@@ -1,0 +1,82 @@
+nav{
+  width: 100%;
+  background: var(--color-white);
+  padding: 0.7rem 0;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+}
+
+nav .container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+nav .Searchbar{
+  background: var(--color-light);
+  border-radius: var(--border-radius);
+  padding: var(--search-padding);
+}
+
+nav .Searchbar input[type="search"]{
+  background:transparent;
+  width: 30vw;
+  margin-left: 1rem;
+  font-size: 0.9rem;
+  color: var(--color-dark);
+}
+
+nav .Searchbar input[type="search"]::placeholder{
+  color: var(--color-gray);
+}
+
+nav .create{
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+
+.create .profile-photo {
+  position: relative;
+  cursor: pointer;
+  overflow: visible;
+}
+
+/* Profile options styles */
+.create .profile-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 0;
+  z-index: 10;
+  border: 2px solid #007bff;
+  color: #333;
+}
+
+.create .profile-photo:hover .profile-options {
+  display: block;
+}
+
+.create .profile-options .username {
+  font-weight: bold;
+  font-size: smaller;
+  color: #333;
+}
+
+.create .profile-options .btn-logout {
+  background: #007bff;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+
