@@ -121,3 +121,24 @@ export const fetchUsers = async () => {
     console.error('Error fetching users:', error);
   }
 };
+
+export const acceptFriendRequest = async (friendRequestId) => {
+  try {
+    const response = await axios.post(`${url}/friendRequests/${friendRequestId}/accept`);
+    return response.data;
+  } catch (error) {
+    console.error('Error accepting friend request:', error);
+    throw error;
+  }
+};
+
+export const declineFriendRequest = async (friendRequestId) => {
+  try {
+
+    const response = await axios.post(`${url}/friendRequests/${friendRequestId}/decline`);
+    return response.data;
+  } catch (error) {
+    console.error('Error declining friend request:', error);
+    throw error;
+  }
+};

@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-import FriendRequest from "./friendRequest.js";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -33,20 +32,6 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
-  default:[],
-
-  sentFriendRequests: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: FriendRequest,
-    },
-  ],
-  receivedFriendRequests: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: FriendRequest,
-    },
-  ],
   bio: {
     type: String,
     default: "",
@@ -54,14 +39,14 @@ const userSchema = new mongoose.Schema({
   followers: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "RegisteredUser",
-    },
+      ref: 'RegisteredUser',
+    }
   ],
   following: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "RegisteredUser",
-    },
+      ref: 'RegisteredUser',
+    }
   ],
 });
 
@@ -82,7 +67,7 @@ userSchema.methods.generateAuthToken = async function () {
     // Return the new token
     return token;
   } catch (error) {
-    console.log(error+ "Jai");
+    console.log(error + "Jai");
   }
 };
 

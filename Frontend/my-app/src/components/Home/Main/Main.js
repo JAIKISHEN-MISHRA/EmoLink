@@ -9,9 +9,12 @@ import ChatBox from "./Chat/ChatBox.js";
 import axios from "axios";
 import Story from "./Story/Story.js";
 import { BsPlusCircle } from 'react-icons/bs';
+import { acceptFriendRequest,declineFriendRequest } from "../../../api/index.js";
 
 const Main = () => {
     const [users, setUsers] = useState([]);
+    const [friendRequests, setFriendRequests] = useState([]);
+
     useEffect(() => {
         myFunction();
         const fetchUsers = async () => {
@@ -29,6 +32,24 @@ const Main = () => {
                 console.error('Error fetching users:', error);
             }
         };
+
+        const fetchFriendRequestsData = async () => {
+            try {
+                const token = localStorage.getItem('tokenurl');
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+                const response = await axios.get('http://localhost:5000/friendRequests/friend-requests', config);
+                setFriendRequests(response.data);
+            } catch (error) {
+                console.error('Error fetching friend requests:', error);
+            }
+        };
+
+        fetchFriendRequestsData();
 
         fetchUsers();
     }, []);
@@ -111,194 +132,220 @@ const Main = () => {
         setCreate(!CreateStory);
     };
 
+    const handleAcceptFriendRequest = async (friendRequestId) => {
+        try {
+          await acceptFriendRequest(friendRequestId);
+          // Update the state or fetch friend requests again to reflect the changes
+          // For simplicity, you can reload the friend requests after acceptance
+          window.location.reload();
+        } catch (error) {
+          console.error('Error accepting friend request:', error);
+          // Handle the error as needed
+        }
+      };
+    
+      const handleDeclineFriendRequest = async (friendRequestId) => {
+        try {
+          await declineFriendRequest(friendRequestId);
+          // Update the state or fetch friend requests again to reflect the changes
+          // For simplicity, you can reload the friend requests after declining
+          window.location.reload();
+        } catch (error) {
+          console.error('Error declining friend request:', error);
+          // Handle the error as needed
+        }
+      };
+    
     return (
         <>
-           {showStories ? (<Story stories={storiesData}  onClose={toggleStories} /> ) : (
-                        
-                        <main>
-                            <div className="container">
-                                <div className="left">
-                                    <a href="/profile" className="profile">
-                                        <div className="profile-photo">
-                                            <img src={Logo} alt="Profiles" />
-                                        </div>
-                                        <div className="handle">
-                                            <h4>Jaikishen</h4>
-                                            <p className="text-muted">@jai</p>
-                                        </div>
-                                    </a>
-                                    <div className="sidebar">
-                                        <a className="menu-item active">
-                                            <span><i className="uil uil-home"></i></span><h3>Home</h3>
-                                        </a>
-                                        <a className="menu-item">
-                                            <span><i className="uil uil-compass"></i></span><h3>Explore</h3>
-                                        </a>
-                                        <a className="menu-item" id="notifications">
-                                            <span><i className="uil uil-bell"><small className="notification-count">9+</small></i></span><h3>Notifications</h3>
-                                            <div className="notifications-popup">
-                                                <div>
-                                                    <div className="profile-photo">
-                                                        <img src={Logo} alt="Profile" />
-                                                    </div>
-                                                    <div className="notification-body">
-                                                        <b>Nikhil Mishra</b> accepted your friend request
-                                                        <small className="text-muted"> 2 Days Ago</small>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div className="profile-photo">
-                                                        <img src={Logo} alt="Profile" />
-                                                    </div>
-                                                    <div className="notification-body">
-                                                        <b>Jammy Khan</b> send you friend request
-                                                        <small className="text-muted"> 2 Days Ago</small>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div className="profile-photo">
-                                                        <img src={Logo} alt="Profile" />
-                                                    </div>
-                                                    <div className="notification-body">
-                                                        <b>Sharjeel Ansari</b> commented on your post
-                                                        <small className="text-muted"> 4 hours Ago</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a className="menu-item" id="messages-notifications">
-                                            <span><i className="uil uil-message"><small className="notification-count">6</small></i></span><h3>Messages</h3>
-                                        </a>
-                                        <a className="menu-item">
-                                            <span><i className="uil uil-bookmark"></i></span><h3>Bookmarks</h3>
-                                        </a>
-                                        <a href="/analytics" className="menu-item">
-                                            <span><i className="uil uil-analytics"></i></span><h3>Analytics</h3>
-                                        </a>
-                                        <a className="menu-item" id="theme">
-                                            <span><i className="uil uil-palette"></i></span><h3>Theme</h3>
-                                        </a>
-                                        <a href="/settings" className="menu-item">
-                                            <span><i className="uil uil-cog"></i></span><h3>Settings</h3>
-                                        </a>
-                                    </div>
-                                    <label htmlFor="create-post" className="btn btn-primary">Create Post</label>
-                                </div>
-                                <div className="center">
-                                    <div className="stories">
-                                        <div className="story" onClick={toggleStories}>
-                                        
-                                            <div className="profile-photo">
-                                                <img src={Logo} alt="Post" />
-                                            </div>
-                                            <p className="name">Jaikishen Mishra</p>
-                                        </div>
-                                        <div className="story" onClick={toggleStories}>
-                                            <div className="profile-photo">
-                                                <img src={Logo} alt="Post" />
-                                            </div>
-                                            <p className="name">Nikhil Mishra</p>
-                                        </div>
-                                        <div className="story" onClick={toggleStories}>
-                                            <div className="profile-photo">
-                                                <img src={Logo} alt="Post" />
-                                            </div>
-                                            <p className="name">Jammy Mishra</p>
-                                        </div>
-                                      
-                                       {CreateStory ? (
-                                           <div className="story create-story-form"  >
-                                        <form action="" className="create-story" encType="multipart/form-data">
-                                        <input type="file" accept="image/*" name="story" id="create-story-image" />
-                                        <input type="submit" value="Story" className="btn "  />
-                                        </form>
-                                        </div>
-                                           
-                                       ) :(
-                                         <div className="story create-face"  onClick={toggleCreateStory}>
-                                        <BsPlusCircle  size={'7vw'}/>
-                                        </div>
-                                        
-                                        )}
-                                      
-                                    </div>
-                                  
-                                    
-            
-                                    
-                                    <form action="" className="create-post" encType="multipart/form-data">
-                                        <div className="profile-photo">
-                                            <img src={Logo} alt="Post-Pic" />
-                                        </div>
-                                        <input type="text" placeholder="What's on your mind?" id="create-post" name="caption" value={formData.caption} onChange={handleInputChange} />
-                                        <input type="file" className="btn-primary"accept="image/*" name="image" id="create-post-image" onChange={handleImageChange} />
-                                        <input type="submit" value="Post" className="btn btn-primary" onClick={handleCreatePost} />
-                                    </form>
-                                    <Feeds />
-                                </div>
-                                <div className="right">
-                                    <div className="messages">
-                                        <div className="heading">
-                                            <h4>Messages</h4><i className="uil uil-message"></i>
-                                        </div>
-                                        <div className="search-bar">
-                                            <i className="uil uil-search"></i>
-                                            <input type="search" placeholder="search messages" id="message-search" />
-                                        </div>
-                                        <div className="category">
-                                            <h6 className="active">Primary</h6>
-                                            <h6>General</h6>
-                                            <h6 className="message-requests">Requests</h6>
-                                        </div>
-                                        {selectedUser ? (
-                                <ChatBox user={selectedUser} onClose={handleCloseChat} />
-                            ) : (
-                                users.map(user => (
-                                    <div
-                                        key={user._id}
-                                        className="message"
-                                        onClick={() => handleOpenChat(user)}
-                                    >
-                                        <div className="profile-photo">
-                                            <img src={Logo} alt="Profile" />
-                                        </div>
-                                        <div className="message-body">
-                                            <h5>{user.username}</h5>
-                                        </div>
-                                    </div>
-                                ))
-                            )}
+            {showStories ? (<Story stories={storiesData} onClose={toggleStories} />) : (
 
-                                    </div>
-            
-                                    <div className="friend-requets">
-                                        <h4>Requests</h4>
-                                        <div className="request">
-                                            <div className="info">
-                                                <div className="profile-photo">
-                                                    <img src={Logo} alt="Profile" />
-                                                </div>
-                                                <div>
-                                                    <h5>Jammy Khan</h5>
-                                                    <p className="text-muted">
-                                                        8 mutual friends
-                                                    </p>
-                                                </div>
+                <main>
+                    <div className="container">
+                        <div className="left">
+                            <a href="/profile" className="profile">
+                                <div className="profile-photo">
+                                    <img src={Logo} alt="Profiles" />
+                                </div>
+                                <div className="handle">
+                                    <h4>Jaikishen</h4>
+                                    <p className="text-muted">@jai</p>
+                                </div>
+                            </a>
+                            <div className="sidebar">
+                                <a className="menu-item active">
+                                    <span><i className="uil uil-home"></i></span><h3>Home</h3>
+                                </a>
+                                <a className="menu-item">
+                                    <span><i className="uil uil-compass"></i></span><h3>Explore</h3>
+                                </a>
+                                <a className="menu-item" id="notifications">
+                                    <span><i className="uil uil-bell"><small className="notification-count">9+</small></i></span><h3>Notifications</h3>
+                                    <div className="notifications-popup">
+                                        <div>
+                                            <div className="profile-photo">
+                                                <img src={Logo} alt="Profile" />
                                             </div>
-                                            <div className="action">
-                                                <button className="btn btn-primary">
-                                                    Accept
-                                                </button>
-                                                <button className="btn">
-                                                    Decline
-                                                </button>
+                                            <div className="notification-body">
+                                                <b>Nikhil Mishra</b> accepted your friend request
+                                                <small className="text-muted"> 2 Days Ago</small>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className="profile-photo">
+                                                <img src={Logo} alt="Profile" />
+                                            </div>
+                                            <div className="notification-body">
+                                                <b>Jammy Khan</b> send you friend request
+                                                <small className="text-muted"> 2 Days Ago</small>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className="profile-photo">
+                                                <img src={Logo} alt="Profile" />
+                                            </div>
+                                            <div className="notification-body">
+                                                <b>Sharjeel Ansari</b> commented on your post
+                                                <small className="text-muted"> 4 hours Ago</small>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
+                                <a className="menu-item" id="messages-notifications">
+                                    <span><i className="uil uil-message"><small className="notification-count">6</small></i></span><h3>Messages</h3>
+                                </a>
+                                <a className="menu-item">
+                                    <span><i className="uil uil-bookmark"></i></span><h3>Bookmarks</h3>
+                                </a>
+                                <a href="/analytics" className="menu-item">
+                                    <span><i className="uil uil-analytics"></i></span><h3>Analytics</h3>
+                                </a>
+                                <a className="menu-item" id="theme">
+                                    <span><i className="uil uil-palette"></i></span><h3>Theme</h3>
+                                </a>
+                                <a href="/settings" className="menu-item">
+                                    <span><i className="uil uil-cog"></i></span><h3>Settings</h3>
+                                </a>
                             </div>
-                        </main>
-                )}
+                            <label htmlFor="create-post" className="btn btn-primary">Create Post</label>
+                        </div>
+                        <div className="center">
+                            <div className="stories">
+                                <div className="story" onClick={toggleStories}>
+
+                                    <div className="profile-photo">
+                                        <img src={Logo} alt="Post" />
+                                    </div>
+                                    <p className="name">Jaikishen Mishra</p>
+                                </div>
+                                <div className="story" onClick={toggleStories}>
+                                    <div className="profile-photo">
+                                        <img src={Logo} alt="Post" />
+                                    </div>
+                                    <p className="name">Nikhil Mishra</p>
+                                </div>
+                                <div className="story" onClick={toggleStories}>
+                                    <div className="profile-photo">
+                                        <img src={Logo} alt="Post" />
+                                    </div>
+                                    <p className="name">Jammy Mishra</p>
+                                </div>
+
+                                {CreateStory ? (
+                                    <div className="story create-story-form"  >
+                                        <form action="" className="create-story" encType="multipart/form-data">
+                                            <input type="file" accept="image/*" name="story" id="create-story-image" />
+                                            <input type="submit" value="Story" className="btn " />
+                                        </form>
+                                    </div>
+
+                                ) : (
+                                    <div className="story create-face" onClick={toggleCreateStory}>
+                                        <BsPlusCircle size={'7vw'} />
+                                    </div>
+
+                                )}
+
+                            </div>
+
+
+
+
+                            <form action="" className="create-post" encType="multipart/form-data">
+                                <div className="profile-photo">
+                                    <img src={Logo} alt="Post-Pic" />
+                                </div>
+                                <input type="text" placeholder="What's on your mind?" id="create-post" name="caption" value={formData.caption} onChange={handleInputChange} />
+                                <input type="file" className="btn-primary" accept="image/*" name="image" id="create-post-image" onChange={handleImageChange} />
+                                <input type="submit" value="Post" className="btn btn-primary" onClick={handleCreatePost} />
+                            </form>
+                            <Feeds />
+                        </div>
+                        <div className="right">
+                            <div className="messages">
+                                <div className="heading">
+                                    <h4>Messages</h4><i className="uil uil-message"></i>
+                                </div>
+                                <div className="search-bar">
+                                    <i className="uil uil-search"></i>
+                                    <input type="search" placeholder="search messages" id="message-search" />
+                                </div>
+                                <div className="category">
+                                    <h6 className="active">Primary</h6>
+                                    <h6>General</h6>
+                                    <h6 className="message-requests">Requests</h6>
+                                </div>
+                                {selectedUser ? (
+                                    <ChatBox user={selectedUser} onClose={handleCloseChat} />
+                                ) : (
+                                    users.map(user => (
+                                        <div
+                                            key={user._id}
+                                            className="message"
+                                            onClick={() => handleOpenChat(user)}
+                                        >
+                                            <div className="profile-photo">
+                                                <img src={Logo} alt="Profile" />
+                                            </div>
+                                            <div className="message-body">
+                                                <h5>{user.username}</h5>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+
+                            </div>
+
+                            <div className="friend-requets">
+                                <h4>Requests</h4>
+                                {friendRequests.map(request => (
+                                    <div key={request._id} className="request">
+                                        <div className="info">
+                                            <div className="profile-photo">
+                                                <img src={Logo} alt="Profile" />
+                                            </div>
+                                            <div>
+                                                <h5>{request.sender.username}</h5>
+                                                <p className="text-muted">
+                                                    {request.sender.username} sent you a friend request
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="action">
+                                            <button className="btn btn-primary" onClick={() => handleAcceptFriendRequest(request._id)}>
+                                                Accept
+                                            </button>
+                                            <button className="btn" onClick={() => handleDeclineFriendRequest(request._id)}>
+                                                Decline
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            )}
 
             <div className="customize-theme">
                 <div className="card">

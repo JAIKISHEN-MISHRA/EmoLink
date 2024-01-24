@@ -17,6 +17,7 @@ import setupSocketIO from './config/socket.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import friendRouter from './routes/friendrequest.js';
 
 config();
 
@@ -50,6 +51,7 @@ app.use('/api/addPost', multer({ storage: multer.memoryStorage() }).single('imag
 app.use('/api/getPost', getPost);
 app.use('/analytics', analyticsRouter);
 app.use('/profile', profileRouter);
+app.use('/friendRequests',friendRouter);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
