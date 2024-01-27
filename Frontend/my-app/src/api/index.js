@@ -47,9 +47,9 @@ export const loginUser = async (userData) => {
   
 
 
-export const fetchPostApi=async(posts)=>{
+export const fetchPostApi=async(config)=>{
   try {
-    const response= await axios.get(`${getpost}/getPost`);
+    const response= await axios.get(`${getpost}/getPost`,config);
     return response;
   } catch (error) {
     console.error("Error getting posts");

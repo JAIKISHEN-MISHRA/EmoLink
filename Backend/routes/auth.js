@@ -13,6 +13,33 @@ router.post('/login', loginUser);
 router.post('/alluser',protect,allUsers);
 router.get('/Username',protect,allUsernames);
 
+router.get("/profdetail", async (req, res) => {
+  try {
+    const userEmail = req.query.email;
+
+
+    // If email parameter is not provided, return a 400 status
+    if (!userEmail) {
+      return res.status(400).json({ error: 'Email parameter is required' });
+    }
+
+    // Find the user in the data source and await the result
+    const user = await Register.findOne({ email: userEmail });
+
+    // If user is not found, return a 404 status
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Return the user details
+    res.status(200).send({ user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+});
+
+
 router.get("/users/:id/verify/:token", async (req, res) => {
     try {
         const userId = req.params.id;

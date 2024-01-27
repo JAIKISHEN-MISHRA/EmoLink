@@ -22,10 +22,14 @@ const postSchema = new mongoose.Schema({
     // You may want to use a library like moment.js to calculate time ago
   },
   // You might want to add fields for likes, comments, and shares
-  likes: {
-    type: Number,
-    default: 0,
-  },
+  likes: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "RegisteredUser", // Reference to the User model (assuming you have one)
+      },
+    },
+  ],
   comments: [
     {
       author: String,

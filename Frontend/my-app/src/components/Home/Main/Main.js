@@ -9,11 +9,14 @@ import ChatBox from "./Chat/ChatBox.js";
 import axios from "axios";
 import Story from "./Story/Story.js";
 import { BsPlusCircle } from 'react-icons/bs';
-import { acceptFriendRequest,declineFriendRequest } from "../../../api/index.js";
+import { acceptFriendRequest, declineFriendRequest } from "../../../api/index.js";
 
 const Main = () => {
     const [users, setUsers] = useState([]);
     const [friendRequests, setFriendRequests] = useState([]);
+    const [notifications, setNotifications] = useState([]);
+    const [profName,setProfname]=useState();
+
 
     useEffect(() => {
         myFunction();
@@ -49,9 +52,42 @@ const Main = () => {
             }
         };
 
+        const fetchNotifications = async () => {
+            try {
+                const token = localStorage.getItem('tokenurl');
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+                const response = await axios.get('http://localhost:5000/notifications/${}', config);
+                setNotifications(response.data);
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        };
+
+
+        const fetchProfName=async()=>{
+            try {
+                const email=localStorage.getItem('token');
+                const response = await axios.get(`http://localhost:5000/profDetail?email=${email}`);
+                const user = response.data.user.name;      
+                const nameArray = user.split(' ');  
+                setProfname(nameArray);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        fetchProfName();
+
         fetchFriendRequestsData();
 
         fetchUsers();
+
+        // fetchNotifications();
     }, []);
 
 
@@ -134,28 +170,28 @@ const Main = () => {
 
     const handleAcceptFriendRequest = async (friendRequestId) => {
         try {
-          await acceptFriendRequest(friendRequestId);
-          // Update the state or fetch friend requests again to reflect the changes
-          // For simplicity, you can reload the friend requests after acceptance
-          window.location.reload();
+            await acceptFriendRequest(friendRequestId);
+            // Update the state or fetch friend requests again to reflect the changes
+            // For simplicity, you can reload the friend requests after acceptance
+            window.location.reload();
         } catch (error) {
-          console.error('Error accepting friend request:', error);
-          // Handle the error as needed
+            console.error('Error accepting friend request:', error);
+            // Handle the error as needed
         }
-      };
-    
-      const handleDeclineFriendRequest = async (friendRequestId) => {
+    };
+
+    const handleDeclineFriendRequest = async (friendRequestId) => {
         try {
-          await declineFriendRequest(friendRequestId);
-          // Update the state or fetch friend requests again to reflect the changes
-          // For simplicity, you can reload the friend requests after declining
-          window.location.reload();
+            await declineFriendRequest(friendRequestId);
+            // Update the state or fetch friend requests again to reflect the changes
+            // For simplicity, you can reload the friend requests after declining
+            window.location.reload();
         } catch (error) {
-          console.error('Error declining friend request:', error);
-          // Handle the error as needed
+            console.error('Error declining friend request:', error);
+            // Handle the error as needed
         }
-      };
-    
+    };
+
     return (
         <>
             {showStories ? (<Story stories={storiesData} onClose={toggleStories} />) : (
@@ -168,8 +204,8 @@ const Main = () => {
                                     <img src={Logo} alt="Profiles" />
                                 </div>
                                 <div className="handle">
-                                    <h4>Jaikishen</h4>
-                                    <p className="text-muted">@jai</p>
+                                    <h4>{profName}</h4>
+                                    <p className="text-muted">@{profName}</p>
                                 </div>
                             </a>
                             <div className="sidebar">
@@ -180,35 +216,21 @@ const Main = () => {
                                     <span><i className="uil uil-compass"></i></span><h3>Explore</h3>
                                 </a>
                                 <a className="menu-item" id="notifications">
-                                    <span><i className="uil uil-bell"><small className="notification-count">9+</small></i></span><h3>Notifications</h3>
+                                    <span><i className="uil uil-bell"><small className="notification-count">{notifications.length}</small></i></span>
+                                    <h3>Notifications</h3>
                                     <div className="notifications-popup">
-                                        <div>
-                                            <div className="profile-photo">
-                                                <img src={Logo} alt="Profile" />
+                                        {notifications.map(notification => (
+                                            <div key={notification._id}>
+                                                {/* Render your notification content here */}
+                                                <div className="profile-photo">
+                                                    <img src={Logo} alt="Profile" />
+                                                </div>
+                                                <div className="notification-body">
+                                                    <b>{notification.sender}</b> {notification.message}
+                                                    <small className="text-muted">{notification.timestamp}</small>
+                                                </div>
                                             </div>
-                                            <div className="notification-body">
-                                                <b>Nikhil Mishra</b> accepted your friend request
-                                                <small className="text-muted"> 2 Days Ago</small>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="profile-photo">
-                                                <img src={Logo} alt="Profile" />
-                                            </div>
-                                            <div className="notification-body">
-                                                <b>Jammy Khan</b> send you friend request
-                                                <small className="text-muted"> 2 Days Ago</small>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="profile-photo">
-                                                <img src={Logo} alt="Profile" />
-                                            </div>
-                                            <div className="notification-body">
-                                                <b>Sharjeel Ansari</b> commented on your post
-                                                <small className="text-muted"> 4 hours Ago</small>
-                                            </div>
-                                        </div>
+                                        ))}
                                     </div>
                                 </a>
                                 <a className="menu-item" id="messages-notifications">

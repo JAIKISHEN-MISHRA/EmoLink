@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
 import Logo from '../../Images/Logo.png';
+import axios from "axios";
 
 import { fetchPostApi } from "../../../../api";
 
 const Feeds = () => {
   const [posts, setPosts] = useState([]);
+  const token = localStorage.getItem('tokenurl');
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
   useEffect(() => {
+    
     const fetchPosts = async () => {
       try {
-        const response = await fetchPostApi();
+        const response = await fetchPostApi(config);
         setPosts(response.data);
       } catch (error) {
         console.error('Error fetching posts:', error);
@@ -19,14 +28,28 @@ const Feeds = () => {
     fetchPosts();
   }, []);
 
+  const handleLikeClick = async (postId) => {
+    try {
+      const response = await axios.post(`http://localhost:5000/api/getpost/like/${postId}`,{},config);
+      const updatedPosts = posts.map((post) =>
+        post._id === postId ? { ...post, likes: response.data.likes, isLiked: !post.isLiked } : post
+      );
+      setPosts(updatedPosts);
+    } catch (error) {
+      console.error('Error liking post:', error);
+    }
+  };
+
+
   return (
     <>
       <div className="feeds">
         {posts.length > 0 ? (
-          
+
           posts.map((post) => {
+            console.log(post)
             const base64String = btoa(
-              new Uint8Array(post.image.data.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
+              new Uint8Array(post.image.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
             );
             // const base64String=btoa(
             //   String.fromCharCode(...new Uint8Array((post.image.data.data)))
@@ -50,13 +73,19 @@ const Feeds = () => {
                 </div>
 
                 <div className="photo">
-                  <img src={`data:image/${post.image.contentType};base64,${base64String}`} alt="Post" />
+                  {/* <img src={`data:image/${post.image.contentType};base64,${base64String}`} alt="Post" /> */}
+                  <img src={`data:image/${post.image.contentType};base64,${post.image.data}`} alt="Post" />
+
                 </div>
 
                 <div className="action-buttons">
                   <div className="interaction-buttons">
-                    <span><i className="uil uil-thumbs-up">{post.likes}</i></span>
-                    <span><i className="uil uil-comment">{post.comments}</i></span>
+                    <span onClick={() => handleLikeClick(post._id)}>
+                      <i className={`uil uil-thumbs-up ${post.isLiked ? 'liked' : ''}`}>
+                        {post.likes.length}
+                      </i>
+                    </span>
+                    <span><i className="uil uil-comment">{post.comments.length}</i></span>
                     <span><i className="uil uil-share">{post.shares}</i></span>
                   </div>
                   <div className="bookmarks">

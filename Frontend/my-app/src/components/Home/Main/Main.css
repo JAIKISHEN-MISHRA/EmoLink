@@ -3,6 +3,7 @@ main{
     top:5.4rem;
 }
 
+
 main .container{
     display: grid;
     grid-template-columns: 18vw auto 20vw;
@@ -165,6 +166,12 @@ main .container .left .profile{
 }
 
 
+.center .stories .create{
+    justify-content: center;
+    
+}
+
+
 .center .stories .story::before{
     content: "";
     display: block;
@@ -191,8 +198,16 @@ main .container .left .profile{
 }
 
 .center .stories .story:nth-child(4){
-    background: url('../Images/Logo.png') no-repeat center center/cover;
+    background: url('../Images/Logo.png') no-repeat center center/cover  blur(0.1px);
+    background-color: rgba(0, 0, 0, 0.3); /*Adjust the alpha value for darkness*/
+   
 }
+.center .stories .create-face{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 .center .story .profile-photo{
     width: 2rem;
@@ -233,6 +248,10 @@ main .container .left .profile{
     font-size: 0.85rem;
     line-height: 1.5;
 }
+
+.center .feeds .interaction-buttons i.liked {
+    color: red;
+  }
 
 .center .feed .head{
     display: flex;

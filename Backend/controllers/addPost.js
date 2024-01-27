@@ -20,7 +20,7 @@ export const addPost = async (req, res) => {
         data: image.buffer,
         contentType: image.mimetype,
       },
-      likes: 0,
+      likes: [],
       comments: [],
       shares: 0,
     };
