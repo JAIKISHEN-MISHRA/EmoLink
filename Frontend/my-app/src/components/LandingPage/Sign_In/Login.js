@@ -78,7 +78,7 @@ const Login = () => {
 
             
           } catch (error) {
-            console.log("Login Error");
+            console.log(error);
             LogShowAlertFail();
           }
       }

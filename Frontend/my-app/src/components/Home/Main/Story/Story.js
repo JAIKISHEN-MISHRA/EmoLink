@@ -14,7 +14,7 @@ const Story = ({ stories, onClose }) => {
       } else {
         onClose();
       }
-    }, 10000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [currentStoryIndex, stories, onClose]);
@@ -33,6 +33,7 @@ const Story = ({ stories, onClose }) => {
       onClose();
     }
   };
+  console.log(stories);
 
   return (
 

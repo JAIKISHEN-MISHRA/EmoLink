@@ -7,6 +7,9 @@ import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { BsPencil, BsFillXCircleFill } from 'react-icons/bs';
+// import Feeds from '../Home/Main/Feeds/feeds.js';
+// import Bookmark from '../Bookmark/Bookmark.js';
 
 const Profile = () => {
   const { username: profileUsername } = useParams();
@@ -99,25 +102,66 @@ const Profile = () => {
     }
   };
 
+  // ------------------------------------------------------------------
+  const [ispop, setpop] = useState(false);
+  var [heading, setHeading] = useState(null);
+  const [popButtonLabel, setPopButtonLabel] =useState(null);
+  const handleFollowerCountClick = () => {
+    setHeading("Followers")
+    setPopButtonLabel("Remove")
+    setpop(true);
+  };
+  const handleFollowingCountClick = () => {
+    setHeading("Following")
+    setPopButtonLabel("Unfollow")
+    setpop(true);
+  };
+
+  const closeModal = () => {
+    setpop(false);
+    // setPopButtonLabel(null)
+  };
+
+const handleBottomAction =()=>{
+  if(popButtonLabel === "Remove"){
+    setPopButtonLabel("Add")
+  }
+  if(popButtonLabel === "Add"){
+    setPopButtonLabel("Follow")
+  }
+
+  if(popButtonLabel === "Unfollow"){
+    setPopButtonLabel("Follow")
+  }
+  if(popButtonLabel === "Follow"){
+    setPopButtonLabel("Follow")
+  }
+}
+
 
   return (
     <div>
       <Navbar />
-      <div className='profile-container'>
+      <div className=' container profile-container'>
         <div className='profile'>
-          <img className='user-image' src={Logo} alt='User' />
-          <button className='edit-button'>edit</button>
+          <div className='profile-image'>
+            <span><img className='user-image' src={Logo} alt='User' /></span>
+            <span className='edit-button'>
+              <BsPencil className='pencil' /></span>
+          </div>
+
           <div className='profile-info'>
             <div>
+            <span className='original-name'>{userData.fullName}</span>
               <h4 className='user-name'>{userData.username}</h4>
-              <span className='original-name'>{userData.fullName}</span>
+              
             </div>
             <div className='numbers'>
-              <a href='' className='num'>
+              <a onClick={handleFollowerCountClick} className='num'>
                 <div>{userData.followers}</div>
                 <div>followers</div>
               </a>
-              <a className='num'>
+              <a onClick={handleFollowingCountClick} className='num'>
                 <div>{userData.following}</div>
                 <div>following</div>
               </a>
@@ -125,41 +169,83 @@ const Profile = () => {
                 <div>{userData.posts}</div>
                 <div>posts</div>
               </a>
-            </div>
-            <hr className='hr' />
-          </div>
-          <div className='profile-bottom'>
-            <div className='left-about'>
-              {isEditingBio ? (
-                <>
-                  <textarea
-                    value={editedBio}
-                    onChange={(e) => setEditedBio(e.target.value)}
-                    rows={4}
-                    cols={50}
-                  />
-                  <button onClick={handleSaveBio}>Save</button>
-                </>
-              ) : (
-                <>
-                  <ul>
-                    <li className='uil uil-home'>{userData.bio}</li>
-                  </ul>
-                  {isOwnProfile && (
-                    <button onClick={handleEditBio} className='btn btn-secondary'>
-                      Edit Bio
-                    </button>
-                  )}                                </>
+              {ispop && (
+                <div className="pop">
+                  <div className="pop-content">
+
+                    <div className='pop-header'>
+                      <h4>Number of {heading}: {userData.followers}</h4>
+                      <span className="close" onClick={closeModal}>
+                        <BsFillXCircleFill />
+                      </span>
+                    </div>
+                    {/* <hr className='hr' /> */}
+                    <div className='pop-bottom'>
+                      <div className='pop-entry'>
+                        <span><img className='user-image' src={Logo} alt='User' /></span>
+                        <div className='user-name'>Jai</div>
+                        <div>
+                          <button className='pop-bottom-button' value={popButtonLabel}  onClick={handleBottomAction}>
+                            {popButtonLabel}
+                          </button>
+                        </div>
+                      </div>
+                      <div className='pop-entry'>
+                        <span><img className='user-image' src={Logo} alt='User' /></span>
+                        <div className='user-name'>Jammy</div>
+                        <div>
+                          <button className='pop-bottom-button' value={popButtonLabel}  onClick={handleBottomAction}>
+                            {popButtonLabel}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
-            <div className='friend-request'>
-              {/* Friend request button and content */}
-              {!isOwnProfile && (<button onClick={handleAddFriend}>{friendRequestSent ? 'Request Sent' : 'Add Friend'}</button>)}        
+
+            <hr className='hr' />
+          </div></div>
+        <div className='profile-bottom'>
+          <div className='left-about'>
+            {isEditingBio ? (
+              <>
+                <textarea
+                  value={editedBio}
+                  onChange={(e) => setEditedBio(e.target.value)}
+                  rows={4}
+                  cols={50}
+                />
+                <button onClick={handleSaveBio}>Save</button>
+              </>
+            ) : (
+              <>
+                <ul>
+                  <li className='uil uil-home'>{userData.bio}</li>
+                </ul>
+                {isOwnProfile && (
+                  <button onClick={handleEditBio} className='btn btn-secondary'>
+                    Edit Bio
+                  </button>
+                )}                                </>
+            )}
+          </div>
+          <div className='friend-request'>
+            {/* Friend request button and content */}
+            {!isOwnProfile && (<button onClick={handleAddFriend}>{friendRequestSent ? 'Request Sent' : 'Add Friend'}</button>)}
+          </div>
+          <div className='user-posts'>
+            <h4>Post</h4>
+            <div>
+              //post
             </div>
           </div>
         </div>
       </div>
+
     </div>
+
   );
 };
 

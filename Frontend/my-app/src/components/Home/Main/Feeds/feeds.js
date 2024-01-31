@@ -16,6 +16,7 @@ const Feeds = () => {
 
   useEffect(() => {
     
+    
     const fetchPosts = async () => {
       try {
         const response = await fetchPostApi(config);
@@ -47,7 +48,6 @@ const Feeds = () => {
         {posts.length > 0 ? (
 
           posts.map((post) => {
-            console.log(post)
             const base64String = btoa(
               new Uint8Array(post.image.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
             );
