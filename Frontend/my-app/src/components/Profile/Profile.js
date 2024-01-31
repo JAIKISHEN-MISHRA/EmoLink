@@ -16,13 +16,14 @@ const Profile = () => {
   const loggedInUsername = localStorage.getItem('token');
 
   const [userData, setUserData] = useState({
-    followers: 0,
-    following: 0,
+    followers: [],
+    following: [],
     posts: 0,
     username: '',
     fullName: '',
     userImage: '',
     bio: '',
+    id: '',
   });
   const navigate = useNavigate();
 
@@ -30,6 +31,7 @@ const Profile = () => {
   const [editedBio, setEditedBio] = useState('');
 
   const [friendRequestSent, setFriendRequestSent] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,10 +41,11 @@ const Profile = () => {
 
         const response = await fetchProfileData(username);
         setUserData(response);
+
         setEditedBio(response.bio);
 
         // Check if friend request has been sent
-        const friendRequests = await axios.get('http://localhost:5000/friendRequests/friend-requests', {
+        const friendRequests = await axios.get(`http://localhost:5000/friendRequests/friend-requests/${response.id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('tokenurl')}`,
           },
@@ -64,12 +67,12 @@ const Profile = () => {
     };
 
     fetchData();
+
   }, [profileUsername, loggedInUsername, navigate]);
 
   const handleEditBio = () => {
     setIsEditingBio(true);
   };
-
   const handleSaveBio = async () => {
     try {
       const username = profileUsername || loggedInUsername;
@@ -85,7 +88,7 @@ const Profile = () => {
       console.error('Error updating bio:', error);
     }
   };
-  const isOwnProfile = profileUsername === undefined;
+  const isOwnProfile = profileUsername === loggedInUsername;
   const username = localStorage.getItem('token');
 
   const handleAddFriend = async () => {
@@ -105,7 +108,7 @@ const Profile = () => {
   // ------------------------------------------------------------------
   const [ispop, setpop] = useState(false);
   var [heading, setHeading] = useState(null);
-  const [popButtonLabel, setPopButtonLabel] =useState(null);
+  const [popButtonLabel, setPopButtonLabel] = useState(null);
   const handleFollowerCountClick = () => {
     setHeading("Followers")
     setPopButtonLabel("Remove")
@@ -122,22 +125,21 @@ const Profile = () => {
     // setPopButtonLabel(null)
   };
 
-const handleBottomAction =()=>{
-  if(popButtonLabel === "Remove"){
-    setPopButtonLabel("Add")
-  }
-  if(popButtonLabel === "Add"){
-    setPopButtonLabel("Follow")
-  }
+  const handleBottomAction = () => {
+    if (popButtonLabel === "Remove") {
+      setPopButtonLabel("Add")
+    }
+    if (popButtonLabel === "Add") {
+      setPopButtonLabel("Follow")
+    }
 
-  if(popButtonLabel === "Unfollow"){
-    setPopButtonLabel("Follow")
+    if (popButtonLabel === "Unfollow") {
+      setPopButtonLabel("Follow")
+    }
+    if (popButtonLabel === "Follow") {
+      setPopButtonLabel("Follow")
+    }
   }
-  if(popButtonLabel === "Follow"){
-    setPopButtonLabel("Follow")
-  }
-}
-
 
   return (
     <div>
@@ -152,17 +154,17 @@ const handleBottomAction =()=>{
 
           <div className='profile-info'>
             <div>
-            <span className='original-name'>{userData.fullName}</span>
+              <span className='original-name'>{userData.fullName}</span>
               <h4 className='user-name'>{userData.username}</h4>
-              
+
             </div>
             <div className='numbers'>
               <a onClick={handleFollowerCountClick} className='num'>
-                <div>{userData.followers}</div>
+                <div>{userData.followers.count}</div>
                 <div>followers</div>
               </a>
               <a onClick={handleFollowingCountClick} className='num'>
-                <div>{userData.following}</div>
+                <div>{userData.following.count}</div>
                 <div>following</div>
               </a>
               <a className='num'>
@@ -172,37 +174,47 @@ const handleBottomAction =()=>{
               {ispop && (
                 <div className="pop">
                   <div className="pop-content">
-
                     <div className='pop-header'>
-                      <h4>Number of {heading}: {userData.followers}</h4>
+                      <h4>Number of {heading}: {heading === "Followers" ? userData.followers.count : userData.following.count}</h4>
                       <span className="close" onClick={closeModal}>
                         <BsFillXCircleFill />
                       </span>
                     </div>
-                    {/* <hr className='hr' /> */}
                     <div className='pop-bottom'>
-                      <div className='pop-entry'>
-                        <span><img className='user-image' src={Logo} alt='User' /></span>
-                        <div className='user-name'>Jai</div>
-                        <div>
-                          <button className='pop-bottom-button' value={popButtonLabel}  onClick={handleBottomAction}>
-                            {popButtonLabel}
-                          </button>
-                        </div>
-                      </div>
-                      <div className='pop-entry'>
-                        <span><img className='user-image' src={Logo} alt='User' /></span>
-                        <div className='user-name'>Jammy</div>
-                        <div>
-                          <button className='pop-bottom-button' value={popButtonLabel}  onClick={handleBottomAction}>
-                            {popButtonLabel}
-                          </button>
-                        </div>
-                      </div>
+                      {/* Render followers if heading is "Followers" */}
+                      {heading === "Followers" && userData.followers.users.map((follower) => {
+                        return (
+                          <div className='pop-entry' key={follower.id}>
+                            <span><img className='user-image' src={Logo} alt='User' /></span>
+                            <div className='user-name'>{follower.username}</div>
+                            <div>
+                              <button className='pop-bottom-button' value={popButtonLabel} onClick={handleBottomAction}>
+                                {popButtonLabel}
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {/* Render following if heading is "Following" */}
+                      {heading === "Following" && userData.following.users.map((following) => {
+                        return (
+                          <div className='pop-entry' key={following.id}>
+                            <span><img className='user-image' src={Logo} alt='User' /></span>
+                            <div className='user-name'>{following.username}</div>
+                            <div>
+                              <button className='pop-bottom-button' value={popButtonLabel} onClick={handleBottomAction}>
+                                {popButtonLabel}
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
               )}
+
             </div>
 
             <hr className='hr' />
@@ -250,4 +262,6 @@ const handleBottomAction =()=>{
 };
 
 export default Profile;
+
+
 

@@ -11,25 +11,48 @@ profileRouter.get('/user', async (req, res) => {
         const { username } = req.query;
 
         // Fetch user data from RegisteredUser schema
-        const user = await Register.findOne({ username }).exec();
+        const user = await Register.findOne({ username })
+            .populate('followers', 'username')
+            .populate('following', 'username')
+            .exec();
 
         // Fetch post count from Post schema based on the author (username)
         const postCount = await Post.countDocuments({ author: username }).exec();
 
+        // Convert followers and following to arrays
+        const followersArray = user.followers.map(follower => ({
+            id: follower._id,
+            username: follower.username
+        }));
+
+        const followingArray = user.following.map(followingUser => ({
+            id: followingUser._id,
+            username: followingUser.username
+        }));
+
         res.json({
-            followers: user.followers.length,
-            following: user.following.length,
+            followers: {
+                count: followersArray.length,
+                users: followersArray
+            },
+            following: {
+                count: followingArray.length,
+                users: followingArray
+            },
             posts: postCount,
             username: user.username,
             fullName: user.name,
             userImage: user.userImage,
             bio: user.bio,
+            id: user._id,
         });
     } catch (error) {
         console.error('Error fetching user profile data:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+  
+
 
 profileRouter.put('/updateBio/:username',  async (req, res) => {
     try {

@@ -48,11 +48,13 @@ friendRouter.post('/send-request', async (req, res) => {
   }
 });
 
-friendRouter.route('/friend-requests').get(protect,async (req, res) => {
+friendRouter.route('/friend-requests/:userId').get(protect,async (req, res) => {
     try {
-      const userId = req.user._id; // Assuming you have the user ID in the request object
+      const receiverId = req.params.userId;
+      const senderId = req.user._id; // Assuming you have the user ID in the request object
       const friendRequests = await FriendRequest.find({
-        receiver: userId,
+        receiver: receiverId,
+        sender:senderId,
         status: 'pending',
       })
         .populate('sender', 'username') // Populate sender information

@@ -494,7 +494,7 @@ const Main = () => {
                 console.error('Error fetching friend requests:', error);
             }
         };
-
+        
         fetchFriendRequestsData();
         fetchUsers();
     }, []);
