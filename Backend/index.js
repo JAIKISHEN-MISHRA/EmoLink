@@ -19,6 +19,7 @@
   import { fileURLToPath } from 'url';
   import { dirname } from 'path';
   import friendRouter from './routes/friendrequest.js';
+  import { spawn } from 'child_process';
   
   config();
   
@@ -41,6 +42,8 @@
   app.use('/analytics', analyticsRouter);
   app.use('/profile', profileRouter);
   app.use('/friendRequests', friendRouter);
+
+ 
   
   // Set up Socket.io with the server
   const io = new SocketIOServer(server, {
@@ -57,7 +60,28 @@
   
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
-  
+  app.post('/predict-sentiment', (req, res) => {
+    // const { text } = req.body;
+    const { text } = "I have best parents in world";
+
+
+    // Spawn a child process to execute the Python script
+    const pythonProcess = spawn('python',['config/Model.py', text]);
+
+    // Capture the output from the Python script
+    pythonProcess.stdout.on('data', (data) => {
+        const prediction = parseInt(data.toString().trim(), 10);
+        const sentiment = prediction === 0 ? 'Negative' : 'Positive';
+        console.log(prediction+" "+sentiment);
+        // res.json({ prediction, sentiment });
+    });
+
+    // Handle errors
+    pythonProcess.stderr.on('data', (data) => {
+        console.error(`Error: ${data}`);
+        res.status(500).json({ error: 'An error occurred while predicting sentiment' });
+    });
+});
   app.get('/forgot-pass/:token', (req, res) => {
     res.sendFile(path.join(__dirname, 'components/forgotpass', 'forgot.html'));
   });

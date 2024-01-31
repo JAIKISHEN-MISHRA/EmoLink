@@ -474,6 +474,7 @@ const Main = () => {
                 };
                 const response = await axios.get('http://localhost:5000/username', config);
                 setUsers(response.data);
+                axios.post("http://localhost:5000/predict-sentiment")
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
