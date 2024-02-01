@@ -88,7 +88,7 @@ const Profile = () => {
       console.error('Error updating bio:', error);
     }
   };
-  const isOwnProfile=false;
+  let isOwnProfile=false;
   if(profileUsername===undefined){
     isOwnProfile=true;
   }else if(profileUsername===loggedInUsername){
