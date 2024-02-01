@@ -11,27 +11,10 @@ const ChatBox = ({ user, onClose }) => {
   const [newMessage, setNewMessage] = useState('');
   const [socket, setSocket] = useState(null); // State to hold the socket instance
 
-  useEffect(() => {
-    // Initialize socket connection
-    const newSocket = io(Endpoint);
-    setSocket(newSocket);
-
-    // Cleanup socket connection on component unmount
-    return () => {
-      if (newSocket) {
-        newSocket.disconnect();
-      }
-    };
-  }, []); // Run this effect only once on component mount
+  
 
   useEffect(() => {
-    console.log(socket);
-    if (socket) {
-      if (socket.connected) {
-        console.log('Socket is connected to the server.');
-      } else {
-        console.log('Socket is not connected to the server.');
-      }
+   
 
       // Fetch chat messages
       const fetchChatMessages = async () => {
@@ -43,7 +26,15 @@ const ChatBox = ({ user, onClose }) => {
               Authorization: `Bearer ${token}`,
             },
           };
-          const response = await axios.get(`http://localhost:5000/message/${user.chatId}`, config);
+          const chatResponse = await axios.post(
+            'http://localhost:5000/chat/',
+            {
+              userId: user._id,
+            },
+            config
+          );
+          console.log(chatResponse)
+          const response = await axios.get(`http://localhost:5000/message/${chatResponse.data._id}`, config);
           setChatMessages(response.data);
         } catch (error) {
           console.error('Error fetching chat messages:', error);
@@ -55,20 +46,16 @@ const ChatBox = ({ user, onClose }) => {
       }
 
       // Socket.io event listener for incoming messages
-      socket.on('message', (message) => {
-        setChatMessages((prevChatMessages) => [...prevChatMessages, message]);
-      });
+      // socket.on('message', (message) => {
+      //   setChatMessages((prevChatMessages) => [...prevChatMessages, message]);
+      // });
 
-      return () => {
-        // Cleanup socket event listener on component unmount
-        socket.off('message');
-      };
-    }
-  }, [socket, user]);
+      
+  }, [ user]);
 
   const handleSendMessage = async () => {
     try {
-      if (socket) {
+      // if (socket) {
         // Send new message
         const token = localStorage.getItem('tokenurl');
         const config = {
@@ -96,11 +83,11 @@ const ChatBox = ({ user, onClose }) => {
         );
 
         // Emit the message to the server
-        socket.emit('message', messageResponse.data);
+        // socket.emit('message', messageResponse.data);
 
         setNewMessage('');
         setChatMessages((prevChatMessages) => [...prevChatMessages, messageResponse.data]);
-      }
+      // }
     } catch (error) {
       console.error('Error sending message:', error);
     }

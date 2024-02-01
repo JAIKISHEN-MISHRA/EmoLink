@@ -474,7 +474,6 @@ const Main = () => {
                 };
                 const response = await axios.get('http://localhost:5000/username', config);
                 setUsers(response.data);
-                axios.post("http://localhost:5000/predict-sentiment")
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
@@ -491,7 +490,6 @@ const Main = () => {
                 };
                 const response = await axios.get('http://localhost:5000/friendRequests/friend-requests', config);
                 setFriendRequests(response.data);
-                console.log(response.data)
             } catch (error) {
                 console.error('Error fetching friend requests:', error);
             }
