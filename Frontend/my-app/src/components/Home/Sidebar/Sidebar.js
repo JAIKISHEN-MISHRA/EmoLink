@@ -35,7 +35,7 @@ const Sidebar = () => {
                 console.error('Error fetching notifications:', error);
             }
         };
-        fetchNotifications();
+        // fetchNotifications();
 
         fetchProfName();
     }, []);

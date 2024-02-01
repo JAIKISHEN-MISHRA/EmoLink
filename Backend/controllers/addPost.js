@@ -1,5 +1,8 @@
-import Post from '../Models/addPost.js'; // Adjust the path based on your project structure
-import Register from '../Models/User.js'; // Adjust the path based on your project structure
+import Post from '../Models/addPost.js';
+import Register from '../Models/User.js';
+import Analysis from '../Models/Analysis.js';
+import { runImageProcessing } from '../config/ImageModel.js';
+import { predictSentiment } from '../config/SentimentModel.js';
 
 export const addPost = async (req, res) => {
   try {
@@ -8,10 +11,36 @@ export const addPost = async (req, res) => {
       return res.status(400).json({ error: 'Image not provided' });
     }
 
-    // Fetch username from Register model based on email
-    const email = req.body.email; // Assuming the email is sent in the request body
+    // Read the image data and pass it to the image processing function
+    const imageData = image.buffer;
+    const Imageprediction = await runImageProcessing(imageData);
+
+    let imageAnalysis;  // Declare the variable outside the if statement
+
+    if (Imageprediction === "Sad") {
+      imageAnalysis = 0;
+    } else {
+      imageAnalysis = 1;
+    }
+
+    const Sentimentprediction = await predictSentiment(req.body.caption);
+
+    // Fetch user from Register model based on email
+    const email = req.body.email;
     const user = await Register.findOne({ email });
-    const author = user ? user.username : 'DefaultAuthor'; // Use a default author if not found
+    const author = user ? user.username : 'DefaultAuthor';
+
+    // Update or insert data in the Analysis collection
+    await Analysis.findOneAndUpdate(
+      { userId: user._id },
+      {
+        $push: {
+          imageAnalysis: { $each: [imageAnalysis], $position: 0 },
+          sentimentAnalysis: { $each: [Sentimentprediction.prediction], $position: 0 },
+        },
+      },
+      { upsert: true }
+    );
 
     const postData = {
       author,

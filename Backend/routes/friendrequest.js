@@ -48,24 +48,22 @@ friendRouter.post('/send-request', async (req, res) => {
   }
 });
 
-friendRouter.route('/friend-requests/:userId').get(protect,async (req, res) => {
-    try {
-      const receiverId = req.params.userId;
-      const senderId = req.user._id; // Assuming you have the user ID in the request object
-      const friendRequests = await FriendRequest.find({
-        receiver: receiverId,
-        sender:senderId,
-        status: 'pending',
-      })
-        .populate('sender', 'username') // Populate sender information
-        ;
-  
-      res.json(friendRequests);
-    } catch (error) {
-      console.error('Error fetching friend requests:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
-    }
-  });
+friendRouter.route('/friend-requests').get(protect, async (req, res) => {
+  try {
+    const receiverId = req.user._id;
+    const friendRequests = await FriendRequest.find({
+      receiver: receiverId,
+      status: 'pending',
+    })
+      .populate('sender', 'username'); // Populate sender information
+
+    res.json(friendRequests);
+  } catch (error) {
+    console.error('Error fetching friend requests:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 
   friendRouter.post('/:id/accept', async (req, res) => {
     try {
