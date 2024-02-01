@@ -88,7 +88,10 @@ const Profile = () => {
       console.error('Error updating bio:', error);
     }
   };
-  const isOwnProfile = profileUsername === loggedInUsername;
+  const isOwnProfile = profileUsername === undefined;
+  console.log(profileUsername)
+  console.log(loggedInUsername);
+  console.log(isOwnProfile)
   const username = localStorage.getItem('token');
 
   const handleAddFriend = async () => {
