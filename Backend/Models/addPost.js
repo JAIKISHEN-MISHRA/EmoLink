@@ -32,8 +32,15 @@ const postSchema = new mongoose.Schema({
   ],
   comments: [
     {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "RegisteredUser", // Reference to the User model (assuming you have one)
+      },
       author: String,
-      text: String,
+      text:{
+        type: String,
+        required:true,
+      },
       timestamp: {
         type: Date,
         default: Date.now,

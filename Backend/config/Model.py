@@ -29,3 +29,4 @@ def predict_sentiment(text):
 if __name__ == "__main__":
     input_text = sys.argv[1]
     prediction = predict_sentiment(input_text)
+    print(prediction)

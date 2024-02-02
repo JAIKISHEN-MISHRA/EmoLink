@@ -14,6 +14,7 @@ export const addPost = async (req, res) => {
     // Read the image data and pass it to the image processing function
     const imageData = image.buffer;
     const Imageprediction = await runImageProcessing(imageData);
+    console.log(Imageprediction);
 
     let imageAnalysis;  // Declare the variable outside the if statement
 
@@ -24,6 +25,7 @@ export const addPost = async (req, res) => {
     }
 
     const Sentimentprediction = await predictSentiment(req.body.caption);
+    console.log(Sentimentprediction);
 
     // Fetch user from Register model based on email
     const email = req.body.email;

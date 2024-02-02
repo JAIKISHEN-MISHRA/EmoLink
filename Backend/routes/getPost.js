@@ -37,5 +37,37 @@ router.post("/like/:postId", protect, async (req, res) => {
   }
 });
 
+router.post("/comment/:postId", protect, async (req, res) => {
+  const userId = req.user._id;
+  const postId = req.params.postId;
+  const { content } = req.body;
+
+  try {
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    // Create the comment object
+    const comment = {
+      user: userId,
+      author: req.user.username, // Assuming you have a 'username' field in your user model
+      text:content,
+      timestamp: new Date(),
+    };
+
+    // Add the new comment to the comments array
+    post.comments.push(comment);
+
+    await post.save();
+
+    res.status(201).send( post );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 
 export default router;
