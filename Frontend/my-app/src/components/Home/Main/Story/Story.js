@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Story.css';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 
-
 const Story = ({ stories, onClose }) => {
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -26,6 +24,7 @@ const Story = ({ stories, onClose }) => {
       onClose();
     }
   };
+
   const handlePreviousStory = () => {
     if (currentStoryIndex > 0) {
       setCurrentStoryIndex(currentStoryIndex - 1);
@@ -33,28 +32,25 @@ const Story = ({ stories, onClose }) => {
       onClose();
     }
   };
-  console.log(stories);
 
   return (
-
     <div className="story-container">
       <div className='prev navi'>
-      {currentStoryIndex > 0 && (
-      <button className='btn btn-primary'  onClick={handlePreviousStory}> <BsChevronLeft /></button>
-    )}
-        
-        {/* <button className='btn ' onClick={handleNextStory}> <BsChevronRight /></button> */}
+        {currentStoryIndex > 0 && (
+          <button className='btn btn-primary' onClick={handlePreviousStory}>
+            <BsChevronLeft />
+          </button>
+        )}
       </div>
-      <div  className='image'>
-        <img src={stories[currentStoryIndex]} alt={`Story ${currentStoryIndex + 1}`} />
+      <div className='image'>
+        <img src={`data:${stories[currentStoryIndex].mimetype};base64,${stories[currentStoryIndex].path}`} alt={stories[currentStoryIndex].filename} />
       </div>
-      <div className='next navi' >
-        <button className='btn btn-primary ' onClick={handleNextStory}> <BsChevronRight /></button>
+      <div className='next navi'>
+        <button className='btn btn-primary' onClick={handleNextStory}>
+          <BsChevronRight />
+        </button>
       </div>
-
-
     </div>
-
   );
 };
 

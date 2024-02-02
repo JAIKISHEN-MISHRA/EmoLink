@@ -20,6 +20,7 @@
   import { dirname } from 'path';
   import friendRouter from './routes/friendrequest.js';
   import { spawn } from 'child_process';
+  import Storyrouter from './routes/addStory.js';
   
   config();
   
@@ -42,6 +43,7 @@
   app.use('/analytics', analyticsRouter);
   app.use('/profile', profileRouter);
   app.use('/friendRequests', friendRouter);
+  app.use(Storyrouter);
 
  
   
