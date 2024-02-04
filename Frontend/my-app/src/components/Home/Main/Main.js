@@ -69,7 +69,6 @@ const Main = () => {
                 };
                 const response = await axios.get('http://localhost:5000/addStory', config);
                 setStoriesData(response.data.stories); // Update stories state with fetched data
-                console.log(response.data.stories);
             } catch (error) {
                 console.error('Error fetching stories:', error);
             }

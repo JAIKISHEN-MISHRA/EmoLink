@@ -1,24 +1,16 @@
-import mongoose from "mongoose";
+// models/Notification.js
 
-const notificationModel=mongoose.Schema({
-    sender: {
-        type: String,
-        required: true,
-      },
-      message: {
-        type: String,
-        required: true,
-      },
-      timestamp: {
-        type: Date,
-        default: Date.now,
-      },
-      userId:{
-        type:mongoose.Schema.Types,
-        ref:"RegisteredUser",
-        required:true
-      }
-})
+import mongoose from 'mongoose';
+const notificationSchema = new mongoose.Schema({
+  sender: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'RegisteredUser',
+    required: true
+  },
+  message: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now },
+});
 
-const Notification=mongoose.Model('Notification',notificationModel);
+const Notification = mongoose.model('Notification', notificationSchema);
+
 export default Notification;

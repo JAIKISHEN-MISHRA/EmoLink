@@ -33,7 +33,6 @@ const ChatBox = ({ user, onClose }) => {
             },
             config
           );
-          console.log(chatResponse)
           const response = await axios.get(`http://localhost:5000/message/${chatResponse.data._id}`, config);
           setChatMessages(response.data);
         } catch (error) {
@@ -66,7 +65,7 @@ const ChatBox = ({ user, onClose }) => {
         };
 
         const chatResponse = await axios.post(
-          'http://localhost:5000/chat/',
+          'http://localhost:5000/chat',
           {
             userId: user._id,
           },
@@ -74,7 +73,7 @@ const ChatBox = ({ user, onClose }) => {
         );
 
         const messageResponse = await axios.post(
-          'http://localhost:5000/message/',
+          'http://localhost:5000/message',
           {
             content: newMessage,
             chatId: chatResponse.data._id,
