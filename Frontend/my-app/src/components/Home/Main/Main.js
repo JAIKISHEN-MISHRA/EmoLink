@@ -70,10 +70,7 @@ const Main = () => {
                 };
                 const response = await axios.get('http://localhost:5000/addStory', config);
                 setStoriesData(response.data.stories); // Update stories state with fetched data
-<<<<<<< HEAD
                 // console.log(response.data.stories);
-=======
->>>>>>> 5a9fa4cb2b3c04e61ae662677945efaf9468e523
             } catch (error) {
                 console.error('Error fetching stories:', error);
             }
