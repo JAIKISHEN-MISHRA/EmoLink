@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import './Navbar.css';
 import Logo from '../Images/Logo.png';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'; 
+import Icon from '../Images/icon.png'
 
 const Navbar = () => {
   const LogOuthowAlertSuccess = () => {
@@ -33,22 +34,22 @@ const Navbar = () => {
     <nav>
       <div className='container'>
         <h2>EmoLink</h2>
+        {/* <div className='icon'><img src={Icon} alt='ProfilePic' /></div> */}
         <div className='Searchbar'>
-          <i className='uil uil-search'></i>
-          <input
+          <input className="search-input"
             type='text'
-            placeholder='Search for Creators by Email ID'
+            placeholder='Search by Email'
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <button className='btn btn-search' onClick={handleSearch}>
-            Search
+          <i className='uil uil-search'></i>
           </button>
         </div>
         <div className='create'>
-          <label className='btn btn-primary' htmlFor='create-posts'>
+          {/* <label className='btn btn-primary' htmlFor='create-posts'>
             Create
-          </label>
+          </label> */}
           <div
             className='profile-photo'
             onMouseEnter={() => setProfileActive(true)}

@@ -12,32 +12,72 @@ const CreateStory = () => {
     useEffect(() => {
         const formData = new FormData();
         tempStories.forEach((story) => {
-            console.log('Appending story:', story); // Log each story being appended
+            // console.log('Appending story:', story); // Log each story being appended
             formData.append('stories', story.file);
         });
         setSubmitFormData(formData);
     }, [tempStories]);
 
-    const handleFileChange = (event) => {
+    const handleFileChange = async (event) => {
         const files = event.target.files;
-    
+        console.log(files.width);
         const newTempStories = [...tempStories];
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             const type = file.type.startsWith('image/') ? 'image' : 'video'; // Determine the type of file
-            newTempStories.push({
-                id: i,
-                file: file,
-                src: URL.createObjectURL(file),
-                type: type // Include the type field
-            });
+            if (file) {
+                const res  = await compressAndSetAspectRatio(file);
+                newTempStories.push({
+                    id: i,
+                    file: file,
+                    src: res,
+                    type: type, 
+                });
+              }          
         }
         console.log(newTempStories);
         setTempStories(newTempStories);
         setShowStory(true);
     };
-    
+// ---
+const compressAndSetAspectRatio = async (file) => {
+    return new Promise( (resolve) => {
+      const image = new Image();
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const maxWidth = 600; 
+      const maxHeight = 600; 
+      image.src = URL.createObjectURL(file); 
+      image.onload = () => {
+        let newWidth = image.width;
+        let newHeight = image.height; 
 
+        // uska ratio humare hissab se yaha max--> 1:1 rahega uske andar kaise bhi
+        if (newWidth > maxWidth) {
+          newWidth = maxWidth;
+          newHeight = (maxWidth / image.width) * image.height;
+        }
+
+        if (newHeight > maxHeight) {
+          newHeight = maxHeight;
+          newWidth = (maxHeight / image.height) * image.width;
+        }
+
+        console.log("h ", newHeight, " w ", newWidth );  
+
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+        ctx.drawImage(image, 0, 0, newWidth, newHeight);
+
+        // best quality hai , hum chahey toh quality kam kar sakte hai
+        const compressedDataUrl =canvas.toDataURL('image/jpeg',1); 
+        
+        console.log( "hhh :", (compressedDataUrl))
+        resolve(compressedDataUrl);
+      };
+    });
+  };
+// ----
     const handleSubmit = async () => {
         try {
             const token = localStorage.getItem('tokenurl');

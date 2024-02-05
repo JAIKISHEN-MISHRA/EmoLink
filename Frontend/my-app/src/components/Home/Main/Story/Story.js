@@ -42,7 +42,7 @@ const Story = ({ stories, onClose }) => {
           </button>
         )}
       </div>
-      <div className='image'>
+      <div className='image-cont'>
         <img src={`data:${stories[currentStoryIndex].mimetype};base64,${stories[currentStoryIndex].path}`} alt={stories[currentStoryIndex].filename} />
       </div>
       <div className='next navi'>

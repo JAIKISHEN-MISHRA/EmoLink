@@ -11,6 +11,7 @@ import axios from "axios";
 import Story from "./Story/Story.js";
 import CreateStory from "./Story/CreateStory.js";
 import { BsPlusCircle } from 'react-icons/bs';
+import { BsImages } from "react-icons/bs";
 import Sidebar from "../Sidebar/Sidebar.js";
 
 const Main = () => {
@@ -69,7 +70,7 @@ const Main = () => {
                 };
                 const response = await axios.get('http://localhost:5000/addStory', config);
                 setStoriesData(response.data.stories); // Update stories state with fetched data
-                console.log(response.data.stories);
+                // console.log(response.data.stories);
             } catch (error) {
                 console.error('Error fetching stories:', error);
             }
@@ -202,8 +203,14 @@ const Main = () => {
                                                 <img src={Logo} alt="Post-Pic" />
                                             </div>
                                             <input type="text" placeholder="What's on your mind?" id="create-post" name="caption" value={formData.caption} onChange={handleInputChange} />
-                                            <input type="file" className="btn-primary" accept="image/*" name="image" id="create-post-image" onChange={handleImageChange} />
-                                            <input type="submit" value="Post" className="btn btn-primary" onClick={handleCreatePost} />
+                                            <input type="submit" value="Post" className="writepost btn btn-primary" onClick={handleCreatePost} />
+                                            <div class="wrapper">
+                                                <div class="file-upload">
+                                                    <label for="create-post-image" class="buttonpost btn btn-primary"><BsImages />
+                                                        <input type="file" accept="image/*" name="image" id="create-post-image" onChange={handleImageChange} />
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </form>
                                         <Feeds />
                                     </div>

@@ -92,7 +92,7 @@ const Sidebar = () => {
                     <span><i className="uil uil-cog"></i></span><h3>Settings</h3>
                 </a>
             </div>
-            <label htmlFor="create-post" className="btn btn-primary">Create Post</label>
+            {/* <label htmlFor="create-post" className="btn btn-primary">Create Post</label> */}
         </div>
 
     )

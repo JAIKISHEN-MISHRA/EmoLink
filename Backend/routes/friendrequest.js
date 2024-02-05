@@ -1,5 +1,4 @@
 // routes/friendRequests.js
-
 import express from 'express';
 import FriendRequest from '../Models/friendRequest.js';
 import Register from '../Models/User.js';
@@ -40,6 +39,12 @@ friendRouter.post('/send-request', async (req, res) => {
     });
 
     await friendRequest.save();
+
+    const notification = new Notification({
+      sender: receiverUser._id,
+      message: `${senderUser.username} sent you a friend request.`,
+    });
+    await notification.save();
 
     res.json({ message: 'Friend request sent successfully.' });
   } catch (error) {

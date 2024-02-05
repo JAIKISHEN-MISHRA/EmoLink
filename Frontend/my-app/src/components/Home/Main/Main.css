@@ -6,9 +6,12 @@ main{
 
 main .container{
     display: grid;
-    grid-template-columns: 18vw auto 20vw;
-    column-gap: 2rem;
-    position: relative;
+    grid-template-columns: 18% 60% 20%;
+    column-gap: 1%;
+    /* position: relative; */
+    width: 100%;
+    height: 100%;
+    padding: 0 2vw;
 }
 
 main .container .left{
@@ -144,12 +147,13 @@ main .container .left .profile{
 
 
 
-.center .stories{
+.center .stories {
     display: flex;
     justify-content: space-between;
     height: 12rem;
     gap: 0.5rem;
-}
+    overflow: scroll;
+  }
 
 .center .stories .story{
     padding: var(--card-padding);
@@ -162,7 +166,7 @@ main .container .left .profile{
     font-size: 0.75rem;
     width: 100%;
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 
@@ -237,10 +241,57 @@ main .container .left .profile{
     margin-right: 1rem;
 }
 
+.wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-upload {
+    display: flex;
+    background-size: 100% 200%;
+    transition: all 1s;
+}
+
+.buttonpost {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.buttonpost input[type='file'] {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    cursor: pointer;
+}
+
+&:hover {
+    background-position: 0 -100%;
+    color: #2590EB;
+}
+
+.buttonpost {
+    color: #fff;
+    padding: 10px 20px;
+    margin-left: 10rem;
+}
+
+.writepost {
+    left: 9rem;
+    position: relative;
+}
 
 
-
-.center .feeds .feed{
+.center .feeds .feed {
     background: var(--color-white);
     border-radius: var(--card-border-radius);
     padding: var(--card-padding);

@@ -6,13 +6,23 @@ import Logo from "../Images/Logo.png"
 const LogoPreloader = () => {
   return (
     <div className="logo-preloader">
-      <div className="logo-container">
-        {/* Add your logo image here */}
-        <img src={Logo} alt="EmoLink Logo" />
-      </div>
-      <div className="loading-text">
-        <h1>Loading...</h1>
-      </div>
+      <div id="emolink" class="box">
+    <span class="letter">E</span>
+    <span class="letter">m</span>
+
+    <div class="emolinkCircle box">
+        <div class="emolinkInner box">
+            <div class="emolinkCore box"></div>
+        </div>
+    </div>
+
+    <span class="letter box"></span>
+    <span class="letter box">L</span>
+    <span class="letter box">i</span>
+    <span class="letter box">n</span>
+    <span class="letter box">K</span>
+</div>
+
     </div>
   );
 };
