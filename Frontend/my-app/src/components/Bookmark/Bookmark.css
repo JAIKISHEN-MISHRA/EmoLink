@@ -1,0 +1,103 @@
+
+.Bookmark-container{
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+}
+  
+  .Bookmark-container .container {
+  
+    /* position: relative; */
+
+    display: grid;
+    grid-template-columns: 20vw auto ;
+    column-gap: 2rem;
+    margin-top: 10rem;
+    border: 2px solid black;
+    /* position: relative; */
+    padding: 10vw;
+  }
+  
+  
+  .content {
+    border-radius: 3rem 3rem 0 0;
+    background-color: #ebe7e7;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+    padding: 1vh ;
+    /* height: 80vh; */
+    margin-top: 5.4rem;
+  }
+  .content h1{
+    padding: 2vh 4vw;
+    margin-bottom: 1rem;
+    /* background-color: wheat; */
+  }
+  .content .center {
+    display: grid;
+    /* grid-template-columns: 25vw 25vw 25vw ; */
+    
+    grid-template-columns: 25vw 25vw 25vw ;
+    column-gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    /* max-width: 40vw; */
+  }
+  
+
+
+.center .feeds .feed{
+  background: var(--color-white);
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  margin: 1rem 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.center .feed .head{
+  display: flex;
+  justify-content: space-between;
+}
+
+.center .feed .user{
+  display: flex;
+  gap: 1rem;
+}
+
+.center .feed .photo{
+  border-radius: var(--card-border-radius);
+  overflow: hidden;
+  margin: 0.7rem 0;
+}
+
+.center .feed .action-buttons{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  margin: 0.6rem;
+}
+
+.center .liked-by{
+  display: flex;
+}
+
+.center .liked-by span{
+  width: 1.4rem;
+  height: 1.4rem;
+  display: block;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--color-white);
+  margin-left: -0.6rem;
+}
+
+.center .liked-by span:first-child{
+  margin: 0;
+}
+
+.center .liked-by p{
+  margin-left: 0.5rem;
+}
+
+
+
+  
