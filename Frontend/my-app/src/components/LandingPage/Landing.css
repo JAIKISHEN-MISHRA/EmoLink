@@ -188,7 +188,7 @@ header .right{
 
     /* GLOBAL */
 .container{
-    padding: 0 1rem;
+    /* padding: 0 1rem; */
 }
 section{
     padding-top: 2rem !important;

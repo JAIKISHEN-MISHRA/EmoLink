@@ -199,7 +199,7 @@ const Main = () => {
 
 
                                         <form action="" className="create-post" encType="multipart/form-data">
-                                            <div className="profile-photo">
+                                            <div className="profile-photo post-profile">
                                                 <img src={Logo} alt="Post-Pic" />
                                             </div>
                                             <input type="text" placeholder="What's on your mind?" id="create-post" name="caption" value={formData.caption} onChange={handleInputChange} />

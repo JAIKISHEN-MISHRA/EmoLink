@@ -33,8 +33,8 @@ const Navbar = () => {
   return (
     <nav>
       <div className='container'>
-        <h2>EmoLink</h2>
-        {/* <div className='icon'><img src={Icon} alt='ProfilePic' /></div> */}
+        {/* <h2>EmoLink</h2> */}
+        <div className='icon'><img src={Icon} alt='ProfilePic' /></div>
         <div className='Searchbar'>
           <input className="search-input"
             type='text'
@@ -46,7 +46,7 @@ const Navbar = () => {
           <i className='uil uil-search'></i>
           </button>
         </div>
-        <div className='create'>
+        <div className='create right-profile-nav'>
           {/* <label className='btn btn-primary' htmlFor='create-posts'>
             Create
           </label> */}

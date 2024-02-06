@@ -43,10 +43,10 @@ const Sidebar = () => {
 
         <div className="left">
             <a href="/profile" className="profile">
-                <div className="profile-photo">
+                <div className="profile-photo left-side-profile">
                     <img src={Logo} alt="Profiles" />
                 </div>
-                <div className="handle">
+                <div className="handle sidebar-name">
                     <h4>{profName}</h4>
                     <p className="text-muted">@{profName}</p>
                 </div>
