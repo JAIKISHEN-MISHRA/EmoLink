@@ -43,7 +43,7 @@ const Story = ({ stories, onClose }) => {
         )}
       </div>
       <div className='image-cont'>
-        <img src={`data:${stories[currentStoryIndex].mimetype};base64,${stories[currentStoryIndex].path}`} alt={stories[currentStoryIndex].filename} />
+        <img  className='image1' src={`data:${stories[currentStoryIndex].mimetype};base64,${stories[currentStoryIndex].path}`} alt={stories[currentStoryIndex].filename} />
       </div>
       <div className='next navi'>
         <button className='btn btn-primary' onClick={handleNextStory}>

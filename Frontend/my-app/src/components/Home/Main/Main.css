@@ -29,8 +29,12 @@ main .container .left .profile{
     column-gap: 1rem;
     width: 100%;
 }
-
-
+.left-side-profile img{
+    border: solid 1px var(--color-primary);
+}
+.handle{
+    font-size: small;
+}
 .left .sidebar{
     margin-top: 1rem;
     background: var(--color-white);
@@ -220,6 +224,13 @@ main .container .left .profile{
     border: 3px solid var(--color-primary);
 }
 
+.post-profile{
+    height: 3rem;
+    border: solid 2px var(--color-primary);
+    width: 7rem;
+    left: -8px;
+    position: relative;
+}
 
 .center .create-post{
     width: 100%;
