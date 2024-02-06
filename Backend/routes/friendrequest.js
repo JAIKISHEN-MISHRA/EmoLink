@@ -3,6 +3,7 @@ import express from 'express';
 import FriendRequest from '../Models/friendRequest.js';
 import Register from '../Models/User.js';
 import protect from '../Middleware/auth.js';
+import Notification from '../Models/Notification.js';
 
 const friendRouter = express.Router();
 

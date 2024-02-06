@@ -96,9 +96,7 @@ const Profile = () => {
   }else{
     isOwnProfile=false;
   }
-  console.log(profileUsername)
-  console.log(loggedInUsername);
-  console.log(isOwnProfile)
+ 
   const username = localStorage.getItem('token');
 
   const handleAddFriend = async () => {
