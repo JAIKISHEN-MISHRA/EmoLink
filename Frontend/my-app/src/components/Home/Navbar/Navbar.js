@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './Navbar.css';
 import Logo from '../Images/Logo.png';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2'; 
-import Icon from '../Images/icon.png'
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import Icon from '../Images/icon.png';
 
 const Navbar = () => {
   const LogOuthowAlertSuccess = () => {
@@ -33,23 +33,32 @@ const Navbar = () => {
   return (
     <nav>
       <div className='container'>
-        {/* <h2>EmoLink</h2> */}
-        <div className='icon'><img src={Icon} alt='ProfilePic' /></div>
+        <div className='icon'>
+          {/* Use Link to navigate to the home page */}
+          <Link to="/home">
+            <img src={Icon} alt='ProfilePic' />
+          </Link>
+        </div>
         <div className='Searchbar'>
-          <input className="search-input"
+          <input
+            className="search-input"
             type='text'
             placeholder='Search by Email'
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSearch();
+              }
+            }}
           />
           <button className='btn btn-search' onClick={handleSearch}>
-          <i className='uil uil-search'></i>
+            <i className='uil uil-search'></i>
           </button>
         </div>
+
         <div className='create right-profile-nav'>
-          {/* <label className='btn btn-primary' htmlFor='create-posts'>
-            Create
-          </label> */}
           <div
             className='profile-photo'
             onMouseEnter={() => setProfileActive(true)}

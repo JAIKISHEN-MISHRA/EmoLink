@@ -11,51 +11,14 @@ const ChatBox = ({ user, onClose }) => {
   const [newMessage, setNewMessage] = useState('');
   const [socket, setSocket] = useState(null); // State to hold the socket instance
 
-  
+
 
   useEffect(() => {
-   
 
-      // Fetch chat messages
-      const fetchChatMessages = async () => {
-        try {
-          const token = localStorage.getItem('tokenurl');
-          const config = {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          };
-          const chatResponse = await axios.post(
-            'http://localhost:5000/chat/',
-            {
-              userId: user._id,
-            },
-            config
-          );
-          const response = await axios.get(`http://localhost:5000/message/${chatResponse.data._id}`, config);
-          setChatMessages(response.data);
-        } catch (error) {
-          console.error('Error fetching chat messages:', error);
-        }
-      };
 
-      if (user) {
-        fetchChatMessages();
-      }
-
-      // Socket.io event listener for incoming messages
-      // socket.on('message', (message) => {
-      //   setChatMessages((prevChatMessages) => [...prevChatMessages, message]);
-      // });
-
-      
-  }, [ user]);
-
-  const handleSendMessage = async () => {
-    try {
-      // if (socket) {
-        // Send new message
+    // Fetch chat messages
+    const fetchChatMessages = async () => {
+      try {
         const token = localStorage.getItem('tokenurl');
         const config = {
           headers: {
@@ -63,29 +26,66 @@ const ChatBox = ({ user, onClose }) => {
             Authorization: `Bearer ${token}`,
           },
         };
-
         const chatResponse = await axios.post(
-          'http://localhost:5000/chat',
+          'http://localhost:5000/chat/',
           {
             userId: user._id,
           },
           config
         );
+        const response = await axios.get(`http://localhost:5000/message/${chatResponse.data._id}`, config);
+        setChatMessages(response.data);
+      } catch (error) {
+        console.error('Error fetching chat messages:', error);
+      }
+    };
 
-        const messageResponse = await axios.post(
-          'http://localhost:5000/message',
-          {
-            content: newMessage,
-            chatId: chatResponse.data._id,
-          },
-          config
-        );
+    if (user) {
+      fetchChatMessages();
+    }
 
-        // Emit the message to the server
-        // socket.emit('message', messageResponse.data);
+    // Socket.io event listener for incoming messages
+    // socket.on('message', (message) => {
+    //   setChatMessages((prevChatMessages) => [...prevChatMessages, message]);
+    // });
 
-        setNewMessage('');
-        setChatMessages((prevChatMessages) => [...prevChatMessages, messageResponse.data]);
+
+  }, [user]);
+
+  const handleSendMessage = async () => {
+    try {
+      // if (socket) {
+      // Send new message
+      const token = localStorage.getItem('tokenurl');
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const chatResponse = await axios.post(
+        'http://localhost:5000/chat',
+        {
+          userId: user._id,
+        },
+        config
+      );
+
+      const messageResponse = await axios.post(
+        'http://localhost:5000/message',
+        {
+          content: newMessage,
+          chatId: chatResponse.data._id,
+        },
+        config
+      );
+
+      // Emit the message to the server
+      // socket.emit('message', messageResponse.data);
+
+      setNewMessage('');
+      setChatMessages((prevChatMessages) => [...prevChatMessages, messageResponse.data]);
       // }
     } catch (error) {
       console.error('Error sending message:', error);
@@ -121,7 +121,14 @@ const ChatBox = ({ user, onClose }) => {
           placeholder="Type your message..."
           value={newMessage}
           onChange={typingHandler}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleSendMessage();
+            }
+          }}
         />
+
         <button className="btn btn-send btn-primary" onClick={handleSendMessage}>
           Send
         </button>
