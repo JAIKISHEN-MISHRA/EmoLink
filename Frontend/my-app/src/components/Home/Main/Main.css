@@ -658,32 +658,32 @@ main .container .right{
 /* Media Queries for small laptops and big tablet*/
 
 @media screen and (max-width:1200px) {
-    /* .container{
+    .container{
         width: 96%;
-    } */
+    }
     main .container{
         grid-template-columns: 6vw 70vw 20vw;
         gap: 1rem;
     }
-    /* .left{
+    .left{
         width: 5rem;
         z-index: 5;;
-    } */
-    /* main .container .left .profile{
+    }
+    main .container .left .profile{
         display: none;
-    } */
+    }
 
     .sidebar h3{
         display: none;
     }
 
-    /* .left .btn{
+    .left .btn{
         display: none;
-    } */
+    }
 
-    /* .customize-theme .card{
+    .customize-theme .card{
         width: 80vw;
-    } */
+    }
 }
 
 /* Mobile Phone */
