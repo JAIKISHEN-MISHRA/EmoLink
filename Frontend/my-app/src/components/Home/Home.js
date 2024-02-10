@@ -24,7 +24,7 @@ const Home = () => {
         <Preloader />
       ) : (
         <>
-        <Navbar/>   
+         
         <Main/>  
         </>
         

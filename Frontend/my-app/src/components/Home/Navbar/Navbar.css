@@ -5,6 +5,7 @@ nav {
   padding: 0.7rem 1rem;
   /* Adjusted padding for better responsiveness */
   position: fixed;
+  display: flex;
   top: 0;
   z-index: 10;
 }

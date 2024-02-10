@@ -9,12 +9,15 @@ import myFunction from "./Function.js";
 import ChatBox from "./Chat/ChatBox.js";
 import axios from "axios";
 import Story from "./Story/Story.js";
+import Preloader from "../Preloader/preloader.js"
 import CreateStory from "./Story/CreateStory.js";
 import { BsPlusCircle } from 'react-icons/bs';
 import { BsImages } from "react-icons/bs";
 import Sidebar from "../Sidebar/Sidebar.js";
+import Navbar from "../Navbar/Navbar.js";
 
 const Main = () => {
+    const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState([]);
     const [friendRequests, setFriendRequests] = useState([]);
     const [formData, setData] = useState({
@@ -25,6 +28,7 @@ const Main = () => {
     const [showStories, setShowStories] = useState(false);
     const [isCreateStory, setCreate] = useState(false);
     const [storiesData, setStoriesData] = useState([])
+
 
     useEffect(() => {
         myFunction();
@@ -98,7 +102,7 @@ const Main = () => {
 
     const handleCreatePost = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         try {
             const data = new FormData();
             data.append('caption', formData.caption);
@@ -109,7 +113,9 @@ const Main = () => {
         } catch (error) {
             postShowAlertFail();
             console.error('Error creating post:', error);
-        }
+        }finally {
+            setLoading(false);
+          }
     };
 
     const handleOpenChat = (user) => {
@@ -124,7 +130,7 @@ const Main = () => {
         setShowStories(!showStories);
         setSelectedUser(user); // Set the selected user
     };
-    
+
 
     const toggleCreateStory = () => {
         setCreate(!isCreateStory);
@@ -171,30 +177,45 @@ const Main = () => {
 
     return (
         <>
-            {showStories ? (
-                <Story stories={storiesData} onClose={toggleStories} />
-            ) : (
-                <>
-                    {isCreateStory ? (
-                        <CreateStory />
-                    ) : (
-                        <>
-                            <main>
-                                <div className="container">
-                                    <Sidebar />
+            <Navbar />
+
+            {loading ? (
+                    <Preloader />
+                ) : (
+            <>
+                {isCreateStory ? (
+                    <CreateStory />
+                ) : (
+                    <>
+                        <main>
+                            <div className="container">
+                                <Sidebar />
+                                <>
                                     <div className="center">
                                         <div className="stories">
-                                            {storiesData.map((story) => (
-                                                <div key={story._id} className="story" onClick={() => toggleStories(story.userId)}>
-                                                    <div className="profile-photo">
-                                                        <img src={`data:${story.mimetype};base64,${story.path}`} alt={story.filename} />
-                                                    </div>
-                                                    <p className="name">{story.userId.username}</p>
-                                                </div>
-                                            ))}
                                             <div className="story create-face" onClick={toggleCreateStory}>
                                                 <BsPlusCircle size={'7vw'} />
                                             </div>
+                                            {storiesData.map((story) => (
+                                                <div
+                                                    key={story._id}
+                                                    className="story"
+                                                    onClick={() => toggleStories(story.userId)}
+                                                    style={{ backgroundImage: `url(data:${story.mimetype};base64,${story.path})`}}
+                                                >
+                                                    <div className="profile-photo">
+                                                        <img src={`data:${story.mimetype};base64,${story.path}`} alt={story.filename} />
+                                                    </div>
+                                                    
+                                                    <p className="name">{story.userId.username}</p>
+                                                </div>
+                                            ))}
+
+
+                                            {showStories &&
+                                                <Story stories={storiesData} onClose={toggleStories} />}
+
+
                                         </div>
 
 
@@ -276,12 +297,13 @@ const Main = () => {
                                             ))}
                                         </div>
                                     </div>
-                                </div>
-                            </main>
-                        </>
-                    )}
-                </>
-            )}
+                                </>
+                            </div>
+                        </main>
+                    </>
+                )}
+            </>)}
+
             <div className="customize-theme">
                 <div className="card">
                     <h2>Customize your theme</h2>

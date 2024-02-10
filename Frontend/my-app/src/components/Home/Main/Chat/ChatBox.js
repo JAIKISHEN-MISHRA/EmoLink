@@ -217,6 +217,7 @@ const ChatBox = ({ user, onClose }) => {
 
       setNewMessage('');
       setChatMessages((prevChatMessages) => [...prevChatMessages, messageResponse.data]);
+      console.log(chatMessages)
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -225,21 +226,26 @@ const ChatBox = ({ user, onClose }) => {
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
   };
+  
 
   return (
     <div className="chat-box">
+      <div className='header'>
       <button className="btn btn-back" onClick={onClose}>
-        <BsArrowLeft size={20} />
+        <BsArrowLeft size={16} />
       </button>
-      <span className="chat-header">Chat with {user.username}</span>
-      <br />
-      <br />
+      <span className="chat-header">{user.username}</span>
+      </div>
+      <br/>
 
       {chatMessages && (
         <div className="chat-messages">
-          {chatMessages.map((msg, index) => (
-            <div key={index} className={msg.sender._id === 'You' ? 'sent' : 'received'}>
-              <strong>{msg.sender.name}:</strong> {msg.content}
+          {chatMessages.map((msg, index) => ( 
+            <div key={index} className="chitchat">
+              <strong>{msg.sender.name}: &nbsp;</strong> 
+              <div className='msg'>
+              {msg.content}
+              </div>
             </div>
           ))}
         </div>
@@ -248,6 +254,7 @@ const ChatBox = ({ user, onClose }) => {
       <div className="chat-input">
         <input
           type="text"
+          className=''
           placeholder="Type your message..."
           value={newMessage}
           onChange={typingHandler}

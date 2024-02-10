@@ -2,16 +2,22 @@
   display: grid;
   grid-template-columns: 18vw auto 20vw;
   column-gap: 2rem;
-  position: relative;
-  margin: 20vh 2vw;
   overflow: hidden;
+  align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* background-color: linear-gradient(transparent,rgba(222, 34, 34, 0.75)); */
+     z-index: 10000;
 }
 .story-container .image-cont{
   display: flex;
   height: 70vh;
   justify-content: center;
   align-items: center;
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }
 
 .story-container .image-cont .image1 {
@@ -154,3 +160,4 @@
     white-space: nowrap; 
   }
 }
+

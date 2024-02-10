@@ -5,9 +5,12 @@ import LoginFunction from "./Function.js";
 import { registerUser,loginUser } from "../../../api/index.js";
 import './Login.css';
 import Swal from 'sweetalert2';
+import Preloader from "../../Home/Preloader/preloader.js"
 import {useNavigate} from 'react-router-dom';
 
 const Login = () => {
+    
+    const [loading, setLoading] = useState(false);
     useEffect(()=>{
         LoginFunction();
     },[]);
@@ -54,6 +57,7 @@ const Login = () => {
 
     const handleSignUp = async(e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const user = await registerUser(formData);
             regShowAlertSuccess();
@@ -63,10 +67,14 @@ const Login = () => {
             regShowAlertFail();
            console.log("Registration error");
           }
+          finally {
+            setLoading(false); 
+          }
       };
     
       const handleSignIn = async(e) => {
         e.preventDefault();
+        setLoading(true)
         try {
            
       
@@ -80,6 +88,8 @@ const Login = () => {
           } catch (error) {
             console.log(error);
             LogShowAlertFail();
+          }finally {
+            setLoading(false); 
           }
       }
 
@@ -91,6 +101,10 @@ const Login = () => {
             };
     
   return (
+<>
+    {loading ? (
+        <Preloader />
+    ) : ( <>
     <div className="form-body">
     <div className="forms-container" id="forms-container" >
     <div className="form-container sign-up">
@@ -139,6 +153,9 @@ const Login = () => {
     </div>
 </div>
 </div>
+</>
+    )}
+    </>
   );
 }
 

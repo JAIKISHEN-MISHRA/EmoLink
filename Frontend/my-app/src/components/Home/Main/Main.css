@@ -11,7 +11,7 @@ main .container{
     /* position: relative; */
     width: 100%;
     height: 100%;
-    padding: 0 2vw;
+    padding: 0 3vw;
 }
 
 main .container .left{
@@ -154,9 +154,10 @@ main .container .left .profile{
 .center .stories {
     display: flex;
     justify-content: space-between;
-    height: 12rem;
+    height: 28vh;
     gap: 0.5rem;
-    overflow: scroll;
+    overflow:scroll;
+    white-space: nowrap;
   }
 
 .center .stories .story{
@@ -170,6 +171,9 @@ main .container .left .profile{
     font-size: 0.75rem;
     width: 100%;
     position: relative;
+    
+    background-size: cover ;
+        background-position: 'center';
     /* overflow: hidden; */
 }
 
@@ -192,8 +196,9 @@ main .container .left .profile{
 
 .center .stories .story .name{
     z-index: 2;
+        
 }
-.center .stories .story:nth-child(1){
+/* .center .stories .story:nth-child(1){
     background: url('../Images/Logo.png') no-repeat center center/cover;
 }
 
@@ -203,9 +208,9 @@ main .container .left .profile{
 
 .center .stories .story:nth-child(3){
     background: url('../Images/Logo.png') no-repeat center center/cover;
-}
+} */
 
-.center .stories .story:nth-child(4){
+.center .stories .story:nth-child(1){
     background: url('../Images/Logo.png') no-repeat center center/cover  blur(0.1px);
     background-color: rgba(0, 0, 0, 0.3); /*Adjust the alpha value for darkness*/
    
@@ -652,33 +657,33 @@ main .container .right{
 
 /* Media Queries for small laptops and big tablet*/
 
-@media screen and (max-width:1200px){
-    .container{
+@media screen and (max-width:1200px) {
+    /* .container{
         width: 96%;
-    }
+    } */
     main .container{
-        grid-template-columns: 5rem auto 30vw;
+        grid-template-columns: 6vw 70vw 20vw;
         gap: 1rem;
     }
-    .left{
+    /* .left{
         width: 5rem;
         z-index: 5;;
-    }
-    main .container .left .profile{
+    } */
+    /* main .container .left .profile{
         display: none;
-    }
+    } */
 
     .sidebar h3{
         display: none;
     }
 
-    .left .btn{
+    /* .left .btn{
         display: none;
-    }
+    } */
 
-    .customize-theme .card{
+    /* .customize-theme .card{
         width: 80vw;
-    }
+    } */
 }
 
 /* Mobile Phone */

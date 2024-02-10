@@ -2,36 +2,68 @@
     padding: 0.2rem;
     border-radius: 1rem;
     overflow: scroll;
+    scroll-padding: 0;
     height: 15rem;
+    font-size: 1vw;
+    /* position: absolute;
+    border: 2px solid red ; */
+    grid-template-rows: 15% 70% 15%;
   
+}
+
+
+    ::-webkit-scrollbar {
+      width: 1rem;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      /* border-radius: 0.7rem; */
+      border: none;
+      background-color: rgba(225, 26, 26, 0.5);
+    }
+    
+.chat-box .header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .chat-box .btn-back {
     display: inline;
-    padding: 0.2rem 0.5rem;
-    font-weight: 50;
+    padding: 0.1rem;
+    font-weight: 500;
+    align-items: center;
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: all 300ms ease;
-    font-size: 0.1rem;
-    margin-right: 1rem;
-    background-color: gray;
+    font-size: 1vw;
+    /* margin-right: 1rem; */
+    background-color:hsl(252, 75%, 60%);
 
 }
 .chat-box .cht-header{
     font-size: 2.5rem;
     font-weight: 400;
 }
-.chat-input{
+.chat-box .chat-input{
+    /* position: absolute; */
     display: flex;
     flex-direction: row;
     bottom: 0;
+
+}
+.chat-input input{
+    width: 70%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .chat-input .btn-send{
-    display: inline;
-    padding: 0.2rem;
-    font-weight: 50;
+    width: 30%;
+    display: inline-block;
+    padding: 0.1rem;
+    /* font-weight: 50; */
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: all 300ms ease;
@@ -39,6 +71,18 @@
 
 }
 .chat-messages{
-    font-size: 0.8rem;
-    font-weight: bold;
+    font-size: 1.7vh;
+    /* font-weight: bold; */
+    margin-bottom: 0;
 }
+
+.chat-messages .chitchat{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 0.1vh;
+}
+
+/* 
+.chat-messages .chitchat strong{
+    text-decoration: underline;
+} */

@@ -114,9 +114,11 @@ const compressAndSetAspectRatio = async (file) => {
     };
 
     const handleCropComplete = (croppedImageUrl) => {
+        console.log("temp " , croppedImageUrl)
         const updatedTempStories = tempStories.map((story) =>
             story.id === selectedImage.id ? { ...story, src: croppedImageUrl } : story
         );
+        console.log(updatedTempStories)
 
         setTempStories(updatedTempStories);
         setSelectedImage(null);
