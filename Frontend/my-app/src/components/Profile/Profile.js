@@ -31,7 +31,7 @@ const Profile = () => {
   const [editedBio, setEditedBio] = useState('');
 
   const [friendRequestSent, setFriendRequestSent] = useState(false);
-
+  const[posts,setpost]=useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,7 +65,20 @@ const Profile = () => {
         });
       }
     };
-
+    const fetchUserPost=async()=>{
+      try{
+      const response = await axios.get(`http://localhost:5000/api/getpost/getUserPost`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('tokenurl')}`,
+          },
+        });
+        console.log(response.data);
+      setpost(response.data);}
+      catch(e){
+        console.log(e);
+      }
+    }
+    fetchUserPost()
     fetchData();
 
   }, [profileUsername, loggedInUsername, navigate]);
@@ -257,9 +270,54 @@ const Profile = () => {
           </div>
           <div className='user-posts'>
             <h4>Post</h4>
-            <div>
-              //post
+            <div className="feeds">
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <div className="feed" key={post._id}>
+              <div className="head">
+                <div className="user">
+                  <div className="profile-photo">
+                    <img src={Logo} alt="Profile" />
+                  </div>
+                  <div className="info">
+                    <h3>{post.author}</h3>
+                    <small>{post.timestamp}, {post.timeAgo}</small>
+                  </div>
+                </div>
+                <span className="edit">
+                  <i className="uil uil-ellipsis-h"></i>
+                </span>
+              </div>
+              <div className="photo">
+              <img src={`data:${post.image.contentType};base64,${btoa(new Uint8Array(post.image.data.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))}`} alt="Post" />
+              </div>
+
+              {/* <div className="action-buttons">
+                <div className="interaction-buttons">
+                  <span onClick={() => handleLikeClick(post._id)}>
+                    <i className={`uil uil-thumbs-up ${post.isLiked ? 'liked' : ''}`}>
+                      {post.likes.length}
+                    </i>
+                  </span>
+                  <span><i className="uil uil-comment" onClick={() => setShowComment(post)}>{post.comments.length}</i></span>
+                  <span><i className="uil uil-share">{post.shares}</i></span>
+                </div>
+                <div className="bookmarks">
+                  <span><i className="uil uil-bookmark-full"></i></span>
+                </div>
+              </div> */}
+
+              <div className="caption">
+                <p><b>{post.author}</b> {post.caption}</p>
+              </div>
+
             </div>
+          ))
+        ) : (
+          <p>No posts available.</p>
+        )}
+      </div>
+     
           </div>
         </div>
       </div>

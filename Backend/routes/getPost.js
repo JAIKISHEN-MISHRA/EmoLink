@@ -69,5 +69,16 @@ router.post("/comment/:postId", protect, async (req, res) => {
   }
 });
 
+router.get("/getUserPost",protect,async(req,res)=>{
+  try{
+  const author=req.user.email;
+  const posts = await Post.find({author})
+  res.status(200).json(posts)
+  }catch(e){
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 export default router;

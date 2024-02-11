@@ -23,6 +23,7 @@ const Feeds = () => {
       try {
         const response = await fetchPostApi(config);
         setPosts(response.data);
+        console.log(response.data[0])
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
