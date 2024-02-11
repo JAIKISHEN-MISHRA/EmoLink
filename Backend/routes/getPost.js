@@ -80,5 +80,33 @@ router.get("/getUserPost",protect,async(req,res)=>{
   }
 });
 
+router.delete('/:postId', protect, async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const userEmail = req.user.email; // Assuming you have stored the user's email in the req.user object after authentication
+
+    // Find the post by ID
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Check if the user is the author of the post
+    if (post.author !== userEmail) {
+      return res.status(403).json({ message: 'You are not authorized to delete this post' });
+    }
+
+    // Delete the post from the database
+    await Post.findByIdAndDelete(postId);
+
+    // If the post is deleted successfully, send a success response
+    res.status(200).json({ message: 'Post deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 export default router;

@@ -31,7 +31,7 @@ const Profile = () => {
   const [editedBio, setEditedBio] = useState('');
 
   const [friendRequestSent, setFriendRequestSent] = useState(false);
-  const[posts,setpost]=useState([]);
+  const [posts, setpost] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,16 +65,17 @@ const Profile = () => {
         });
       }
     };
-    const fetchUserPost=async()=>{
-      try{
-      const response = await axios.get(`http://localhost:5000/api/getpost/getUserPost`, {
+    const fetchUserPost = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/getpost/getUserPost`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('tokenurl')}`,
           },
         });
         console.log(response.data);
-      setpost(response.data);}
-      catch(e){
+        setpost(response.data);
+      }
+      catch (e) {
         console.log(e);
       }
     }
@@ -101,15 +102,15 @@ const Profile = () => {
       console.error('Error updating bio:', error);
     }
   };
-  let isOwnProfile=false;
-  if(profileUsername===undefined){
-    isOwnProfile=true;
-  }else if(profileUsername===loggedInUsername){
-    isOwnProfile=true
-  }else{
-    isOwnProfile=false;
+  let isOwnProfile = false;
+  if (profileUsername === undefined) {
+    isOwnProfile = true;
+  } else if (profileUsername === loggedInUsername) {
+    isOwnProfile = true
+  } else {
+    isOwnProfile = false;
   }
- 
+
   const username = localStorage.getItem('token');
 
   const handleAddFriend = async () => {
@@ -161,6 +162,52 @@ const Profile = () => {
       setPopButtonLabel("Follow")
     }
   }
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // Function to toggle dropdown visibility
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+  const handleDeletePost = async (postId) => {
+    try {
+      // Send a request to delete the post
+      const response = await axios.delete(`http://localhost:5000/api/getpost/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('tokenurl')}`,
+        },
+      });
+  
+      // Update the UI by removing the deleted post from the list of posts
+      setpost((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+      Swal.fire({
+        title: 'Delete Success',
+        text: response.data.message, // Use response.data.message for success message
+        icon: 'success',
+      });
+    } catch (error) {
+      // Handle error message from server response
+      let errorMessage = 'Failed to delete post';
+      if (error.response && error.response.data && error.response.data.message) {
+        errorMessage = error.response.data.message;
+      }
+      Swal.fire({
+        title: 'Delete failed',
+        text: errorMessage,
+        icon: 'error',
+      });
+      console.error('Error deleting post:', error);
+    }
+  };
+  
+  // Function to call handleDeletePost with postId
+  const handleClickDeletePost = (postId) => {
+    handleDeletePost(postId);
+  };
+  const handleReportPost=()=>{
+    console.log("Reporting Post");
+  }
+
 
   return (
     <div>
@@ -271,28 +318,34 @@ const Profile = () => {
           <div className='user-posts'>
             <h4>Post</h4>
             <div className="feeds">
-        {posts.length > 0 ? (
-          posts.map((post) => (
-            <div className="feed" key={post._id}>
-              <div className="head">
-                <div className="user">
-                  <div className="profile-photo">
-                    <img src={Logo} alt="Profile" />
-                  </div>
-                  <div className="info">
-                    <h3>{post.author}</h3>
-                    <small>{post.timestamp}, {post.timeAgo}</small>
-                  </div>
-                </div>
-                <span className="edit">
-                  <i className="uil uil-ellipsis-h"></i>
-                </span>
-              </div>
-              <div className="photo">
-              <img src={`data:${post.image.contentType};base64,${btoa(new Uint8Array(post.image.data.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))}`} alt="Post" />
-              </div>
+              {posts.length > 0 ? (
+                posts.map((post) => (
+                  <div className="feed" key={post._id}>
+                    <div className="head">
+                      <div className="user">
+                        <div className="profile-photo">
+                          <img src={Logo} alt="Profile" />
+                        </div>
+                        <div className="info">
+                          <h3>{post.author}</h3>
+                          <small>{post.timestamp}, {post.timeAgo}</small>
+                        </div>
+                      </div>
+                      <span className="edit" onClick={toggleDropdown} onMouseEnter={() => setIsDropdownOpen(true)} onMouseLeave={() => setIsDropdownOpen(false)}>
+                        <i className="uil uil-ellipsis-h"></i>
+                        {isDropdownOpen && (
+                          <div className="dropdown-menu">
+                            {isOwnProfile&&(<button onClick={() => handleClickDeletePost(post._id)}>Delete Post</button>)}
+                            <button onClick={handleReportPost}>Report Post</button>
+                          </div>
+                        )}
+                      </span>
+                    </div>
+                    <div className="photo">
+                      <img src={`data:${post.image.contentType};base64,${btoa(new Uint8Array(post.image.data.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))}`} alt="Post" />
+                    </div>
 
-              {/* <div className="action-buttons">
+                    {/* <div className="action-buttons">
                 <div className="interaction-buttons">
                   <span onClick={() => handleLikeClick(post._id)}>
                     <i className={`uil uil-thumbs-up ${post.isLiked ? 'liked' : ''}`}>
@@ -307,17 +360,17 @@ const Profile = () => {
                 </div>
               </div> */}
 
-              <div className="caption">
-                <p><b>{post.author}</b> {post.caption}</p>
-              </div>
+                    <div className="caption">
+                      <p><b>{post.author}</b> {post.caption}</p>
+                    </div>
 
+                  </div>
+                ))
+              ) : (
+                <p>No posts available.</p>
+              )}
             </div>
-          ))
-        ) : (
-          <p>No posts available.</p>
-        )}
-      </div>
-     
+
           </div>
         </div>
       </div>
