@@ -5,6 +5,7 @@ import { sendEmail } from '../config/sendEmail.js';// Import the sendEmail funct
 import validator from 'validator';
 import crypto from 'crypto';
 import Chat from '../Models/chatModel.js';
+import UserActivityDuration from '../Models/userActivity.js';
 
 
 export const registerUser = async (req, res) => {
@@ -67,6 +68,17 @@ export const loginUser = async (req, res) => {
 
     if (!user) {
       return res.send("User not found"); // User not found
+    }
+
+    const activity=await UserActivityDuration.find({username:email}).exec();
+
+    if (activity) {
+      const durationInSeconds = activity[activity.length-1].durationInSeconds;
+
+      // Check if the user has exceeded the daily limit
+      if (durationInSeconds > 21600) {
+        return res.status(403).send("Daily limit exceeded.Please Login next day");
+      }
     }
 
     // Compare the provided password with the hashed password in the database
