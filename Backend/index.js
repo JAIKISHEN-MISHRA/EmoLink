@@ -21,6 +21,7 @@
   import friendRouter from './routes/friendrequest.js';
   import { spawn } from 'child_process';
   import Storyrouter from './routes/addStory.js';
+  import notificationrouter from './routes/notification.js';
   
   config();
   
@@ -44,6 +45,7 @@
   app.use('/profile', profileRouter);
   app.use('/friendRequests', friendRouter);
   app.use(Storyrouter);
+  app.use('/notifications',notificationrouter)
 
  
   

@@ -29,13 +29,13 @@ const Sidebar = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 };
-                const response = await axios.get('http://localhost:5000/notifications/${}', config);
+                const response = await axios.get('http://localhost:5000/notifications', config);
                 setNotifications(response.data);
             } catch (error) {
                 console.error('Error fetching notifications:', error);
             }
         };
-        // fetchNotifications();
+        fetchNotifications();
 
         fetchProfName();
     }, []);
@@ -63,18 +63,19 @@ const Sidebar = () => {
                     <h3>Notifications</h3>
                     <div className="notifications-popup">
                         {notifications.map(notification => (
-                            <div key={notification._id}>
+                            <div key={notification._id} className="notification-item">
                                 {/* Render your notification content here */}
                                 <div className="profile-photo">
                                     <img src={Logo} alt="Profile" />
                                 </div>
                                 <div className="notification-body">
-                                    <b>{notification.sender}</b> {notification.message}
+                                    <b>{notification.sender.name}</b> {notification.message}
                                     <small className="text-muted">{notification.timestamp}</small>
                                 </div>
                             </div>
                         ))}
                     </div>
+
                 </a>
                 <a className="menu-item" id="messages-notifications">
                     <span><i className="uil uil-message"><small className="notification-count">6</small></i></span><h3>Messages</h3>

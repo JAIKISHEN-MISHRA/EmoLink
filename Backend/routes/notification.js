@@ -1,12 +1,13 @@
 // routes/notifications.js
 import express from 'express';
-const router = express.Router();
-import Notification from '../Models/Notification';
-import protect from '../Middleware/auth';
+const notificationrouter = express.Router();
+import Notification from '../Models/Notification.js';
+import protect from '../Middleware/auth.js';
 // Get all notifications
-router.get('/', async (req, res) => {
+notificationrouter.get('/',protect, async (req, res) => {
   try {
-    const notifications = await Notification.find().populate('sender');
+    const id=req.user._id;
+    const notifications = await Notification.find({sender:id}).populate('sender','-password');
     res.json(notifications);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -14,7 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 // Create a new notification
-router.post('/',protect, async (req, res) => {
+notificationrouter.post('/',protect, async (req, res) => {
   try {
     const sender = req.user._id;
     if (!sender) throw new Error('Sender not found');
@@ -31,4 +32,4 @@ router.post('/',protect, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default notificationrouter;
