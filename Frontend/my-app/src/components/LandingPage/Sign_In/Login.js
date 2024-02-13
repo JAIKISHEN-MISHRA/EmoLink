@@ -40,13 +40,7 @@ const Login = () => {
         });
     }
 
-    const LogShowAlertFail = () => {
-        Swal.fire({
-          title: 'Login Fail',
-          text: 'Please Try again later',
-          icon: 'error',
-        });
-    }
+   
 
     const [formData, setFormData] = useState({
         name: '',
@@ -87,7 +81,11 @@ const Login = () => {
             
           } catch (error) {
             console.log(error);
-            LogShowAlertFail();
+            Swal.fire({
+              title: 'Login Fail',
+              text: error.response.data,
+              icon: 'error',
+            });
           }finally {
             setLoading(false); 
           }

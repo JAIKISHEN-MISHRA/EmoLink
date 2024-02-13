@@ -24,9 +24,6 @@ const formatDuration = (value) => {
 
 const Analytics = () => {
   const [userActivityDuration, setUserActivityDuration] = useState([]);
-  const [showPopup1, setShowPopup1] = useState(false);
-  const [showPopup2, setShowPopup2] = useState(false);
-  const [showPopup3, setShowPopup3] = useState(false);
 
   useEffect(() => {
     const email = localStorage.getItem('token');
@@ -43,61 +40,11 @@ const Analytics = () => {
     fetchUserActivityData();
   }, []);
 
-  useEffect(() => {
-    const durations = [3600, 10800, 18000]; // yeh hours ke liye hai (1 hour, 3 hours, 5 hours)
-    // const durations = [60, 180, 300]; // yeh minutes ke liye hai (1 minute, 3 minutes, 5 minutes)
 
-    // const durations = [1, 3, 5]; // for seconds and testing purposes
   
-    const showPopupsSequentially = async () => {
-      for (let i = 0; i < durations.length; i++) {
-        await new Promise((resolve) => {
-          // Show popup after resolving the promise
-          setTimeout(() => {
-            closeAllPopups();
-            switch (i) {
-              case 0:
-                setShowPopup1(true);
-                break;
-              case 1:
-                setShowPopup2(true);
-                break;
-              case 2:
-                setShowPopup3(true);
-                break;
-              default:
-                break;
-            }
-            resolve();
-          }, durations[i] * 1000);
-        });
-      }
-    };
   
-    showPopupsSequentially();
-  
-    return () => {
-      // Cleanup if needed
-    };
-  }, []);
-  
-  const closeAllPopups = () => {
-    setShowPopup1(false);
-    setShowPopup2(false);
-    setShowPopup3(false);
+ 
 
-    // Add logout logic when closing the 5-second popup
-    if (showPopup3) {
-      handleLogout();
-    }
-  };
-
-  const handleLogout = () => {
-    // Log out logic
-    localStorage.removeItem('token');
-    // You may navigate to the login page or perform any other logout actions here
-    console.log('Logout initiated');
-  };
   
   return (
     <div>
@@ -192,41 +139,7 @@ const Analytics = () => {
         </div>
       </div>
 
-      {/* Popup 1 */}
-      {showPopup1 && (
-        <div className='popup'>
-          <div className='popup-inner'>
-            <p>You've been active for more than 1 hours!</p>
-            <button className='close_icon' onClick={closeAllPopups}>
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Popup 2 */}
-      {showPopup2 && (
-        <div className='popup'>
-          <div className='popup-inner'>
-            <p>You've been active for more than 3 hours!</p>
-            <button className='close_icon' onClick={closeAllPopups}>
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Popup 3 */}
-      {showPopup3 && (
-        <div className='popup'>
-          <div className='popup-inner'>
-            <p>You've been active for more than 5 hours!</p>
-            <button className='close_icon' onClick={closeAllPopups}>
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 };
