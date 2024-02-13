@@ -25,7 +25,6 @@ nav .Searchbar {
   border-radius: var(--border-radius);
   padding: var(--search-padding);
   flex-grow: 1;
-  margin-left: 4rem;
   max-width: 460px;
 }
 
@@ -134,7 +133,7 @@ nav .create {
     font-size: 0.8rem;
   }
   .btn-search{
-    left: 38rem;
+    left: 38.5rem;
     }
     nav .Searchbar{
       max-width: 425px;
@@ -169,7 +168,7 @@ nav .create {
     font-size: 0.7rem;
   }
   .btn-search {
-    left: 16rem;
+    left: 15rem;
 }
 .icon{
   height: 3vh;

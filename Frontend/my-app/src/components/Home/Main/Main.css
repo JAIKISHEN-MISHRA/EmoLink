@@ -151,14 +151,24 @@ main .container .left .profile{
 
 
 
+/* Story container styling */
 .center .stories {
     display: flex;
     justify-content: space-between;
     height: 28vh;
     gap: 0.5rem;
-    overflow:scroll;
+    overflow: auto; /* Enable scrolling */
     white-space: nowrap;
-  }
+}
+
+/* For WebKit browsers (Chrome, Safari) */
+.center .stories {
+    scrollbar-width:thin ;
+    scrollbar-color: var(--color-primary) transparent ;
+    scrollbar-gutter: stable;
+}
+
+
 
 .center .stories .story{
     padding: var(--card-padding);
@@ -184,14 +194,15 @@ main .container .left .profile{
 }
 
 
-.center .stories .story::before{
+.center .stories .story::before {
     content: "";
     display: block;
     width: 100%;
     height: 5rem;
-    background: linear-gradient(transparent,rgba(0,0,0,0.75));
+    background: linear-gradient(transparent,var(--color-primary));
     position: absolute;
     bottom: 0;
+    border-radius: 1rem;
 }
 
 .center .stories .story .name{
@@ -233,8 +244,10 @@ main .container .left .profile{
     height: 3rem;
     border: solid 2px var(--color-primary);
     width: 7rem;
-    left: -8px;
-    position: relative;
+    margin-left: -8px; 
+}
+.center{
+    margin-left: 1rem;
 }
 
 .center .create-post{
@@ -298,11 +311,11 @@ main .container .left .profile{
 .buttonpost {
     color: #fff;
     padding: 10px 20px;
-    margin-left: 10rem;
+    margin-left: 16rem;
 }
 
 .writepost {
-    left: 9rem;
+    left: 15rem;
     position: relative;
 }
 
@@ -664,6 +677,12 @@ main .container .right{
     }
 }
 
+@media screen and (min-width: 1000px) and (max-width: 1024px) {
+    .post-profile {
+        width: 10rem;
+    }
+}
+
 
 /* feed pop up */
 /* 
@@ -835,4 +854,17 @@ main container ka z 1 kar
    border-radius: 0 10px 10px 0;
 
 
+  }
+
+  /* Hide scrollbar for Webkit-based browsers */
+body::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+  
+  body::-webkit-scrollbar-track {
+    background-color: transparent;
   }
