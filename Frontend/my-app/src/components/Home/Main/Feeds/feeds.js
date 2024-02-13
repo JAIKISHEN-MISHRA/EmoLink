@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Logo from '../../Images/Logo.png';
 import axios from "axios";
+import "./feeds.css"
 import { BsFillXCircleFill } from 'react-icons/bs';
 
 import { fetchPostApi } from "../../../../api";
@@ -108,7 +109,9 @@ const Feeds = () => {
               </div>
 
               <div className="caption">
-                <p><b>{post.author}</b> {post.caption}</p>
+                <p>
+                  {/* <b>{post.author}</b>  */}
+                  {post.caption}</p>
               </div>
 
               <div className="text-muted" onClick={() => setShowComment(post)}>view all {post.comments.length} comments</div>

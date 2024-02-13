@@ -44,10 +44,10 @@ const Analytics = () => {
   }, []);
 
   useEffect(() => {
-    // const durations = [3600, 10800, 18000]; // yeh hours ke liye hai (1 hour, 3 hours, 5 hours)
+    const durations = [3600, 10800, 18000]; // yeh hours ke liye hai (1 hour, 3 hours, 5 hours)
     // const durations = [60, 180, 300]; // yeh minutes ke liye hai (1 minute, 3 minutes, 5 minutes)
 
-    const durations = [1, 3, 5]; // for seconds and testing purposes
+    // const durations = [1, 3, 5]; // for seconds and testing purposes
   
     const showPopupsSequentially = async () => {
       for (let i = 0; i < durations.length; i++) {
