@@ -73,6 +73,11 @@ const Popup = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('tokenurl');
     window.location.reload();
+    Swal.fire({
+        title: 'OOPS You Are Exhausted',
+        text: 'We value your health.Please do rest',
+        icon: 'error',
+      });
     console.log('Logout initiated');
   };
 
