@@ -4,7 +4,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Toolti
 import Header from '../Home/Navbar/Navbar.js';
 import { fetchUserActivityDuration } from '../../api/index.js';
 import './Analytics.css';
-
+import axios from 'axios';
 const formatDuration = (value) => {
   const hours = Math.floor(value / 3600);
   const minutes = Math.floor((value % 3600) / 60);
@@ -24,6 +24,7 @@ const formatDuration = (value) => {
 
 const Analytics = () => {
   const [userActivityDuration, setUserActivityDuration] = useState([]);
+  const [points,setPoints]=useState();
 
   useEffect(() => {
     const email = localStorage.getItem('token');
@@ -36,16 +37,25 @@ const Analytics = () => {
         console.error('Error fetching user activity duration:', error);
       }
     };
+    const fetchPoints = async () => {
+      try {
+        const token = localStorage.getItem('tokenurl');
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const response = await axios.get('http://localhost:5000/getpoints', config);
+        setPoints(response.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchPoints()
 
     fetchUserActivityData();
   }, []);
-
-
-  
-  
- 
-
-  
   return (
     <div>
       <Header className='header' />
@@ -55,17 +65,17 @@ const Analytics = () => {
             <div className='main-cards'>
               <div className='card'>
                 <div className='card-inner'>
-                  <h3>No. of Posts</h3>
+                  <h3>Reputaion Point</h3>
                   <BsFillArchiveFill className='card_icon' />
                 </div>
-                <h1>300</h1>
+                <h1>{points ? points.reputation : "Available soon"}</h1>
               </div>
               <div className='card'>
                 <div className='card-inner'>
-                  <h3>Reward Points</h3>
+                  <h3>EmoPoints</h3>
                   <BsFillTrophyFill className='card_icon' />
                 </div>
-                <h1>12</h1>
+                <h1>{points ? points.emopoints : "Available soon"}</h1>
               </div>
               <div className='card'>
                 <div className='card-inner'>
@@ -139,7 +149,7 @@ const Analytics = () => {
         </div>
       </div>
 
-      
+
     </div>
   );
 };
