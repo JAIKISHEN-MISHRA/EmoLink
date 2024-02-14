@@ -24,6 +24,7 @@ const Feeds = () => {
       try {
         const response = await fetchPostApi(config);
         setPosts(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
@@ -52,7 +53,7 @@ const Feeds = () => {
       // Assuming the API returns the updated comments array
       const updatedComments = await axios.post(`http://localhost:5000/api/getpost/comment/${postId}`, {
         content: myComment
-      },config);
+      }, config);
       setShowComment(prevShowComment => ({
         ...prevShowComment,
         comments: updatedComments.data.comments
@@ -76,7 +77,11 @@ const Feeds = () => {
               <div className="head">
                 <div className="user">
                   <div className="profile-photo">
-                    <img src={Logo} alt="Profile" />
+                    {post.authorProfilePicture ? (
+                      <img src={post.authorProfilePicture} alt="Profile" />
+                    ) : (
+                      <img src={Logo} alt="Profile" />
+                    )}
                   </div>
                   <div className="info">
                     <h3>{post.author}</h3>
@@ -120,64 +125,64 @@ const Feeds = () => {
           <p>No posts available.</p>
         )}
       </div>
-     
-      
+
+
       {showComment && (
-  <div className="comment">
-    <div className="pop">
-      <div className="pop-container">
-        <div className="close" onClick={() => setShowComment(null)}>
-          <BsFillXCircleFill />
-        </div>
-        <div className="pop-content">
-          <div className="content">
-            <img src={`data:image/${showComment.image.contentType};base64,${showComment.image.data}`} alt="Post" />
-          </div>
-          <div className="comment-bar">
-            <div className="user">
-              <span className="profile-photo">
-                <img src={Logo} alt="Profile" />
-              </span>
-              <div className="user-name">
-                {showComment.author}
+        <div className="comment">
+          <div className="pop">
+            <div className="pop-container">
+              <div className="close" onClick={() => setShowComment(null)}>
+                <BsFillXCircleFill />
               </div>
-            </div>
-            <hr className="hr" />
-            <div className="comments">
-              {showComment.comments.map((comment, index) => (
-                <div className="comment-x" key={index}>
+              <div className="pop-content">
+                <div className="content">
+                  <img src={`data:image/${showComment.image.contentType};base64,${showComment.image.data}`} alt="Post" />
+                </div>
+                <div className="comment-bar">
                   <div className="user">
-                    <span className="user-profile-photo">
+                    <span className="profile-photo">
                       <img src={Logo} alt="Profile" />
                     </span>
                     <div className="user-name">
-                      {comment.author}
+                      {showComment.author}
                     </div>
                   </div>
-                  <div className="comment-content">
-                    {comment.text}
+                  <hr className="hr" />
+                  <div className="comments">
+                    {showComment.comments.map((comment, index) => (
+                      <div className="comment-x" key={index}>
+                        <div className="user">
+                          <span className="user-profile-photo">
+                            <img src={Logo} alt="Profile" />
+                          </span>
+                          <div className="user-name">
+                            {comment.author}
+                          </div>
+                        </div>
+                        <div className="comment-content">
+                          {comment.text}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="Write-comment">
+                    <input
+                      type="text"
+                      placeholder="Write a comment here .."
+                      value={myComment}
+                      className="input"
+                      onChange={(e) => setMyComment(e.target.value)}
+                    />
+                    <button className="btn bt btn-primary" onClick={() => addComment(showComment._id)}>
+                      Send
+                    </button>
                   </div>
                 </div>
-              ))}
-            </div>
-            <div className="Write-comment">
-              <input
-                type="text"
-                placeholder="Write a comment here .."
-                value={myComment}
-                className="input"
-                onChange={(e) => setMyComment(e.target.value)}
-              />
-              <button className="btn bt btn-primary" onClick={() => addComment(showComment._id)}>
-                Send
-              </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-)}
+      )}
 
     </>
   );

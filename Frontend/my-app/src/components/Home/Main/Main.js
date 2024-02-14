@@ -44,7 +44,6 @@ const Main = () => {
                 };
                 const response = await axios.get('http://localhost:5000/username', config);
                 setUsers(response.data);
-                console.log(response.data)
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
@@ -179,24 +178,20 @@ const Main = () => {
     const handleAcceptFriendRequest = async (friendRequestId) => {
         try {
             await acceptFriendRequest(friendRequestId);
-            // Update the state or fetch friend requests again to reflect the changes
-            // For simplicity, you can reload the friend requests after acceptance
+        
             window.location.reload();
         } catch (error) {
             console.error('Error accepting friend request:', error);
-            // Handle the error as needed
         }
     };
 
     const handleDeclineFriendRequest = async (friendRequestId) => {
         try {
             await declineFriendRequest(friendRequestId);
-            // Update the state or fetch friend requests again to reflect the changes
-            // For simplicity, you can reload the friend requests after declining
+      
             window.location.reload();
         } catch (error) {
             console.error('Error declining friend request:', error);
-            // Handle the error as needed
         }
     };
 
@@ -325,7 +320,11 @@ const Main = () => {
                                                     <div key={request._id} className="request">
                                                         <div className="info">
                                                             <div className="profile-photo">
-                                                                <img src={Logo} alt="Profile" />
+                                                            {request.sender.profilePicture ? (
+                                                                    <img src={request.sender.profilePicture} alt="Profile" />
+                                                                ) : (
+                                                                    <img src={Logo} alt="Profile" />
+                                                                )}
                                                             </div>
                                                             <div>
                                                                 <h5>{request.sender.username}</h5>

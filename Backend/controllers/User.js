@@ -156,7 +156,7 @@ export const allUsers = async (req, res) => {
 export const allUsernames = async (req, res) => {
   try {
     // Fetch all users except the current user
-    const users = await Register.find({ _id: { $ne: req.user._id } }, '_id username');
+    const users = await Register.find({ _id: { $ne: req.user._id } }, '_id username profilePicture');
 
     // Create an array to store the user data with appended chat IDs
     const usersWithChatIds = [];
@@ -181,11 +181,6 @@ export const allUsernames = async (req, res) => {
       // Push the user data to the array
       usersWithChatIds.push(userWithChatId);
     }
-
-
-    // Convert the array to JSON
-    const jsonData = JSON.stringify(usersWithChatIds, null, 2);
-
     // Send the response with the updated user data
     res.json(usersWithChatIds);
   } catch (error) {

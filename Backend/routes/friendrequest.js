@@ -61,7 +61,7 @@ friendRouter.route('/friend-requests').get(protect, async (req, res) => {
       receiver: receiverId,
       status: 'pending',
     })
-      .populate('sender', 'username'); // Populate sender information
+      .populate('sender', 'username profilePicture'); // Populate sender information
 
     res.json(friendRequests);
   } catch (error) {
