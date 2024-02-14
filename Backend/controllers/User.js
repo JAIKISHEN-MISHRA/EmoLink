@@ -74,9 +74,11 @@ export const loginUser = async (req, res) => {
 
     if (activity) {
       const durationInSeconds = activity[activity.length-1].durationInSeconds;
+      const userdayOfWeek=activity[activity.length-1].dayOfWeek;
+      const todayDay=new Date().getDay();
 
       // Check if the user has exceeded the daily limit
-      if (durationInSeconds > 21600) {
+      if (durationInSeconds > 21600 && todayDay==userdayOfWeek) {
         return res.status(403).send("Daily limit exceeded.Please Login next day");
       }
     }
@@ -89,7 +91,17 @@ export const loginUser = async (req, res) => {
 
       // Check if the user is verified
       if (!user.verified) {
-        // ... (your existing verification logic)
+        const verifyToken = new Token({
+          userid: user._id, // Use registerUser._id
+          token: crypto.randomBytes(32).toString('hex'),
+        });
+        await verifyToken.save();
+    
+        // Construct the verification URL
+        const url = `${process.env.BASE_URL}/users/${user._id}/verify/${verifyToken.token}`;
+    
+        // Send a verification email
+        await sendEmail(user.email, "Verify Email", url);
         return res.send("A new verification link has been sent to your email.");
       }
 

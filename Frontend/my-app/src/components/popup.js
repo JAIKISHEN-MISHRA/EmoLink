@@ -5,7 +5,10 @@ import './Analytics/Analytics.css';
 import { fetchUserActivityDuration } from '../api/index.js';
 import './Analytics/Analytics.css';
 import Swal from 'sweetalert2';
+<<<<<<< HEAD
 
+=======
+>>>>>>> c4856f6f9c1641cce259db6f269f1ed1c496e5c0
 
 const Popup = () => {
   const [userActivityDuration, setUserActivityDuration] = useState([]);
@@ -14,7 +17,6 @@ const Popup = () => {
   const [showPopup3, setShowPopup3] = useState(false);
 
   useEffect(() => {
-    console.log("Popupppp")
     const email = localStorage.getItem('token');
     const username = email; // Replace with actual username
     const fetchUserActivityData = async () => {
