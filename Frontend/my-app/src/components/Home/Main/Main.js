@@ -239,7 +239,7 @@ const Main = () => {
                                                     <BsPlusCircle size={'7vw'} />
                                                 </div>
                                                 {storiesData.map((story, index) => (
-                                                    <div key={index} className="story" onClick={() => setSelectedStoryUser(story.username)}>
+                                                    <div key={index} className="story" onClick={() => setSelectedStoryUser(story.username)} style={{ backgroundImage: `url(data:${story.images[0].mimetype};base64,${story.images[0].path})` }}>
                                                         <div className="profile-photo" style={{ backgroundImage: `url(data:${story.images[0].mimetype};base64,${story.images[0].path})` }}>
                                                             <img src={`data:${story.images[0].mimetype};base64,${story.images[0].path}`} alt={story.images[0].filename} />
                                                         </div>
