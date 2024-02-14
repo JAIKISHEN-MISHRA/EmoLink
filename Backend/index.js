@@ -19,10 +19,11 @@
   import { fileURLToPath } from 'url';
   import { dirname } from 'path';
   import friendRouter from './routes/friendrequest.js';
-  import { spawn } from 'child_process';
   import Storyrouter from './routes/addStory.js';
   import notificationrouter from './routes/notification.js';
   import storyCleanUpJob from './cronJobs/storyCleanUp.js';
+  import reputation from './cronJobs/repuationData.js';
+  import pointsRouter from './routes/points.js';
   
   
   config();
@@ -48,6 +49,7 @@
   app.use('/friendRequests', friendRouter);
   app.use(Storyrouter);
   app.use('/notifications',notificationrouter)
+  app.use(pointsRouter);
 
  
   
@@ -80,4 +82,5 @@
     .catch((error) => console.error('Error connecting to MongoDB:', error));
 
 storyCleanUpJob.start();
+reputation.start();
   

@@ -2,6 +2,9 @@ import  express  from "express";
 import { fetchPost } from "../controllers/getPost.js";
 import protect from "../Middleware/auth.js";
 import Post from "../Models/addPost.js";
+import { predictSentiment } from "../config/SentimentModel.js";
+import Analysis from "../Models/Analysis.js";
+
 
 const router=express.Router();
 router.get('/getPost',protect,fetchPost);
@@ -48,6 +51,20 @@ router.post("/comment/:postId", protect, async (req, res) => {
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
+
+    const Sentimentprediction = await predictSentiment(content);
+    console.log(Sentimentprediction);
+
+    await Analysis.findOneAndUpdate(
+      { userId },
+      {
+        $push: {
+          sentimentAnalysis: { $each: [Sentimentprediction.prediction], $position: 0 },
+        },
+      },
+      { upsert: true }
+    );
+
 
     // Create the comment object
     const comment = {
