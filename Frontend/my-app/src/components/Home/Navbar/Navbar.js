@@ -36,7 +36,7 @@ const Navbar = () => {
         <div className='icon'>
           {/* Use Link to navigate to the home page */}
           <Link to="/home">
-            <img src={Icon} alt='ProfilePic' />
+            <img src={Icon} alt='ProfilePic' className='nav-conatiner-icon-image' />
           </Link>
         </div>
         <div className='Searchbar'>

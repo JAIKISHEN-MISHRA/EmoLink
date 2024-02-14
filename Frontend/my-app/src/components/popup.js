@@ -29,8 +29,8 @@ const Popup = () => {
   }, []);
 
   useEffect(() => {
-    const durations = [7200, 14400, 21600]; // 2 hours, 4 hours, and 6 hours
-
+    // const durations = [7200, 14400, 21600]; // 2 hours, 4 hours, and 6 hours
+    const durations = [0];
     const lastActivity = userActivityDuration[userActivityDuration.length - 1];
     if (lastActivity) {
       const lastDurationInSeconds = lastActivity.durationInSeconds;

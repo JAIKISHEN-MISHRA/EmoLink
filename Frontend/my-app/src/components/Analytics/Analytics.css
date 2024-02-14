@@ -68,7 +68,7 @@
   margin: 15px 0;
 }
 
-.card {
+.cards {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -76,23 +76,23 @@
   border-radius: 5px;
 }
 
-.card:first-child {
+.cards:first-child {
   background-color: #12de60;
 }
 
-.card:nth-child(2) {
+.cards:nth-child(2) {
   background-color: #f87918;
 }
 
-.card:nth-child(3) {
+.cards:nth-child(3) {
   background-color: #8421b6;
 }
 
-.card:nth-child(4) {
+.cards:nth-child(4) {
   background-color: #cd8484;
 }
 
-.card-inner {
+.cards-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
