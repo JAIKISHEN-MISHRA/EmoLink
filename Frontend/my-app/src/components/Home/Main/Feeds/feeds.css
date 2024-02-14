@@ -32,7 +32,7 @@
     display: flex;
     justify-content: center;
     background:  rgb(7, 7, 7, 0.5);
-    padding: 1vh;
+    /* padding: 1vh; */
     /* background: radial-gradient(); */
 }
 .feed .photo img{
