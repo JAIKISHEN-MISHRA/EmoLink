@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import './Analytics/Analytics.css'; 
 import { fetchUserActivityDuration } from '../api/index.js';
 import './Analytics/Analytics.css';
+import Swal from 'sweetalert2';
+
 
 const Popup = () => {
   const [userActivityDuration, setUserActivityDuration] = useState([]);
