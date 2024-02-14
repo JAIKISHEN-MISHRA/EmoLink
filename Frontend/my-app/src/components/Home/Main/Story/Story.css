@@ -4,29 +4,55 @@
   column-gap: 2rem;
   overflow: hidden;
   align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* background-color: linear-gradient(transparent,rgba(222, 34, 34, 0.75)); */
-     z-index: 10000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 10000;
+  /* Position the close button */
+  padding-top: 2vh; 
+  padding-right: 2vw;
 }
-.story-container .image-cont{
+
+.story-container .close-btn {
+  position: absolute;
+  top: 1vh;
+  right: 1vw;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem; 
+  font-size: 1.5rem; 
+  color: white; 
+}
+
+.story-container .close-btn:hover {
+  color: red; 
+}
+
+.story-container .image-cont {
   display: flex;
-  height: 70vh;
+  flex-direction: column; /* Display username below the image */
   justify-content: center;
   align-items: center;
-  /* border: 2px solid red; */
+  height: 70vh;
 }
 
 .story-container .image-cont .image1 {
-  max-width : 100%;
-  max-height : 100%;
+  max-width: 100%;
+  max-height: 100%;
   height: auto;
-  width :auto;
+  width: auto;
   object-fit: cover;
-  
+}
+
+.story-container .image-cont .username {
+  font-style: italic;
+  font-size: 14px; /* Adjust the font size as needed */
+  color: red; /* Adjust the color as needed */
+  margin-top: 10px; /* Add margin for spacing */
 }
 
 .navi {
@@ -46,7 +72,6 @@
   background-color: #e4e8ed;
   border: 2px solid;
   color: #0d0d0d;
-
   cursor: pointer;
 }
 

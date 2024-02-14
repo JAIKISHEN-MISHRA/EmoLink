@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import './Analytics/Analytics.css'; 
 import { fetchUserActivityDuration } from '../api/index.js';
 import './Analytics/Analytics.css';
+import Swal from 'sweetalert2';
 
 const Popup = () => {
   const [userActivityDuration, setUserActivityDuration] = useState([]);
@@ -12,7 +13,6 @@ const Popup = () => {
   const [showPopup3, setShowPopup3] = useState(false);
 
   useEffect(() => {
-    console.log("Popupppp")
     const email = localStorage.getItem('token');
     const username = email; // Replace with actual username
     const fetchUserActivityData = async () => {

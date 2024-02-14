@@ -15,7 +15,6 @@ import { BsPlusCircle } from 'react-icons/bs';
 import { BsImages } from "react-icons/bs";
 import Sidebar from "../Sidebar/Sidebar.js";
 import Navbar from "../Navbar/Navbar.js";
-
 const Main = () => {
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState([]);
@@ -25,9 +24,11 @@ const Main = () => {
         image: null,
     });
     const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedStoryUser, setSelectedStoryUser] = useState(null);
     const [showStories, setShowStories] = useState(false);
     const [isCreateStory, setCreate] = useState(false);
-    const [storiesData, setStoriesData] = useState([])
+    const [storiesData, setStoriesData] = useState([]);
+    
 
 
     useEffect(() => {
@@ -73,8 +74,28 @@ const Main = () => {
                     },
                 };
                 const response = await axios.get('http://localhost:5000/addStory', config);
-                setStoriesData(response.data.stories); // Update stories state with fetched data
-                // console.log(response.data.stories);
+                const groupedStories = response.data.stories.reduce((acc, story) => {
+                    const username = story.userId.username;
+                    if (!acc[username]) {
+                        acc[username] = [];
+                    }
+                    acc[username].push(story);
+                    return acc;
+                }, {});
+                // console.log(groupedStories)
+
+                const mergedStories = Object.entries(groupedStories).map(([username, stories]) => {
+                    const mergedImages = stories.map(story => ({
+                        filename: story.filename,
+                        mimetype: story.mimetype,
+                        path: story.path
+                    }));
+                    return {
+                        username,
+                        images: mergedImages
+                    };
+                });
+                setStoriesData(mergedStories); // Update stories state with fetched data
             } catch (error) {
                 console.error('Error fetching stories:', error);
             }
@@ -113,9 +134,9 @@ const Main = () => {
         } catch (error) {
             postShowAlertFail();
             console.error('Error creating post:', error);
-        }finally {
+        } finally {
             setLoading(false);
-          }
+        }
     };
 
     const handleOpenChat = (user) => {
@@ -175,134 +196,145 @@ const Main = () => {
         }
     };
 
+    const handleDeleteStory = async (imageToDelete) => {
+        try {
+          const token = localStorage.getItem('tokenurl');
+          const config = {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          };
+      
+          const response=await axios.delete('http://localhost:5000/deleteStory', {
+            headers: config.headers,
+            data: { filename: imageToDelete.filename },
+          });
+          console.log(response.data);
+        } catch (error) {
+          console.error('Error deleting image:', error);
+        }
+      };
+      
+
     return (
         <>
             <Navbar />
 
             {loading ? (
-                    <Preloader />
-                ) : (
-            <>
-                {isCreateStory ? (
-                    <CreateStory />
-                ) : (
-                    <>
-                        <main>
-                            <div className="container">
-                                <Sidebar />
-                                <>
-                                    <div className="center">
-                                        <div className="stories">
-                                            <div className="story create-face" onClick={toggleCreateStory}>
-                                                <BsPlusCircle size={'7vw'} />
-                                            </div>
-                                            {storiesData.map((story) => (
-                                                <div
-                                                    key={story._id}
-                                                    className="story"
-                                                    onClick={() => toggleStories(story.userId)}
-                                                    style={{ backgroundImage: `url(data:${story.mimetype};base64,${story.path})`}}
-                                                >
-                                                    <div className="profile-photo">
-                                                        <img src={`data:${story.mimetype};base64,${story.path}`} alt={story.filename} />
-                                                    </div>
-                                                    
-                                                    <p className="name">{story.userId.username}</p>
+                <Preloader />
+            ) : (
+                <>
+                    {isCreateStory ? (
+                        <CreateStory />
+                    ) : (
+                        <>
+                            <main>
+                                <div className="container">
+                                    <Sidebar />
+                                    <>
+                                        <div className="center">
+                                            <div className="stories">
+                                                <div className="story create-face" onClick={toggleCreateStory}>
+                                                    <BsPlusCircle size={'7vw'} />
                                                 </div>
-                                            ))}
+                                                {storiesData.map((story, index) => (
+                                                    <div key={index} className="story" onClick={() => setSelectedStoryUser(story.username)}>
+                                                        <div className="profile-photo" style={{ backgroundImage: `url(data:${story.images[0].mimetype};base64,${story.images[0].path})` }}>
+                                                            <img src={`data:${story.images[0].mimetype};base64,${story.images[0].path}`} alt={story.images[0].filename} />
+                                                        </div>
+                                                        <p className="name">{story.username}</p>
+                                                    </div>
+                                                ))}
+                                                {selectedStoryUser && selectedStoryUser !== 'create' && <Story stories={storiesData.filter(story => story.username === selectedStoryUser)} onClose={() => setSelectedStoryUser(null)} onDeleteImage={handleDeleteStory} />}
 
-
-                                            {showStories &&
-                                                <Story stories={storiesData} onClose={toggleStories} />}
-
-
-                                        </div>
-
-
-                                        <form action="" className="create-post" encType="multipart/form-data">
-                                            <div className="profile-photo post-profile">
-                                                <img src={Logo} alt="Post-Pic" />
                                             </div>
-                                            <input type="text" placeholder="What's on your mind?" id="create-post" name="caption" value={formData.caption} onChange={handleInputChange} />
-                                            <input type="submit" value="Post" className="writepost btn btn-primary" onClick={handleCreatePost} />
-                                            <div class="wrapper">
-                                                <div class="file-upload">
-                                                    <label for="create-post-image" class="buttonpost btn btn-primary"><BsImages />
-                                                        <input type="file" accept="image/*" name="image" id="create-post-image" onChange={handleImageChange} />
-                                                    </label>
+
+
+                                            <form action="" className="create-post" encType="multipart/form-data">
+                                                <div className="profile-photo post-profile">
+                                                    <img src={Logo} alt="Post-Pic" />
                                                 </div>
-                                            </div>
-                                        </form>
-                                        <Feeds />
-                                    </div>
-                                    <div className="right">
-                                        <div className="messages">
-                                            <div className="heading">
-                                                <h4>Messages</h4><i className="uil uil-message"></i>
-                                            </div>
-                                            <div className="search-bar">
-                                                <i className="uil uil-search"></i>
-                                                <input type="search" placeholder="search messages" id="message-search" />
-                                            </div>
-                                            <div className="category">
-                                                <h6 className="active">Primary</h6>
-                                                <h6>General</h6>
-                                                <h6 className="message-requests">Requests</h6>
-                                            </div>
-                                            {selectedUser ? (
-                                                <ChatBox user={selectedUser} onClose={handleCloseChat} />
-                                            ) : (
-                                                users.map(user => (
-                                                    <div
-                                                        key={user._id}
-                                                        className="message"
-                                                        onClick={() => handleOpenChat(user)}
-                                                    >
-                                                        <div className="profile-photo">
-                                                            <img src={Logo} alt="Profile" />
-                                                        </div>
-                                                        <div className="message-body">
-                                                            <h5>{user.username}</h5>
-                                                        </div>
-                                                    </div>
-                                                ))
-                                            )}
-
-                                        </div>
-
-                                        <div className="friend-requets">
-                                            <h4>Requests</h4>
-                                            {friendRequests.map(request => (
-                                                <div key={request._id} className="request">
-                                                    <div className="info">
-                                                        <div className="profile-photo">
-                                                            <img src={Logo} alt="Profile" />
-                                                        </div>
-                                                        <div>
-                                                            <h5>{request.sender.username}</h5>
-                                                            <p className="text-muted">
-                                                                {request.sender.username} sent you a friend request
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="action">
-                                                        <button className="btn btn-primary" onClick={() => handleAcceptFriendRequest(request._id)}>
-                                                            Accept
-                                                        </button>
-                                                        <button className="btn" onClick={() => handleDeclineFriendRequest(request._id)}>
-                                                            Decline
-                                                        </button>
+                                                <input type="text" placeholder="What's on your mind?" id="create-post" name="caption" value={formData.caption} onChange={handleInputChange} />
+                                                <input type="submit" value="Post" className="writepost btn btn-primary" onClick={handleCreatePost} />
+                                                <div class="wrapper">
+                                                    <div class="file-upload">
+                                                        <label for="create-post-image" class="buttonpost btn btn-primary"><BsImages />
+                                                            <input type="file" accept="image/*" name="image" id="create-post-image" onChange={handleImageChange} />
+                                                        </label>
                                                     </div>
                                                 </div>
-                                            ))}
+                                            </form>
+                                            <Feeds />
                                         </div>
-                                    </div>
-                                </>
-                            </div>
-                        </main>
-                    </>
-                )}
-            </>)}
+                                        <div className="right">
+                                            <div className="messages">
+                                                <div className="heading">
+                                                    <h4>Messages</h4><i className="uil uil-message"></i>
+                                                </div>
+                                                <div className="search-bar">
+                                                    <i className="uil uil-search"></i>
+                                                    <input type="search" placeholder="search messages" id="message-search" />
+                                                </div>
+                                                <div className="category">
+                                                    <h6 className="active">Primary</h6>
+                                                    <h6>General</h6>
+                                                    <h6 className="message-requests">Requests</h6>
+                                                </div>
+                                                {selectedUser ? (
+                                                    <ChatBox user={selectedUser} onClose={handleCloseChat} />
+                                                ) : (
+                                                    users.map(user => (
+                                                        <div
+                                                            key={user._id}
+                                                            className="message"
+                                                            onClick={() => handleOpenChat(user)}
+                                                        >
+                                                            <div className="profile-photo">
+                                                                <img src={Logo} alt="Profile" />
+                                                            </div>
+                                                            <div className="message-body">
+                                                                <h5>{user.username}</h5>
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                )}
+
+                                            </div>
+
+                                            <div className="friend-requets">
+                                                <h4>Requests</h4>
+                                                {friendRequests.map(request => (
+                                                    <div key={request._id} className="request">
+                                                        <div className="info">
+                                                            <div className="profile-photo">
+                                                                <img src={Logo} alt="Profile" />
+                                                            </div>
+                                                            <div>
+                                                                <h5>{request.sender.username}</h5>
+                                                                <p className="text-muted">
+                                                                    {request.sender.username} sent you a friend request
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="action">
+                                                            <button className="btn btn-primary" onClick={() => handleAcceptFriendRequest(request._id)}>
+                                                                Accept
+                                                            </button>
+                                                            <button className="btn" onClick={() => handleDeclineFriendRequest(request._id)}>
+                                                                Decline
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </>
+                                </div>
+                            </main>
+                        </>
+                    )}
+                </>)}
 
             <div className="customize-theme">
                 <div className="card">

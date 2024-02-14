@@ -27,6 +27,10 @@ const storySchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  expiryDate: {
+    type: Date,
+    default: () => new Date(Date.now() + 24 * 60 * 60 * 1000), // Set expiry date to 24 hours after creation
+  },
 });
 
 const Story = mongoose.model('Story', storySchema);

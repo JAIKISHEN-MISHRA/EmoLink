@@ -43,6 +43,25 @@ Storyrouter.get('/addStory', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+
+  Storyrouter.delete('/deleteStory', protect, async (req, res) => {
+    try {
+      const id = req.user._id; // Assuming req.user contains the authenticated user's information
+      const filename = req.body.filename; // Assuming filename is sent in the request body
+  
+      // Find the story to delete
+      const storyToDelete = await Story.findOneAndDelete({ filename, userId: id });
+      
+      if (!storyToDelete) {
+        return res.status(404).json({ message: "Story not found" });
+      }
+  
+      return res.status(200).json({ message: "Story deleted successfully" });
+    } catch (error) {
+      console.error('Error deleting story:', error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
   
 
 export default Storyrouter;

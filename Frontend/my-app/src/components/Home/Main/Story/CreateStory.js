@@ -20,7 +20,6 @@ const CreateStory = () => {
 
     const handleFileChange = async (event) => {
         const files = event.target.files;
-        console.log(files.width);
         const newTempStories = [...tempStories];
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
@@ -35,7 +34,6 @@ const CreateStory = () => {
                 });
               }          
         }
-        console.log(newTempStories);
         setTempStories(newTempStories);
         setShowStory(true);
     };
@@ -63,7 +61,6 @@ const compressAndSetAspectRatio = async (file) => {
           newWidth = (maxHeight / image.height) * image.width;
         }
 
-        console.log("h ", newHeight, " w ", newWidth );  
 
         canvas.width = newWidth;
         canvas.height = newHeight;
@@ -72,7 +69,6 @@ const compressAndSetAspectRatio = async (file) => {
         // best quality hai , hum chahey toh quality kam kar sakte hai
         const compressedDataUrl =canvas.toDataURL('image/jpeg',1); 
         
-        console.log( "hhh :", (compressedDataUrl))
         resolve(compressedDataUrl);
       };
     });
@@ -94,6 +90,7 @@ const compressAndSetAspectRatio = async (file) => {
             // Clear the temporary stories and reset the component state
             setTempStories([]);
             setShowStory(false);
+            window.location.reload();
         } catch (error) {
             console.error('Error submitting story:', error);
             // Handle error
@@ -140,7 +137,7 @@ const compressAndSetAspectRatio = async (file) => {
                 <div className="story-grid">
                     <hr />
                     {tempStories.map((story, i) => ( // Added index i as the second argument
-                        <div key={i} className="story-item"> // Used index i as the key
+                        <div key={i} className="story-item"> 
                             <div className='remove-icon' onClick={() => handleRemoveStory(story.id)}>
                                 <BsFillXCircleFill />
                             </div>
@@ -150,7 +147,7 @@ const compressAndSetAspectRatio = async (file) => {
                                 <>
                                     {story.type === 'image' ? (
                                         <>
-                                            <img className="story-content" src={story.src} alt={`Story ${i + 1}`} /> // Used index i in alt attribute
+                                            <img className="story-content" src={story.src} alt={`Story ${i + 1}`} />
                                             <div className='crop-icon' onClick={() => setSelectedImage(story)}>
                                                 <BsCrop />
                                             </div>
