@@ -13,6 +13,30 @@ router.post('/login', loginUser);
 router.post('/alluser',protect,allUsers);
 router.get('/Username',protect,allUsernames);
 
+router.post("/ChangeProfile", protect, async (req, res) => {
+  const id = req.user._id;
+
+  try {
+    const { profilePicture } = req.body;
+
+    const updatedUser = await Register.findByIdAndUpdate(
+      id,
+      { $set: { profilePicture } },
+      { new: true } // To return the updated document
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error("Error updating profile picture:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
 router.get("/profdetail", async (req, res) => {
   try {
     const userEmail = req.query.email;

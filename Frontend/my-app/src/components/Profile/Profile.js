@@ -43,7 +43,7 @@ const Profile = () => {
 
         const response = await fetchProfileData(username);
         setUserData(response);
-
+        setPi(response.profile);
         setEditedBio(response.bio);
 
         // Check if friend request has been sent
@@ -74,7 +74,6 @@ const Profile = () => {
             Authorization: `Bearer ${localStorage.getItem('tokenurl')}`,
           },
         });
-        console.log(response.data);
         setpost(response.data);
       }
       catch (e) {
@@ -224,14 +223,33 @@ const Profile = () => {
     }
   };
   
-  const handleImageCropper = (croppedImageUrl) => {
-    console.log("temp ", croppedImageUrl)
-    // setProfileFileInputOpen(false);
-    setSelectedImage(null)
-    setPi(croppedImageUrl)
-
-    
+  const handleImageCropper = async (croppedImageUrl) => {
+  
+    try {
+      const token = localStorage.getItem('tokenurl');
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      // Send a POST request to update the profile picture
+      const response = await axios.post(
+        'http://localhost:5000/ChangeProfile',
+        { profilePicture: croppedImageUrl },
+        config
+      );
+  
+      console.log('Profile picture updated:');
+  
+      setSelectedImage(null);
+      setPi(croppedImageUrl);
+    } catch (error) {
+      console.error('Error updating profile picture:', error);
+    }
   };
+  
   // --------
 
   return (

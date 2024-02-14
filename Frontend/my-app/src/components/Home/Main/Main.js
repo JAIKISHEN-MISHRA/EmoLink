@@ -28,7 +28,7 @@ const Main = () => {
     const [showStories, setShowStories] = useState(false);
     const [isCreateStory, setCreate] = useState(false);
     const [storiesData, setStoriesData] = useState([]);
-    
+
 
 
     useEffect(() => {
@@ -44,6 +44,7 @@ const Main = () => {
                 };
                 const response = await axios.get('http://localhost:5000/username', config);
                 setUsers(response.data);
+                console.log(response.data)
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
@@ -73,18 +74,19 @@ const Main = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 };
+
                 const response = await axios.get('http://localhost:5000/addStory', config);
                 const groupedStories = response.data.stories.reduce((acc, story) => {
                     const username = story.userId.username;
+                    const profilePicture = story.userId.profilePicture; // Add profilePicture field
                     if (!acc[username]) {
-                        acc[username] = [];
+                        acc[username] = { stories: [], profilePicture }; // Include profilePicture in the accumulator
                     }
-                    acc[username].push(story);
+                    acc[username].stories.push(story);
                     return acc;
                 }, {});
-                // console.log(groupedStories)
 
-                const mergedStories = Object.entries(groupedStories).map(([username, stories]) => {
+                const mergedStories = Object.entries(groupedStories).map(([username, { stories, profilePicture }]) => {
                     const mergedImages = stories.map(story => ({
                         filename: story.filename,
                         mimetype: story.mimetype,
@@ -92,6 +94,7 @@ const Main = () => {
                     }));
                     return {
                         username,
+                        profilePicture, // Include profilePicture in the merged story object
                         images: mergedImages
                     };
                 });
@@ -100,6 +103,7 @@ const Main = () => {
                 console.error('Error fetching stories:', error);
             }
         };
+
 
         fetchStories();
 
@@ -198,24 +202,24 @@ const Main = () => {
 
     const handleDeleteStory = async (imageToDelete) => {
         try {
-          const token = localStorage.getItem('tokenurl');
-          const config = {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          };
-      
-          const response=await axios.delete('http://localhost:5000/deleteStory', {
-            headers: config.headers,
-            data: { filename: imageToDelete.filename },
-          });
-          console.log(response.data);
+            const token = localStorage.getItem('tokenurl');
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+
+            const response = await axios.delete('http://localhost:5000/deleteStory', {
+                headers: config.headers,
+                data: { filename: imageToDelete.filename },
+            });
+            console.log(response.data);
         } catch (error) {
-          console.error('Error deleting image:', error);
+            console.error('Error deleting image:', error);
         }
-      };
-      
+    };
+
 
     return (
         <>
@@ -240,12 +244,21 @@ const Main = () => {
                                                 </div>
                                                 {storiesData.map((story, index) => (
                                                     <div key={index} className="story" onClick={() => setSelectedStoryUser(story.username)} style={{ backgroundImage: `url(data:${story.images[0].mimetype};base64,${story.images[0].path})` }}>
-                                                        <div className="profile-photo" style={{ backgroundImage: `url(data:${story.images[0].mimetype};base64,${story.images[0].path})` }}>
-                                                            <img src={`data:${story.images[0].mimetype};base64,${story.images[0].path}`} alt={story.images[0].filename} />
-                                                        </div>
+                                                        {story.profilePicture ? (
+                                                            <div className="profile-photo" style={{ backgroundImage: `url(${story.profilePicture})` }}>
+                                                                <img src={`${story.profilePicture}`} />
+                                                            </div>
+                                                        ) : (
+                                                            <div className="profile-photo" style={{ backgroundImage: `url(${Logo})` }}>
+                                                                <img src={`${Logo}`} />
+
+
+                                                            </div>
+                                                        )}
                                                         <p className="name">{story.username}</p>
                                                     </div>
                                                 ))}
+
                                                 {selectedStoryUser && selectedStoryUser !== 'create' && <Story stories={storiesData.filter(story => story.username === selectedStoryUser)} onClose={() => setSelectedStoryUser(null)} onDeleteImage={handleDeleteStory} />}
 
                                             </div>
@@ -291,7 +304,11 @@ const Main = () => {
                                                             onClick={() => handleOpenChat(user)}
                                                         >
                                                             <div className="profile-photo">
-                                                                <img src={Logo} alt="Profile" />
+                                                                {user.profile ? (
+                                                                    <img src={user.profile} alt="Profile" />
+                                                                ) : (
+                                                                    <img src={Logo} alt="Profile" />
+                                                                )}
                                                             </div>
                                                             <div className="message-body">
                                                                 <h5>{user.username}</h5>

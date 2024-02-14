@@ -175,6 +175,7 @@ export const allUsernames = async (req, res) => {
       const userWithChatId = {
         _id: user._id,
         username: user.username,
+        profile:user.profilePicture,
         chatId: chat ? chat._id : null, // Append chat ID if found, otherwise null
       };
       // Push the user data to the array
@@ -192,6 +193,9 @@ export const allUsernames = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
+
+
+
 
 
 

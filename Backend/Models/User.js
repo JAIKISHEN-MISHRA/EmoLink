@@ -48,6 +48,10 @@ const userSchema = new mongoose.Schema({
       ref: 'RegisteredUser',
     }
   ],
+  profilePicture: {
+    type: String, 
+    default: "", 
+  }
 });
 
 userSchema.methods.generateAuthToken = async function () {

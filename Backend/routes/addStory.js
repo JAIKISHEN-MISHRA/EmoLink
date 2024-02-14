@@ -36,7 +36,7 @@ Storyrouter.get('/addStory', async (req, res) => {
       const stories = await Story.find().populate({
         path: 'userId',
         model: 'RegisteredUser', // Reference to the User model
-        select: 'username' // Select the username field only
+        select: 'username profilePicture' // Select the username field only
       });      res.json({ stories });
     } catch (error) {
       console.error('Error fetching stories:', error);

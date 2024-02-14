@@ -14,6 +14,7 @@ profileRouter.get('/user', async (req, res) => {
         const user = await Register.findOne({ username })
             .populate('followers', 'username')
             .populate('following', 'username')
+            .populate('profilePicture','username')
             .exec();
 
         // Fetch post count from Post schema based on the author (username)
@@ -45,6 +46,7 @@ profileRouter.get('/user', async (req, res) => {
             userImage: user.userImage,
             bio: user.bio,
             id: user._id,
+            profile:user.profilePicture
         });
     } catch (error) {
         console.error('Error fetching user profile data:', error);
