@@ -10,8 +10,8 @@ const postSchema = new mongoose.Schema({
     required: true,
   },
   image: {
-    data: Buffer, // Store binary image data
-    contentType: String, // Store the content type of the image (e.g., 'image/jpeg')
+    data: Buffer,
+    contentType: String, 
   },
   timestamp: {
     type: Date,
@@ -19,14 +19,12 @@ const postSchema = new mongoose.Schema({
   },
   timeAgo: {
     type: String,
-    // You may want to use a library like moment.js to calculate time ago
   },
-  // You might want to add fields for likes, comments, and shares
   likes: [
     {
       user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "RegisteredUser", // Reference to the User model (assuming you have one)
+        ref: "RegisteredUser", 
       },
     },
   ],
@@ -34,7 +32,7 @@ const postSchema = new mongoose.Schema({
     {
       user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "RegisteredUser", // Reference to the User model (assuming you have one)
+        ref: "RegisteredUser",
       },
       author: String,
       text:{

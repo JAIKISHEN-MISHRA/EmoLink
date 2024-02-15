@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { BsFillXCircleFill, BsCrop } from 'react-icons/bs';
+import { BsFillXCircleFill, BsCrop,BsX } from 'react-icons/bs';
 import axios from 'axios'; // Import Axios for making HTTP requests
 import CropImage from './CropImage.js';
 
-const CreateStory = () => {
+const CreateStory = ({onClose}) => {
     const [tempStories, setTempStories] = useState([]);
     const [showStory, setShowStory] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -12,7 +12,6 @@ const CreateStory = () => {
     useEffect(() => {
         const formData = new FormData();
         tempStories.forEach((story) => {
-            // console.log('Appending story:', story); // Log each story being appended
             formData.append('stories', story.file);
         });
         setSubmitFormData(formData);
@@ -37,7 +36,6 @@ const CreateStory = () => {
         setTempStories(newTempStories);
         setShowStory(true);
     };
-// ---
 const compressAndSetAspectRatio = async (file) => {
     return new Promise( (resolve) => {
       const image = new Image();
@@ -73,7 +71,9 @@ const compressAndSetAspectRatio = async (file) => {
       };
     });
   };
-// ----
+  const closeCreateStory = () => {
+    onClose(); // Call the onClose function passed as prop
+};
     const handleSubmit = async () => {
         try {
             const token = localStorage.getItem('tokenurl');
@@ -123,6 +123,9 @@ const compressAndSetAspectRatio = async (file) => {
 
     return (
         <div className='container container-create-story'>
+            <button className="close-btn" onClick={closeCreateStory}>
+        <BsX />
+      </button>
             <form className='create-story-form'>
                 <label htmlFor="fileInput" className="custom-file-input btn">
                     {tempStories.length > 0
@@ -168,3 +171,5 @@ const compressAndSetAspectRatio = async (file) => {
 };
 
 export default CreateStory;
+
+

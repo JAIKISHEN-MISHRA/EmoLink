@@ -3,7 +3,7 @@ import Logo from '../../Images/Logo.png';
 import axios from "axios";
 import "./feeds.css"
 import { BsFillXCircleFill } from 'react-icons/bs';
-
+import Swal from "sweetalert2";
 import { fetchPostApi } from "../../../../api";
 
 const Feeds = () => {
@@ -24,7 +24,7 @@ const Feeds = () => {
       try {
         const response = await fetchPostApi(config);
         setPosts(response.data);
-        console.log(response.data);
+        console.log(response.data)
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
@@ -65,6 +65,50 @@ const Feeds = () => {
       console.error('Error adding comment:', error);
     }
   };
+  const handleBookmarkClick = async (postId) => {
+    try {
+        if (!postId) {
+            console.error('Error bookmarking post: postId is empty');
+            return;
+        }
+  
+        // Get the authentication token from local storage
+        const token = localStorage.getItem('tokenurl');
+  
+        // Set up the request headers
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        };
+  
+        // Prepare the data to be sent in the request body
+        const requestData = {
+            postId // Replace postId with the actual ID of the post
+        };
+  
+        // Send a POST request to bookmark the post
+        const response = await axios.post('http://localhost:5000/addBookmark', requestData, config);
+  
+        const updatedPosts = posts.map((post) =>
+            post._id === postId ? { ...post, isBookmarked: !post.isBookmarked } : post
+        );
+        setPosts(updatedPosts);
+        
+    } catch (error) {
+
+        Swal.fire({
+            title: 'Error',
+            text: error.response.data.message,
+            icon: 'error',
+        });
+    }
+  };
+  
+
+
+
 
 
 
@@ -108,7 +152,7 @@ const Feeds = () => {
                   <span><i className="uil uil-share">{post.shares}</i></span>
                 </div>
                 <div className="bookmarks">
-                  <span><i className="uil uil-bookmark-full"></i></span>
+                  <span><i className={`uil uil-bookmark-full ${post.isBookmarked? 'Bookmarked':''}`} onClick={() => handleBookmarkClick(post._id)}></i></span>
                 </div>
               </div>
 

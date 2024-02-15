@@ -80,7 +80,7 @@ const Sidebar = () => {
                 <a className="menu-item" id="messages-notifications">
                     <span><i className="uil uil-message"><small className="notification-count">6</small></i></span><h3>Messages</h3>
                 </a>
-                <a className="menu-item">
+                <a href="/bookmark"className="menu-item">
                     <span><i className="uil uil-bookmark"></i></span><h3>Bookmarks</h3>
                 </a>
                 <a href="/analytics" className="menu-item">

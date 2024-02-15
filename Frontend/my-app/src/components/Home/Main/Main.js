@@ -160,6 +160,8 @@ const Main = () => {
         setCreate(!isCreateStory);
     };
 
+    
+
     const postShowAlertSuccess = () => {
         Swal.fire({
             title: 'Post Success',
@@ -215,6 +217,8 @@ const Main = () => {
         }
     };
 
+    
+
 
     return (
         <>
@@ -225,7 +229,7 @@ const Main = () => {
             ) : (
                 <>
                     {isCreateStory ? (
-                        <CreateStory />
+                        <CreateStory onClose={() => setCreate(false)}/>
                     ) : (
                         <>
                             <main>
@@ -234,7 +238,7 @@ const Main = () => {
                                     <>
                                         <div className="center">
                                             <div className="stories">
-                                                <div className="story create-face" onClick={toggleCreateStory}>
+                                                <div className="story create-face" onClick={toggleCreateStory} >
                                                     <BsPlusCircle size={'7vw'} />
                                                 </div>
                                                 {storiesData.map((story, index) => (

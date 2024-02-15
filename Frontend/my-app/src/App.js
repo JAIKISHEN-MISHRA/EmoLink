@@ -12,6 +12,7 @@ import Analytics from './components/Analytics/Analytics.js';
 import Swal from 'sweetalert2';
 import Popup from './components/popup.js'; // Import the Popup component
 import AppWrapper from './AnalyseWrapper.js';
+import BookmarkPage from './components/Bookmark/Bookmark.js';
 
 const checkTokenAndNavigate = () => {
     const token = localStorage.getItem('token');
@@ -48,6 +49,7 @@ const App = () => {
                                     {shouldRenderPopup && <Popup />} {/* Render Popup conditionally */}
                                     <Routes>
                                         <Route path='/home' element={<Home />} />
+                                        <Route path='/bookmark' element={<BookmarkPage/>}/>
                                         <Route path='/settings' element={<Settings />} />
                                         <Route path='/profile' element={<Profile />} />
                                         <Route path="/profile/:username" element={<Profile />} />

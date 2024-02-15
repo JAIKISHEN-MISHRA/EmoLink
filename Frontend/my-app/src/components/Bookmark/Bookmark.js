@@ -1,143 +1,77 @@
-import React, { useState } from 'react';
-import './Bookmark.css';
-import '../Home/Main/Main.js'
-import Navbar from "../Home/Navbar/Navbar.js";
-import Logo from "../Home/Images/Logo.png"
-import Sidebar from '../Home/Main/Sidebar.js';
-import Feeds from '../Home/Main/Feeds/feeds.js';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './Bookmark.css'; 
+import Logo from '../Home/Images/Logo.png';
+import Navbar from '../Home/Navbar/Navbar';
 
-const Bookmark = () => {
-    const [posts, setPosts] = useState([
-        { id: 1, username: 'User1', content: 'Awesome post!' },
-        { id: 2, username: 'User2', content: 'Check out this cool photo!' },
-    ]);
+const BookmarkPage = () => {
+  const [bookmarkedPosts, setBookmarkedPosts] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
-    // const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
+  useEffect(() => {
+    // Fetch bookmarked posts from the backend
+    const fetchBookmarkedPosts = async () => {
+      try {
+        const token = localStorage.getItem('tokenurl');
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const response = await axios.get('http://localhost:5000/addBookmark', config);
+        setBookmarkedPosts(response.data);
+        setIsLoading(false); // Set loading to false after data is fetched
+      } catch (error) {
+        console.error('Error fetching bookmarked posts:', error);
+      }
+    };
 
-    // const [showBookmarked, setShowBookmarked] = useState(false);
+    fetchBookmarkedPosts();
+  }, []);
+  console.log(bookmarkedPosts.postId)
 
-    // const handleBookmark = (postId) => {
-    //     const postToBookmark = posts.find((post) => post.id === postId);
-    //     setBookmarkedPosts((prevBookmarkedPosts) => [...prevBookmarkedPosts, postToBookmark]);
-    // };
-
-    // const handleToggleView = () => {
-    //     setShowBookmarked((prevShowBookmarked) => !prevShowBookmarked);
-    // };
-
-    return (
-        <>
-            <Navbar />
-            <div className='bookmark-container'>
-
-                <div className="container  ">
-
-                    <div className="content">
-                        <h1>Bookmark</h1>
-                        <div className='center'>
-                            <div className='feeds'>
-                            <div className="feed" >
-                                <div className="head">
-                                    <div className="user">
-                                        <div className="profile-photo">
-                                            <img src={Logo} alt="Profile" />
-                                        </div>
-                                        <div className="info">
-                                            <h3>Nikhil</h3>
-                                            <small>12-july</small>
-                                        </div>
-                                    </div>
-                                    <span className="edit">
-                                        <i className="uil uil-ellipsis-h"></i>
-                                    </span>
-                                </div>
-
-                                <div className="photo">
-                                    <img src={Logo} alt="Post" />
-                                </div>
-
-                                <div className="action-buttons">
-                                    <div className="interaction-buttons">
-                                        <span><i className="uil uil-thumbs-up">105k</i></span>
-                                        <span><i className="uil uil-comment">50k</i></span>
-                                        <span><i className="uil uil-share">80k</i></span>
-                                    </div>
-                                    <div className="bookmarks">
-                                        <span><i className="uil uil-bookmark-full"></i></span>
-                                    </div>
-                                </div>
-
-                                <div className="caption">
-                                    <p><b>Nikhil</b> COAT</p>
-                                </div>
-
-                                <div className="text-muted">view all 12 comments</div>
-                            </div>
-                            </div>
-
-{/* //// neeche wala backend ke hissab se hai */}
-                            
-                       
-                        {/* <div className="feeds">
-                            {posts.length > 0 ?
-                                (<>
-                                    {posts.map((post) => {
-                                        <div className="feed" key={post._id}>
-                                            <div className="head">
-                                                <div className="user">
-                                                    <div className="profile-photo">
-                                                        <img src={Logo} alt="Profile" />
-                                                    </div>
-                                                    <div className="info">
-                                                        <h3>{post.author}</h3>
-                                                        <small>{post.timestamp}, {post.timeAgo}</small>
-                                                    </div>
-                                                </div>
-                                                <span className="edit">
-                                                    <i className="uil uil-ellipsis-h"></i>
-                                                </span>
-                                            </div>
-
-                                            <div className="photo">
-                                                <img src={`data:image/${post.image.contentType};base64,${base64String}`} alt="Post" />
-                                            </div>
-
-                                            <div className="action-buttons">
-                                                <div className="interaction-buttons">
-                                                    <span><i className="uil uil-thumbs-up">{post.likes}</i></span>
-                                                    <span><i className="uil uil-comment">{post.comments}</i></span>
-                                                    <span><i className="uil uil-share">{post.shares}</i></span>
-                                                </div>
-                                                <div className="bookmarks">
-                                                    <span><i className="uil uil-bookmark-full"></i></span>
-                                                </div>
-                                            </div>
-
-                                            <div className="caption">
-                                                <p><b>{post.author}</b> {post.caption}</p>
-                                            </div>
-
-                                            <div className="text-muted">view all {post.comments.length} comments</div>
-                                        </div>
-
-                                    })} 
-                                    </>
-                                ) 
-                                : 
-                                (
-                                    <p>No posts available.</p>
-                                )}
-                        </div> */}
-                         </div>
-                    </div>
-
-
-
+  return (
+    <>
+    <Navbar className="header"/>
+    <div className="bookmark-page">
+      <h1>Bookmarked Posts</h1>
+      {isLoading ? ( // Conditional rendering of loading indicator
+        <p>Loading...</p>
+      ) : (
+        <div className="bookmarked-posts">
+          {bookmarkedPosts.postId && bookmarkedPosts.postId.length > 0 ? (
+            bookmarkedPosts.postId.map((post) => (
+              <div className="bookmarked-post" key={post._id}>
+                <div className="post-details">
+                  <div className="profile-photo">
+                    {bookmarkedPosts.userId.profilePicture ? (
+                      <img src={bookmarkedPosts.userId.profilePicture} alt="Profile" />
+                    ) : (
+                      <img src={Logo} alt="Profile" />
+                    )}
+                  </div>
+                  <div className="author-info">
+                    <h3>{post.author}</h3>
+                    <small>{post.timestamp}, {post.timeAgo}</small>
+                  </div>
                 </div>
-            </div>
-        </>
-    );
+                <div className="post-image">
+                <img src={`data:${post.image.contentType};base64,${btoa(new Uint8Array(post.image.data.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))}`} alt="Post" />
+                </div>
+                <div className="post-caption">
+                  <p>{post.caption}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No bookmarked posts available.</p>
+          )}
+        </div>
+      )}
+    </div>
+    </>
+  );
 };
 
-
-export default Bookmark
+export default BookmarkPage;

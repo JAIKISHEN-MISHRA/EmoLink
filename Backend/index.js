@@ -24,7 +24,7 @@
   import storyCleanUpJob from './cronJobs/storyCleanUp.js';
   import reputation from './cronJobs/repuationData.js';
   import pointsRouter from './routes/points.js';
-  
+  import Bookmarkrouter from './routes/Bookmark.js';  
   
   config();
   
@@ -50,6 +50,7 @@
   app.use(Storyrouter);
   app.use('/notifications',notificationrouter)
   app.use(pointsRouter);
+  app.use(Bookmarkrouter);
 
  
   

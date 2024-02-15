@@ -94,6 +94,23 @@
   padding: 2vh 0;
 }
 
+.container-create-story .close-btn {
+  position: absolute;
+  top: 1vh;
+  right: 1vw;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem; 
+  font-size: 1.5rem; 
+  color: red; 
+}
+
+.container-create-story .close-btn:hover {
+  color: white; 
+}
+
+
 .container-create-story {
   position: relative;
   margin-top: 7rem;
