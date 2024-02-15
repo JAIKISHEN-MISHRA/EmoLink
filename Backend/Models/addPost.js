@@ -49,6 +49,10 @@ const postSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  views:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Post',
+}]
 });
 
 const Post = mongoose.model('Post', postSchema);

@@ -25,6 +25,8 @@
   import reputation from './cronJobs/repuationData.js';
   import pointsRouter from './routes/points.js';
   import Bookmarkrouter from './routes/Bookmark.js';  
+  import cleanUpDuplicateViewsJob from './cronJobs/RemoveDuplicate.js';
+  import Explorerouter from './routes/Explore.js';
   
   config();
   
@@ -51,7 +53,7 @@
   app.use('/notifications',notificationrouter)
   app.use(pointsRouter);
   app.use(Bookmarkrouter);
-
+  app.use('/explore',Explorerouter);
  
   
   // Set up Socket.io with the server
@@ -84,4 +86,5 @@
 
 storyCleanUpJob.start();
 reputation.start();
+cleanUpDuplicateViewsJob.start();
   

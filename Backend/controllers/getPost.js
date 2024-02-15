@@ -18,7 +18,7 @@ export const fetchPost = async (req, res) => {
     const postsWithProfilePictures = await Promise.all(posts.map(async (post) => {
       const alreadyLiked = post.likes.find((like) => like.user._id.toString() === userId.toString());
       const authorProfile = await Register.findOne({ email: post.author }).select('profilePicture');
-      
+      const isViewed = post && post.views.some(viewedUserId => viewedUserId.equals(userId));
       // Check if the post is bookmarked by the user
       const isBookmarked = bookmarks && bookmarks.postId.some(bookmarkedPost => bookmarkedPost._id.equals(post._id));
 
@@ -27,6 +27,7 @@ export const fetchPost = async (req, res) => {
         isLiked: alreadyLiked !== undefined,
         authorProfilePicture: authorProfile ? authorProfile.profilePicture : null,
         isBookmarked,
+        isViewed,
       };
     }));
 

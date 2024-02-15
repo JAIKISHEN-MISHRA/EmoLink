@@ -125,5 +125,36 @@ router.delete('/:postId', protect, async (req, res) => {
   }
 });
 
+router.post('/view/:postId', protect, async (req, res) => {
+  try {
+    const userId = req.user._id; 
+    const postId = req.params.postId;
+
+    // Find the post by ID
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Check if the user ID is already in the view array
+    if (post.views.includes(userId)) {
+      return res.status(400).json({ message: 'User has already viewed this post' });
+    }
+
+    // Increment the view count and add the user ID to the views array
+    post.views.push(userId);
+    post.viewCount = post.views.length;
+
+    // Save the updated post
+    await post.save();
+
+    res.status(200).json({ message: 'View count updated successfully' });
+  } catch (error) {
+    console.error('Error updating view count:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 export default router;

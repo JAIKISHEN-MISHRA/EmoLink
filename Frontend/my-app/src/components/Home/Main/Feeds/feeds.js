@@ -67,57 +67,78 @@ const Feeds = () => {
   };
   const handleBookmarkClick = async (postId) => {
     try {
-        if (!postId) {
-            console.error('Error bookmarking post: postId is empty');
-            return;
-        }
-  
-        // Get the authentication token from local storage
-        const token = localStorage.getItem('tokenurl');
-  
-        // Set up the request headers
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-        };
-  
-        // Prepare the data to be sent in the request body
-        const requestData = {
-            postId // Replace postId with the actual ID of the post
-        };
-  
-        // Send a POST request to bookmark the post
-        const response = await axios.post('http://localhost:5000/addBookmark', requestData, config);
-  
-        const updatedPosts = posts.map((post) =>
-            post._id === postId ? { ...post, isBookmarked: !post.isBookmarked } : post
-        );
-        setPosts(updatedPosts);
-        
+      if (!postId) {
+        console.error('Error bookmarking post: postId is empty');
+        return;
+      }
+
+      // Get the authentication token from local storage
+      const token = localStorage.getItem('tokenurl');
+
+      // Set up the request headers
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      // Prepare the data to be sent in the request body
+      const requestData = {
+        postId // Replace postId with the actual ID of the post
+      };
+
+      // Send a POST request to bookmark the post
+      const response = await axios.post('http://localhost:5000/addBookmark', requestData, config);
+
+      const updatedPosts = posts.map((post) =>
+        post._id === postId ? { ...post, isBookmarked: !post.isBookmarked } : post
+      );
+      setPosts(updatedPosts);
+
     } catch (error) {
 
-        Swal.fire({
-            title: 'Error',
-            text: error.response.data.message,
-            icon: 'error',
-        });
+      Swal.fire({
+        title: 'Error',
+        text: error.response.data.message,
+        icon: 'error',
+      });
     }
   };
-  
+  const handlePostView = (postId) => (entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.75) {
+        incrementPostView(postId);
+      }
+    });
+  };
 
-
-
-
-
+  const incrementPostView = async (postId) => {
+    try {
+      const response = await axios.post(`http://localhost:5000/api/getpost/view/${postId}`, {}, config);
+      const updatedPosts = posts.map((post) =>
+        post._id === postId ? { ...post, isViewed:!post.isViewed} : post
+      );
+      setPosts(updatedPosts);
+      console.log("Increment view of " + postId);
+    } catch (error) {
+      // console.error('Error updating view count for post:', error);
+    }
+  };
 
   return (
     <>
       <div className="feeds">
         {posts.length > 0 ? (
           posts.map((post) => (
-            <div className="feed" key={post._id}>
+            <div className="feed" key={post._id} ref={postRef => {
+              if (postRef && !post.isViewed) {
+                const observer = new IntersectionObserver(handlePostView(post._id), {
+                  threshold: 0.75
+                });
+                observer.observe(postRef);
+              }
+            }}>
               <div className="head">
                 <div className="user">
                   <div className="profile-photo">
@@ -152,7 +173,7 @@ const Feeds = () => {
                   <span><i className="uil uil-share">{post.shares}</i></span>
                 </div>
                 <div className="bookmarks">
-                  <span><i className={`uil uil-bookmark-full ${post.isBookmarked? 'Bookmarked':''}`} onClick={() => handleBookmarkClick(post._id)}></i></span>
+                  <span><i className={`uil uil-bookmark-full ${post.isBookmarked ? 'Bookmarked' : ''}`} onClick={() => handleBookmarkClick(post._id)}></i></span>
                 </div>
               </div>
 
@@ -161,6 +182,7 @@ const Feeds = () => {
                   {/* <b>{post.author}</b>  */}
                   {post.caption}</p>
               </div>
+              <div className="views"><b>Viewed By {post.views.length} Users</b></div>
 
               <div className="text-muted" onClick={() => setShowComment(post)}>view all {post.comments.length} comments</div>
             </div>
