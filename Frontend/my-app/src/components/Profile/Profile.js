@@ -276,20 +276,19 @@ const Profile = () => {
               <div>
                 <span className='original-name'>{userData.fullName}</span>
                 <h4 className='user-name'>{userData.username}</h4>
-
               </div>
               <div className='numbers'>
                 <a onClick={handleFollowerCountClick} className='num'>
                   <div>{userData.followers.count}</div>
-                  <div>followers</div>
+                  <h4>followers</h4>
                 </a>
                 <a onClick={handleFollowingCountClick} className='num'>
                   <div>{userData.following.count}</div>
-                  <div>following</div>
+                  <h4>following</h4>
                 </a>
                 <a className='num'>
                   <div>{userData.posts}</div>
-                  <div>posts</div>
+                  <h4>posts</h4>
                 </a>
                 {ispop && (
                   <div className="pop">

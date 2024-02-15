@@ -35,7 +35,7 @@ const Navbar = () => {
       <div className='container'>
         <div className='icon'>
           <Link to="/home">
-            <img src={Icon} alt='ProfilePic' />
+            <img src={Icon} alt='ProfilePic' className='nav-conatiner-icon-image' />
           </Link>
         </div>
         <div className='Searchbar'>

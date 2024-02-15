@@ -63,28 +63,28 @@ const Analytics = () => {
         <div className='analytics-grid-container'>
           <main className='analytics-main-container'>
             <div className='main-cards'>
-              <div className='card'>
+              <div className='cards'>
                 <div className='card-inner'>
                   <h3>Reputaion Point</h3>
                   <BsFillArchiveFill className='card_icon' />
                 </div>
                 <h1>{points ? points.reputation : "Available soon"}</h1>
               </div>
-              <div className='card'>
+              <div className='cards'>
                 <div className='card-inner'>
                   <h3>EmoPoints</h3>
                   <BsFillTrophyFill className='card_icon' />
                 </div>
                 <h1>{points ? points.emopoints : "Available soon"}</h1>
               </div>
-              <div className='card'>
+              <div className='cards'>
                 <div className='card-inner'>
                   <h3>No. of Friend Requests</h3>
                   <BsPeopleFill className='card_icon' />
                 </div>
                 <h1>33</h1>
               </div>
-              <div className='card'>
+              <div className='cards'>
                 <div className='card-inner'>
                   <h3>Notifications</h3>
                   <BsFillBellFill className='card_icon' />
