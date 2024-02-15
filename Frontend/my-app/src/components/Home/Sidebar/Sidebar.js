@@ -7,6 +7,7 @@ import axios from "axios";
 const Sidebar = () => {
     const [profName, setProfname] = useState();
     const [notifications, setNotifications] = useState([]);
+    const [profPhoto, setProfPhoto] = useState();
 
     useEffect(() => {
         const fetchProfName = async () => {
@@ -15,6 +16,7 @@ const Sidebar = () => {
                 const response = await axios.get(`http://localhost:5000/profDetail?email=${email}`);
                 const user = response.data.user.name;
                 const nameArray = user.split(' ');
+                setProfPhoto(response.data.user.profilePicture)
                 setProfname(nameArray);
             } catch (error) {
                 console.log(error);
@@ -44,7 +46,11 @@ const Sidebar = () => {
         <div className="left">
             <a href="/profile" className="profile">
                 <div className="profile-photo left-side-profile">
-                    <img src={Logo} alt="Profiles" />
+                    {profPhoto ? (
+                        <img src={profPhoto} alt="Profile" />
+                    ) : (
+                        <img src={Logo} alt="Profile" />
+                    )}
                 </div>
                 <div className="handle sidebar-name">
                     <h4>{profName}</h4>
@@ -80,7 +86,7 @@ const Sidebar = () => {
                 <a className="menu-item" id="messages-notifications">
                     <span><i className="uil uil-message"><small className="notification-count">6</small></i></span><h3>Messages</h3>
                 </a>
-                <a href="/bookmark"className="menu-item">
+                <a href="/bookmark" className="menu-item">
                     <span><i className="uil uil-bookmark"></i></span><h3>Bookmarks</h3>
                 </a>
                 <a href="/analytics" className="menu-item">
