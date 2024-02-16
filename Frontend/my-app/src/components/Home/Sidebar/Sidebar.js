@@ -3,6 +3,7 @@ import '../Main/Main.css'
 import "./Sidebar.css"
 import Logo from "../Images/Logo.png"
 import axios from "axios";
+import sideFunction from "./SidebarFunction"
 
 
 const Sidebar = () => {
@@ -11,6 +12,7 @@ const Sidebar = () => {
     const [profPhoto, setProfPhoto] = useState();
 
     useEffect(() => {
+        sideFunction();
         const fetchProfName = async () => {
             try {
                 const email = localStorage.getItem('token');
@@ -85,7 +87,7 @@ const Sidebar = () => {
 
                 </a>
                 <a href="#Message-popup" className="menu-item" id="messages-notifications">
-                    <span><i className="uil uil-message"><small className="notification-count">6</small></i></span><h3>Messages</h3>
+                    <span><i className="uil uil-comment-alt-message"><small className="notification-count">6</small></i></span><h3>Messages</h3>
                 </a>
                 <a href="/bookmark" className="menu-item">
                     <span><i className="uil uil-bookmark"></i></span><h3>Bookmarks</h3>

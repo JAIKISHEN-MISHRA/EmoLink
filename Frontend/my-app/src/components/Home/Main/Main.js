@@ -239,7 +239,7 @@ const Main = () => {
                                         <div className="center">
                                             <div className="stories">
                                                 <div className="story create-face" onClick={toggleCreateStory} >
-                                                    <BsPlusCircle size={'7vw'} />
+                                                    <BsPlusCircle size={'7rem'} />
                                                 </div>
                                                 {storiesData.map((story, index) => (
                                                     <div key={index} className="story" onClick={() => setSelectedStoryUser(story.username)} style={{ backgroundImage: `url(data:${story.images[0].mimetype};base64,${story.images[0].path})` }}>
@@ -290,15 +290,16 @@ const Main = () => {
                                                 <div className="heading">
                                                     <h4>Messages</h4><i className="uil uil-message"></i>
                                                 </div>
+                                                <div className="category">
+                                                    <h6 className="active"  >Message</h6>
+                                                    <h6 >Notification</h6>
+                                                    <h6 className="message-requests" >Requests</h6>
+                                                </div>
                                                 <div className="search-bar">
                                                     <i className="uil uil-search"></i>
                                                     <input type="search" placeholder="search messages" id="message-search" />
                                                 </div>
-                                                <div className="category">
-                                                    <h6 className="active">Primary</h6>
-                                                    <h6>General</h6>
-                                                    <h6 className="message-requests">Requests</h6>
-                                                </div>
+                                                {/* <div className="category-content message"> */}
                                                 {selectedUser ? (
                                                     <ChatBox user={selectedUser} onClose={handleCloseChat} />
                                                 ) : (
@@ -321,6 +322,10 @@ const Main = () => {
                                                         </div>
                                                     ))
                                                 )}
+                                                {/* </div>
+                                                <div className="category-content notification"></div>
+                                                <div className="category-content request"></div> */}
+                                               
 
                                             </div>
 

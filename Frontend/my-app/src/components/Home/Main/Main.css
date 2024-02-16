@@ -544,7 +544,7 @@ main .container .home-main .right{
 @media screen and (max-width:1023px)  {
     main .container{
         display: grid;
-        grid-template-rows: 86% 14%;
+        grid-template-rows: 90% 14%;
         row-gap: 0%;
         /* position: absolute; */
         width: 100%;
@@ -613,6 +613,9 @@ main .container .home-main .right{
         left: calc(20rem-0.6rem);
         display: block;
     } */
+    .center .stories{
+        height: 20vh;
+    }
 
   .post-profile{
         width: 100%;
@@ -620,13 +623,20 @@ main .container .home-main .right{
         /* margin-left: -8px;  */
     }
     .writepost{
-        padding: 2vh 3vw;
+        padding: 0.5rem 1rem;
         font-size: 3vw;
-    }
+        display: flex;
+
+justify-content: center;    }
     .buttonpost{
         margin: 0 1vw;
+        font-size: 3vw;
+        padding: 0.5rem 0.7rem;
         
-        padding: 2vh 2.5vw;
+    }
+    .center .create-post .input-post input[type="text"]{
+        justify-self: auto;
+        padding: 0 0 0 0.4rem ;
     }
   
 
@@ -634,6 +644,9 @@ main .container .home-main .right{
 
 
 @media screen and (max-width:1023px) {
+    main{
+        margin-top: 4.6rem;
+    }
     main .container{
      padding: 0  ;
      overflow: hidden;

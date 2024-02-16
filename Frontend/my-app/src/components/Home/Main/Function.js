@@ -186,7 +186,6 @@
 
 
 const myFunction = () => {
-    const menuItems = document.querySelectorAll('.menu-item');
     const messagesNotification = document.querySelector('#messages-notifications');
     const messages = document.querySelector('.messages');
     const message = messages.querySelectorAll('.message');
@@ -219,25 +218,7 @@ const myFunction = () => {
     const userPreferences = loadPreferences();
     applyPreferences(userPreferences);
 
-    const changeActiveItem = () => {
-        menuItems.forEach(item => {
-            item.classList.remove('active');
-        });
-    };
-
-    menuItems.forEach(item => {
-        item.addEventListener('click', () => {
-            changeActiveItem();
-            item.classList.add('active');
-            if (item.id !== 'notifications') {
-                document.querySelector('.notifications-popup').style.display = 'none';
-            } else {
-                document.querySelector('.notifications-popup').style.display = 'block';
-                document.querySelector('#notifications .notification-count').style.display = 'none';
-            }
-        });
-    });
-
+   
     messagesNotification.addEventListener('click', () => {
         messages.style.boxShadow = '0 0 1rem var(--color-primary)';
         messagesNotification.querySelector('.notification-count').style.display = 'none';
@@ -362,6 +343,25 @@ const myFunction = () => {
         bg1.classList.remove('active');
         bg2.classList.remove('active');
     });
+
+
+
+
+// ctegory
+const categoryElements = document.querySelectorAll('.category h6');
+   
+     categoryElements.forEach(el => {
+        el.addEventListener('click' , ()=>{
+            
+            categoryElements.forEach(el =>  el.classList.remove('active') )
+            el.classList.add('active');
+        })
+       
+    });
+  
+
+
+
 };
 
 export default myFunction;
