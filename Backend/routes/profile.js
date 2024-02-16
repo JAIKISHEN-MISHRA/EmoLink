@@ -4,6 +4,7 @@ import express from 'express';
 const profileRouter = express.Router();
 import Register from '../Models/User.js';
 import Post from '../Models/addPost.js';
+import protect from '../Middleware/auth.js';
 
 // Route to fetch user profile data based on the username
 profileRouter.get('/user', async (req, res) => {
@@ -80,6 +81,38 @@ profileRouter.put('/updateBio/:username',  async (req, res) => {
     } catch (error) {
         console.error('Error updating bio:', error);
         res.status(500).json({ message: 'Server error' });
+    }
+});
+
+profileRouter.post('/removeUser/:id', protect, async (req, res) => {
+    const { id } = req.params;
+    const userId = req.user._id; 
+    try {
+        const updatedUser = await Register.findByIdAndUpdate(
+            userId,
+            { $pull: { followers: id } },
+            { new: true }
+        );
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error('Error removing follower:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+profileRouter.post('/unfollowUser/:id', protect, async (req, res) => {
+    const { id } = req.params;
+    const userId = req.user._id; 
+    try {
+        const updatedUser = await Register.findByIdAndUpdate(
+            userId,
+            { $pull: { following: id } },
+            { new: true }
+        );
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error('Error removing follower:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 });
 

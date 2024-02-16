@@ -147,25 +147,60 @@ const Profile = () => {
     setpop(false);
     // setPopButtonLabel(null)
   };
-
-  const handleBottomAction = () => {
+  const handleFollowerRemove = async (id) => {
+    const token = localStorage.getItem('tokenurl');
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/profile/removeUser/${id}`,
+        {},
+        config
+      );
+      console.log(response.data);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error removing follower:', error);
+    }
+  };
+  
+  const handleFollowingUnfollow=async(id)=>{
+    const token = localStorage.getItem('tokenurl');
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/profile/unfollowUser/${id}`,
+        {},
+        config
+      );
+      console.log(response.data);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error unfollowing follower:', error);
+    }
+  }
+  const handleBottomAction = (id) => {
     if (popButtonLabel === "Remove") {
-      setPopButtonLabel("Add")
+      handleFollowerRemove(id);
     }
-    if (popButtonLabel === "Add") {
-      setPopButtonLabel("Follow")
-    }
+   
 
     if (popButtonLabel === "Unfollow") {
-      setPopButtonLabel("Follow")
+      handleFollowingUnfollow(id);
     }
-    if (popButtonLabel === "Follow") {
-      setPopButtonLabel("Follow")
-    }
+    
   }
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   // Function to toggle dropdown visibility
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -307,9 +342,11 @@ const Profile = () => {
                               <span><img className='user-image' src={Logo} alt='User' /></span>
                               <div className='user-name'>{follower.username}</div>
                               <div>
-                                <button className='pop-bottom-button' value={popButtonLabel} onClick={handleBottomAction}>
+                              {isOwnProfile && (
+                                <button className='pop-bottom-button' value={popButtonLabel} onClick={() => handleBottomAction(follower.id)}>
                                   {popButtonLabel}
                                 </button>
+                              )}
                               </div>
                             </div>
                           );
@@ -322,9 +359,11 @@ const Profile = () => {
                               <span><img className='user-image' src={Logo} alt='User' /></span>
                               <div className='user-name'>{following.username}</div>
                               <div>
-                                <button className='pop-bottom-button' value={popButtonLabel} onClick={handleBottomAction}>
+                              {isOwnProfile && (
+                                <button className='pop-bottom-button' value={popButtonLabel} onClick={() => handleBottomAction(following.id)}>
                                   {popButtonLabel}
                                 </button>
+                              )}
                               </div>
                             </div>
                           );
