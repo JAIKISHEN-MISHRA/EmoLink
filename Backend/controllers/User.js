@@ -6,6 +6,7 @@ import validator from 'validator';
 import crypto from 'crypto';
 import Chat from '../Models/chatModel.js';
 import UserActivityDuration from '../Models/userActivity.js';
+import DeleteRequest from '../Models/delete.js';
 
 
 export const registerUser = async (req, res) => {
@@ -68,6 +69,16 @@ export const loginUser = async (req, res) => {
 
     if (!user) {
       return res.send("User not found"); // User not found
+    }
+    if (user.deactivate===true) {
+      user.deactivate = false;
+      await user.save();
+    }
+
+    const deleteRequest = await DeleteRequest.findOne({ email });
+
+    if (deleteRequest) {
+      await DeleteRequest.deleteOne({ email });
     }
 
     const activity=await UserActivityDuration.find({username:email}).exec();
@@ -155,15 +166,11 @@ export const allUsers = async (req, res) => {
 
 export const allUsernames = async (req, res) => {
   try {
-    // Fetch all users except the current user
-    const users = await Register.find({ _id: { $ne: req.user._id } }, '_id username profilePicture');
+    const users = await Register.find({ _id: { $ne: req.user._id }, deactivate: { $ne: true } }, '_id username profilePicture');
 
-    // Create an array to store the user data with appended chat IDs
     const usersWithChatIds = [];
 
-    // Iterate through each user
     for (const user of users) {
-      // Find the chat data for the pair of users (req.user._id and user._id)
       const chat = await Chat.findOne({
         $and: [
           { users: req.user._id },
@@ -178,10 +185,8 @@ export const allUsernames = async (req, res) => {
         profile:user.profilePicture,
         chatId: chat ? chat._id : null, // Append chat ID if found, otherwise null
       };
-      // Push the user data to the array
       usersWithChatIds.push(userWithChatId);
     }
-    // Send the response with the updated user data
     res.json(usersWithChatIds);
   } catch (error) {
     console.error('Error fetching usernames:', error);

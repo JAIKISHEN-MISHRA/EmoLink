@@ -58,9 +58,9 @@ export const fetchPostApi=async(config)=>{
   }
 }
 
-export const forgotPass = async () => {
+export const forgotPass = async (email) => {
   try {
-    const storage = localStorage.getItem('token');
+    const storage =email;
 
     if (!storage) {
       throw new Error('Token not found in localStorage');
@@ -94,7 +94,7 @@ export const fetchProfileData = async (username) => {
       console.error('Error fetching user data:', error);
       throw error;
   }
-}
+};
 
 export const updateBio = async (username, editedBio) => {
   try {
@@ -103,6 +103,39 @@ export const updateBio = async (username, editedBio) => {
       });
   } catch (error) {
       console.error('Error updating bio:', error);
+      throw error;
+  }
+};
+
+export const updateMob = async (username, editedMob) => {
+  try {
+      await axios.post(`${url}/updateMob/${username}`, {
+          MobileNo: editedMob,
+      });
+  } catch (error) {
+      console.error('Error updating bio:', error);
+      throw error;
+  }
+};
+
+export const updateName = async (username, editedName) => {
+  try {
+      await axios.post(`${url}/updateName/${username}`, {
+          name: editedName,
+      });
+  } catch (error) {
+      console.error('Error updating bio:', error);
+      throw error;
+  }
+};
+
+export const deactivatedeleteApi = async (email,password,action) => {
+  try {
+      await axios.post(`${url}/deactivate-or-delete`, {
+          email,password,action
+      });
+  } catch (error) {
+      console.error('Error deactivating account:', error);
       throw error;
   }
 };

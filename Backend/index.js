@@ -27,6 +27,7 @@
   import Bookmarkrouter from './routes/Bookmark.js';  
   import cleanUpDuplicateViewsJob from './cronJobs/RemoveDuplicate.js';
   import Explorerouter from './routes/Explore.js';
+import deleteUserWholeData from './cronJobs/DeleteUser.js';
   
   config();
   
@@ -87,4 +88,5 @@
 storyCleanUpJob.start();
 reputation.start();
 cleanUpDuplicateViewsJob.start();
+deleteUserWholeData.start();
   

@@ -35,8 +35,13 @@ Storyrouter.get('/addStory', async (req, res) => {
     try {
       const stories = await Story.find().populate({
         path: 'userId',
-        model: 'RegisteredUser', // Reference to the User model
-        select: 'username profilePicture' // Select the username field only
+        model: 'RegisteredUser', 
+        select: 'username profilePicture' ,
+        match: {
+          $or: [
+              { deactivate: { $exists: false } }, // Documents without the deactivate field
+              { deactivate: false } // Documents with deactivate field set to false
+          ]}
       });      res.json({ stories });
     } catch (error) {
       console.error('Error fetching stories:', error);
