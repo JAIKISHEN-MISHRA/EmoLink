@@ -6,6 +6,7 @@ import { BsFillXCircleFill } from 'react-icons/bs';
 import Swal from "sweetalert2";
 import { fetchPostApi } from "../../../../api";
 
+
 const Feeds = () => {
   const [posts, setPosts] = useState([]);
   const [showComment, setShowComment] = useState(null);
@@ -17,6 +18,12 @@ const Feeds = () => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
+  };
+
+  const handleKeyPress = (e, postId) => {
+    if (e.key === 'Enter') {
+      addComment(postId);
+    }
   };
 
   useEffect(() => {
@@ -117,7 +124,7 @@ const Feeds = () => {
     try {
       const response = await axios.post(`http://localhost:5000/api/getpost/view/${postId}`, {}, config);
       const updatedPosts = posts.map((post) =>
-        post._id === postId ? { ...post, isViewed:!post.isViewed} : post
+        post._id === postId ? { ...post, isViewed: !post.isViewed } : post
       );
       setPosts(updatedPosts);
       console.log("Increment view of " + postId);
@@ -238,6 +245,7 @@ const Feeds = () => {
                       value={myComment}
                       className="input"
                       onChange={(e) => setMyComment(e.target.value)}
+                      onKeyPress={(e) => handleKeyPress(e, showComment._id)}
                     />
                     <button className="btn bt btn-primary" onClick={() => addComment(showComment._id)}>
                       Send
