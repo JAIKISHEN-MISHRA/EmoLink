@@ -267,6 +267,7 @@ main container ka z 1 kar
   .comment-bar .Write-comment{
     width: 100%;
     position: fixed;
+    left: auto;
   }
   .comment .pop .pop-container .pop-content .comment-bar{
     position: absolute;
