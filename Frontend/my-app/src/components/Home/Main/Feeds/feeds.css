@@ -126,27 +126,33 @@ main container ka z 1 kar
 }
 .comment .pop .pop-container .pop-content{
   display: grid;
-  grid-template-columns: 50% 48%;
+  grid-template-columns: 50% 50%;
   column-gap: 2%;
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
   border-radius: 0;
-  background-color: wheat
+  background-color: rgb(255, 255, 255);
+  overflow: hidden;
+  border-radius: 15px 15px;
+  filter: drop-shadow(2px 4px 6px black);
 }
 .comment .pop .pop-container .pop-content .content{
   display: flex;
-  object-fit: cover; 
+  object-fit: cover;
+  align-items: center;
 }
 
 .comment .pop .pop-container .pop-content .comment-bar{
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   padding: auto;
-  margin: 0.3rem ;
-  box-shadow: 0 0 10px rgb(54, 165, 165, 0.5);
+  /* margin: 0.3rem; */
+  box-shadow: 0 0 10px var(--color-primary);
   border: #0e0d0d;
+  overflow-y: scroll;
+  scrollbar-width: thin;
 }
 .comment .pop .pop-container .pop-content .comment-bar .user{
   display: grid;
@@ -197,7 +203,7 @@ main container ka z 1 kar
 .comments .comment-x {
   font-size: 0.7rem;
   padding-left: 5%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 
 .comments .comment-x .user .user-name{
@@ -234,6 +240,9 @@ main container ka z 1 kar
   justify-content: space-around;
   margin-bottom: 1vh;
   padding-right: 1vh;
+  filter: drop-shadow(2px 4px 6px black);
+  position: absolute;
+  left: 1rem;
 
 }
 
@@ -251,4 +260,37 @@ main container ka z 1 kar
  border-radius: 0 10px 10px 0;
 
 
+}
+
+/* For 1024px and larger */
+@media screen and (max-width: 426px) {
+  .comment-bar .Write-comment{
+    width: 100%;
+    position: fixed;
+  }
+  .comment .pop .pop-container .pop-content .comment-bar{
+    position: absolute;
+    /* height: 68vh; */
+    top: 12rem;
+    bottom: -1rem;
+    width: 100%;
+    background: white;
+  }
+  .content{
+    position: fixed;
+  }
+}
+
+/* For 375px */
+@media screen and (max-width: 376px){
+  .comment .pop .pop-container .pop-content .comment-bar{
+    top: 11rem;
+  }
+}
+
+/* For 320px */
+@media screen and (max-width: 320px){
+  .comment .pop .pop-container .pop-content .comment-bar{
+    top: 9rem;
+  }
 }
