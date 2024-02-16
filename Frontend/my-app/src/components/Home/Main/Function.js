@@ -239,7 +239,7 @@ const myFunction = () => {
         });
     };
 
-    messageSearch.addEventListener('keyup', searchMessage);
+   
 
     const openThemeModel = () => {
         themeModel.style.display = 'grid';
@@ -349,17 +349,27 @@ const myFunction = () => {
 
 // ctegory
 const categoryElements = document.querySelectorAll('.category h6');
+
+const categoryContents = document.querySelectorAll('.category-content');
    
-     categoryElements.forEach(el => {
+     categoryElements.forEach((el , index) => {
         el.addEventListener('click' , ()=>{
             
             categoryElements.forEach(el =>  el.classList.remove('active') )
             el.classList.add('active');
+            categoryContents.forEach(content => content.style.display = 'none');
+            const selectedCategory = el.getAttribute('data-category');
+            const selectedContent = document.getElementById(`${selectedCategory}`);
+            
+           console.log(selectedContent)
+                selectedContent.style.display = 'block';
+
+            
         })
        
     });
   
-
+    // messageSearch.addEventListener('keyup', searchMessage);
 
 
 };

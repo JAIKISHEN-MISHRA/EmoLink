@@ -16,6 +16,7 @@ import { BsImages } from "react-icons/bs";
 import Sidebar from "../Sidebar/Sidebar.js";
 import Navbar from "../Navbar/Navbar.js";
 const Main = () => {
+    const [user , setUser] =useState([])
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState([]);
     const [friendRequests, setFriendRequests] = useState([]);
@@ -33,6 +34,16 @@ const Main = () => {
 
     useEffect(() => {
         myFunction();
+        const fetchProfName = async () => {
+            try {
+                const email = localStorage.getItem('token');
+                const response = await axios.get(`http://localhost:5000/profDetail?email=${email}`);
+                const user = response.data.user;
+                setUser(user);
+            } catch (error) {
+                console.log(error);
+            }
+        }
         const fetchUsers = async () => {
             try {
                 const token = localStorage.getItem('tokenurl');
@@ -218,6 +229,24 @@ const Main = () => {
     };
 
 
+    const [notifications, setNotifications] = useState([]);
+    const fetchNotifications = async () => {
+        try {
+            const token = localStorage.getItem('tokenurl');
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+            const response = await axios.get('http://localhost:5000/notifications', config);
+            setNotifications(response.data);
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+        }
+    };
+    fetchNotifications();
+
 
 
     return (
@@ -272,12 +301,12 @@ const Main = () => {
 
 
                                                     <div class="wrapper">
-                                                    <div class="file-upload">
-                                                        <label for="create-post-image" class="buttonpost btn btn-primary"><BsImages />
-                                                            <input type="file" accept="image/*" name="image" id="create-post-image" onChange={handleImageChange} />
-                                                        </label>
+                                                        <div class="file-upload">
+                                                            <label for="create-post-image" class="buttonpost btn btn-primary"><BsImages />
+                                                                <input type="file" accept="image/*" name="image" id="create-post-image" onChange={handleImageChange} />
+                                                            </label>
+                                                        </div>
                                                     </div>
-                                                </div>
                                                     <input type="submit" value="Post" className="writepost btn btn-primary" onClick={handleCreatePost} />
 
 
@@ -287,78 +316,111 @@ const Main = () => {
                                         </div>
                                         <div className="right" id="Message-popup">
                                             <div className="messages" >
-                                                <div className="heading">
+                                                <div className="heading" id="heading1">
                                                     <h4>Messages</h4><i className="uil uil-message"></i>
                                                 </div>
-                                                <div className="category">
-                                                    <h6 className="active"  >Message</h6>
-                                                    <h6 >Notification</h6>
-                                                    <h6 className="message-requests" >Requests</h6>
+                                                <div className="heading" id="heading2">
+                                                    <div className="profile-photo">
+                                                                    {user.profile ? (
+                                                                        <img src={user.profile} alt="Profile" />
+                                                                    ) : (
+                                                                        <img src={Logo} alt="Profile" />
+                                                                    )}
+                                                                </div>
+                                                        <h4>{user.name}</h4>
                                                 </div>
-                                                <div className="search-bar">
+                                                <div className="category">
+                                                    <h6 className="active" data-category="cat-con-msg">Message</h6>
+                                                    <h6 data-category="cat-con-not">Notification</h6>
+                                                    <h6 className="message-requests" data-category="cat-con-req">Requests</h6>
+                                                </div>
+                                                {/* <div className="search-bar">
                                                     <i className="uil uil-search"></i>
                                                     <input type="search" placeholder="search messages" id="message-search" />
+                                                </div> */}
+                                                <div className="category-content message" id="cat-con-msg">
+                                                    {selectedUser ? (
+                                                        <ChatBox user={selectedUser} onClose={handleCloseChat} />
+                                                    ) : (
+                                                        users.map(user => (
+                                                            <div
+                                                                key={user._id}
+                                                                className="msg"
+                                                                onClick={() => handleOpenChat(user)}
+                                                            >
+                                                                <div className="profile-photo">
+                                                                    {user.profile ? (
+                                                                        <img src={user.profile} alt="Profile" />
+                                                                    ) : (
+                                                                        <img src={Logo} alt="Profile" />
+                                                                    )}
+                                                                </div>
+                                                                <div className="message-body">
+                                                                    <h5>{user.username}</h5>
+                                                                </div>
+                                                            </div>
+                                                        ))
+                                                    )}
                                                 </div>
-                                                {/* <div className="category-content message"> */}
-                                                {selectedUser ? (
-                                                    <ChatBox user={selectedUser} onClose={handleCloseChat} />
-                                                ) : (
-                                                    users.map(user => (
-                                                        <div
-                                                            key={user._id}
-                                                            className="message"
-                                                            onClick={() => handleOpenChat(user)}
-                                                        >
+                                                <div className="category-content notification" id="cat-con-not">
+                                                    {notifications.map(notification => (
+                                                        <div key={notification._id} className="notification-item">
+                                                            {/* Render your notification content here */}
                                                             <div className="profile-photo">
-                                                                {user.profile ? (
-                                                                    <img src={user.profile} alt="Profile" />
+                                                                {notification.sender.profilePicture ? (
+                                                                    <img src={notification.sender.profilePicture} alt="Profile" />
                                                                 ) : (
                                                                     <img src={Logo} alt="Profile" />
                                                                 )}
+                                                               
                                                             </div>
-                                                            <div className="message-body">
-                                                                <h5>{user.username}</h5>
+                                                            <div className="notification-body">
+                                                                {/* <b>{notification.sender.name}</b>  */}
+                                                                <div> {notification.message} </div>
+                                                                <small className="text-muted">{notification.timestamp}</small>
                                                             </div>
                                                         </div>
-                                                    ))
-                                                )}
-                                                {/* </div>
-                                                <div className="category-content notification"></div>
-                                                <div className="category-content request"></div> */}
-                                               
+                                                    ))}
+                                                </div>
+                                                <div className="category-content req" id="cat-con-req">
+                                                    {/* <div className="friend-requets"> */}
+                                                    {friendRequests.map(request => (
+                                                        <div key={request._id} className="request">
+                                                            <div className="info">
+                                                                <div className="profile-photo">
+                                                                    {request.sender.profilePicture ? (
+                                                                        <img src={request.sender.profilePicture} alt="Profile" />
+                                                                    ) : (
+                                                                        <img src={Logo} alt="Profile" />
+                                                                    )}
+                                                                </div>
+                                                                <div>
+                                                                    <h5>{request.sender.username}</h5>
+                                                                    <p className="text-muted">
+                                                                        {request.sender.username} sent you a friend request
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="action">
+                                                                <button className="btn btn-primary" onClick={() => handleAcceptFriendRequest(request._id)}>
+                                                                    Accept
+                                                                </button>
+                                                                <button className="btn" onClick={() => handleDeclineFriendRequest(request._id)}>
+                                                                    Decline
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                    {/* </div> */}
+                                                </div>
+
 
                                             </div>
 
-                                            <div className="friend-requets">
-                                                <h4>Requests</h4>
-                                                {friendRequests.map(request => (
-                                                    <div key={request._id} className="request">
-                                                        <div className="info">
-                                                            <div className="profile-photo">
-                                                                {request.sender.profilePicture ? (
-                                                                    <img src={request.sender.profilePicture} alt="Profile" />
-                                                                ) : (
-                                                                    <img src={Logo} alt="Profile" />
-                                                                )}
-                                                            </div>
-                                                            <div>
-                                                                <h5>{request.sender.username}</h5>
-                                                                <p className="text-muted">
-                                                                    {request.sender.username} sent you a friend request
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="action">
-                                                            <button className="btn btn-primary" onClick={() => handleAcceptFriendRequest(request._id)}>
-                                                                Accept
-                                                            </button>
-                                                            <button className="btn" onClick={() => handleDeclineFriendRequest(request._id)}>
-                                                                Decline
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
+
+
+
+
                                         </div>
                                     </div>
                                 </div>
