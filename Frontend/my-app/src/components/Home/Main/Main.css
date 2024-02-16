@@ -286,18 +286,34 @@ main .container .home-main .right{
     color: var(--color-primary);
 }
 
-.right .messages .message{
+.right .messages .category-content{
     display: flex;
+    flex-direction: column;
     gap: 1rem;
     margin-bottom: 1rem;
 }
-
+.right .messages .message .msg{
+    display: flex;
+    gap: 1rem;
+    /* margin-bottom: 1rem; */
+}
+.right .messages .message .msg  .message-body{
+    display: flex;
+   align-items: center;
+   font-size: 1.3rem;
+}
 .right .message .profile-photo{
     position: relative;
     overflow: visible;
-}
+    }
 .right .profile-photo img{
+    margin-bottom: 2vh;
     border-radius: 50%;
+    border: 2px solid var(--color-primary);
+    /* border-width: 2px;
+    border-style: solid;
+    border-image: linear-gradient(45deg, #e67878, #595c9d, #0dff00, #ff4d00) 1; */
+
 }
 
 .right .messages .message:last-child{
@@ -321,16 +337,11 @@ main .container .home-main .right{
 
 
 
-.right .friend-requests{
-    margin-top: 1rem;
+
+#cat-con-not, #cat-con-req{
+    display: none;
 }
 
-.right .friend-requests h4{
-    color: var(--color-white);
-    padding: var(--card-padding);
-    border-radius: var(--card-border-radius);
-    margin-bottom: 0.7rem;
-}
 
 .right .request{
     background: var(--color-white);
@@ -345,7 +356,24 @@ main .container .home-main .right{
     margin-bottom: 1rem;
 }
 
+#cat-con-not .notification-item{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+}
+#cat-con-not .notification-body{
+    display: flex;
+    flex-direction: column;
+    margin-left: 2px;
+}
+#heading2{
+    display: none;
+}
 
+#cat-con-not .notification-body div{
+    font-size: 0.9rem;
+}
 
 
 
@@ -596,8 +624,17 @@ main .container .home-main .right{
     .customize-theme .card{
         width: 80vw;
     }
+    /* .category-content{
+        justify-content: center;
+    } */
 }
 
+@media screen and (max-width: 1023px)and  (min-width: 450px) {
+    .right .messages .category-content{
+        padding-left: 6%;
+        justify-content: center;
+    }
+}
 @media  screen and (max-width:767px) {
    
 
@@ -662,6 +699,14 @@ justify-content: center;    }
      .left .btn{
          display: none;
      }
+     #heading1{display: none;
+    }
+    #heading2{
+        display: block;
+    }
+     .right .messages{
+        border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;     }
     
  }
 
