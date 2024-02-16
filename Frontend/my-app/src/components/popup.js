@@ -1,11 +1,7 @@
-// Popup.js
-
 import React, { useEffect, useState } from 'react';
 import './Analytics/Analytics.css'; 
 import { fetchUserActivityDuration } from '../api/index.js';
 import Swal from 'sweetalert2';
-
-
 
 const Popup = () => {
   const [userActivityDuration, setUserActivityDuration] = useState([]);
@@ -29,8 +25,7 @@ const Popup = () => {
   }, []);
 
   useEffect(() => {
-    // const durations = [7200, 14400, 21600]; // 2 hours, 4 hours, and 6 hours
-    const durations = [0];
+    const durations = [7200, 14400, 21600]; // 2 hours, 4 hours, and 6 hours
     const lastActivity = userActivityDuration[userActivityDuration.length - 1];
     if (lastActivity) {
       const lastDurationInSeconds = lastActivity.durationInSeconds;
@@ -40,13 +35,25 @@ const Popup = () => {
         if (lastDurationInSeconds >= durationInSeconds) {
           switch (i) {
             case 0:
-              setShowPopup1(true);
+              if (!sessionStorage.getItem('popupShown1')) {
+                setShowPopup1(true);
+                sessionStorage.setItem('popupShown1', 'true');
+                sessionStorage.setItem('popupExpiry1', new Date().getDate());
+              }
               break;
             case 1:
-              setShowPopup2(true);
+              if (!sessionStorage.getItem('popupShown2')) {
+                setShowPopup2(true);
+                sessionStorage.setItem('popupShown2', 'true');
+                sessionStorage.setItem('popupExpiry2', new Date().getDate());
+              }
               break;
             case 2:
-              setShowPopup3(true);
+              if (!sessionStorage.getItem('popupShown3')) {
+                setShowPopup3(true);
+                sessionStorage.setItem('popupShown3', 'true');
+                sessionStorage.setItem('popupExpiry3', new Date().getDate());
+              }
               break;
             default:
               break;
@@ -63,7 +70,7 @@ const Popup = () => {
     setShowPopup2(false);
     setShowPopup3(false);
 
-    // Add logout logic when closing the 5-second popup
+    // Add logout logic when closing the 6-hour popup
     if (showPopup3) {
       handleLogout();
     }
@@ -75,10 +82,10 @@ const Popup = () => {
     localStorage.removeItem('tokenurl');
     window.location.reload();
     Swal.fire({
-        title: 'OOPS You Are Exhausted',
-        text: 'We value your health.Please do rest',
-        icon: 'error',
-      });
+      title: 'OOPS You Are Exhausted',
+      text: 'We value your health. Please do rest',
+      icon: 'error',
+    });
     console.log('Logout initiated');
   };
 
