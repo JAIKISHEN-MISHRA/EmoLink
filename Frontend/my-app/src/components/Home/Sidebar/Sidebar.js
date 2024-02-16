@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import '../Main/Main.css'
+import "./Sidebar.css"
 import Logo from "../Images/Logo.png"
 import axios from "axios";
 
@@ -58,10 +59,10 @@ const Sidebar = () => {
                 </div>
             </a>
             <div className="sidebar">
-                <a className="menu-item active">
+                <a href="/home" className="menu-item active">
                     <span><i className="uil uil-home"></i></span><h3>Home</h3>
                 </a>
-                <a className="menu-item">
+                <a href="/explore" className="menu-item">
                     <span><i className="uil uil-compass"></i></span><h3>Explore</h3>
                 </a>
                 <a className="menu-item" id="notifications">
@@ -83,7 +84,7 @@ const Sidebar = () => {
                     </div>
 
                 </a>
-                <a className="menu-item" id="messages-notifications">
+                <a href="#Message-popup" className="menu-item" id="messages-notifications">
                     <span><i className="uil uil-message"><small className="notification-count">6</small></i></span><h3>Messages</h3>
                 </a>
                 <a href="/bookmark" className="menu-item">

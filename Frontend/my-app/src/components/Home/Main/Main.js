@@ -160,7 +160,7 @@ const Main = () => {
         setCreate(!isCreateStory);
     };
 
-    
+
 
     const postShowAlertSuccess = () => {
         Swal.fire({
@@ -180,7 +180,7 @@ const Main = () => {
     const handleAcceptFriendRequest = async (friendRequestId) => {
         try {
             await acceptFriendRequest(friendRequestId);
-        
+
             window.location.reload();
         } catch (error) {
             console.error('Error accepting friend request:', error);
@@ -190,7 +190,7 @@ const Main = () => {
     const handleDeclineFriendRequest = async (friendRequestId) => {
         try {
             await declineFriendRequest(friendRequestId);
-      
+
             window.location.reload();
         } catch (error) {
             console.error('Error declining friend request:', error);
@@ -217,7 +217,7 @@ const Main = () => {
         }
     };
 
-    
+
 
 
     return (
@@ -229,13 +229,13 @@ const Main = () => {
             ) : (
                 <>
                     {isCreateStory ? (
-                        <CreateStory onClose={() => setCreate(false)}/>
+                        <CreateStory onClose={() => setCreate(false)} />
                     ) : (
                         <>
                             <main>
                                 <div className="container">
                                     <Sidebar />
-                                    <>
+                                    <div className="home-main">
                                         <div className="center">
                                             <div className="stories">
                                                 <div className="story create-face" onClick={toggleCreateStory} >
@@ -267,20 +267,26 @@ const Main = () => {
                                                 <div className="profile-photo post-profile">
                                                     <img src={Logo} alt="Post-Pic" />
                                                 </div>
-                                                <input type="text" placeholder="What's on your mind?" id="create-post" name="caption" value={formData.caption} onChange={handleInputChange} />
-                                                <input type="submit" value="Post" className="writepost btn btn-primary" onClick={handleCreatePost} />
-                                                <div class="wrapper">
+                                                <div className="input-post">
+                                                    <input type="text" placeholder="What's on your mind?" id="create-post" name="caption" value={formData.caption} onChange={handleInputChange} />
+
+
+                                                    <div class="wrapper">
                                                     <div class="file-upload">
                                                         <label for="create-post-image" class="buttonpost btn btn-primary"><BsImages />
                                                             <input type="file" accept="image/*" name="image" id="create-post-image" onChange={handleImageChange} />
                                                         </label>
                                                     </div>
                                                 </div>
+                                                    <input type="submit" value="Post" className="writepost btn btn-primary" onClick={handleCreatePost} />
+
+
+                                                </div>
                                             </form>
                                             <Feeds />
                                         </div>
-                                        <div className="right">
-                                            <div className="messages">
+                                        <div className="right" id="Message-popup">
+                                            <div className="messages" >
                                                 <div className="heading">
                                                     <h4>Messages</h4><i className="uil uil-message"></i>
                                                 </div>
@@ -324,7 +330,7 @@ const Main = () => {
                                                     <div key={request._id} className="request">
                                                         <div className="info">
                                                             <div className="profile-photo">
-                                                            {request.sender.profilePicture ? (
+                                                                {request.sender.profilePicture ? (
                                                                     <img src={request.sender.profilePicture} alt="Profile" />
                                                                 ) : (
                                                                     <img src={Logo} alt="Profile" />
@@ -349,7 +355,7 @@ const Main = () => {
                                                 ))}
                                             </div>
                                         </div>
-                                    </>
+                                    </div>
                                 </div>
                             </main>
                         </>

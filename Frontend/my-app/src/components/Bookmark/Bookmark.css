@@ -65,7 +65,7 @@
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
-  .profile-photo img {
+  .post-details .profile-photo img {
     width: 40px;
     height: 40px;
   }

@@ -1,156 +1,35 @@
 main{
-    position: relative;
-    top:5.4rem;
-}
-
-
-main .container{
-    display: grid;
-    grid-template-columns: 18% 60% 20%;
-    column-gap: 1%;
     /* position: relative; */
+    margin-top: 5.3rem;
+    /* top:5.4rem; */
+
+}
+
+/* main .container{
+    display: grid;
+    grid-template-columns: 18% 81%;
+    column-gap: 1%;
+    position: absolute;
     width: 100%;
-    height: 100%;
+    height: var(--con-height);
     padding: 0 3vw;
-}
-
-main .container .left{
-    height: max-content;
-    position: sticky;
-    top: var(--sticky-top-left);
-}
-
-main .container .left .profile{
-    padding: var(--card-padding);
-    background: var(--color-white);
-    border-radius: var(--card-border-radius);
-    display: flex;
-    align-items: center;
-    column-gap: 1rem;
+} */
+main .container .home-main{
+    display: grid;
+    grid-template-columns:74% 25%;
+    column-gap: 1%;
+    /* position: absolute; */
     width: 100%;
-}
-.left-side-profile img{
-    border: solid 1px var(--color-primary);
-}
-.handle{
-    font-size: small;
-}
-.left .sidebar{
-    margin-top: 1rem;
-    background: var(--color-white);
-    border-radius: var(--card-border-radius);
+    height: var(--con-height);
+    padding: 0 ;
 }
 
-.left .sidebar .menu-item{
-    display: flex;
-    align-items: center;
-    height: 4rem;
-    cursor: pointer;
-    transition: all 300ms ease;
-    position: relative;
-}
 
-.left .sidebar .menu-item:hover{
-    background: var(--color-light);
-}
-
-.left .sidebar i{
-    font-size: 1.4rem;
-    color: var(--color-gray);
-    margin-left: 2rem;
-    position: relative;
-}
-
-.left .sidebar i .notification-count{
-    background: var(--color-danger);
-    color: white;
-    font-size: 0.7rem;
-    width: fit-content;
-    border-radius: 0.8rem;
-    padding: 0.1rem 0.4rem;
-    position: absolute;
-    top: -0.2rem;
-    right: -0.3rem;
-}
-
-.left .sidebar h3{
-    margin-left: 1.5rem;
-    font-size: 1rem;
-}
-
-.left .sidebar .active{
-    background: var(--color-light);
-}
-
-.left .sidebar .active i,.left .sidebar .active h3{
-    color: var(--color-primary);
-}
-
-.left .sidebar .active::before{
-    content: "";
-    display: block;
-    width: 0.5rem;
+.center{
+    overflow-y: scroll ;
     height: 100%;
-    position: absolute;
-    background: var(--color-primary);
+    margin: 0;
 }
-
-.left .sidebar .menu-item:first-child.active{
-    border-top-left-radius: var(--card-border-radius);
-    overflow: hidden;
-}
-
-.left .sidebar .menu-item:last-child.active{
-    border-bottom-left-radius: var(--card-border-radius);
-    overflow: hidden;
-}
-
-
-.left .btn{
-    margin-top: 1rem;
-    width: 100%;
-    text-align: center;
-    padding: 1rem 0;
-}
-
-.left .notifications-popup{
-    position: absolute;
-    top: 0;
-    left: 100%;
-    width: 30rem;
-    background: var(--color-white);
-    border-radius: var(--card-border-radius);
-    padding: var(--card-padding);
-    box-shadow: 0 0 2rem hsl(var(--color-primary),75%,60%,25%);
-    z-index: 8;
-    display: none;
-}
-
-
-.left .notifications-popup::before{
-    content: "";
-    width: 1.2rem;
-    height: 1.2rem;
-    display: block;
-    background: var(--color-white);
-    position: absolute;
-    left: -0.6rem;
-    transform: rotate(45deg);
-}
-
-.left .notifications-popup > div{
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.left .notifications-popup small{
-    display: block;
-}
-
-
-
 
 /* Story container styling */
 .center .stories {
@@ -200,7 +79,7 @@ main .container .left .profile{
     display: block;
     width: 100%;
     height: 5rem;
-    background: linear-gradient(transparent,var(--color-primary));
+    background: linear-gradient(transparent,var(--color-gray));
     position: absolute;
     bottom: 0;
     border-radius: 1rem;
@@ -231,6 +110,7 @@ main .container .left .profile{
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 
 
@@ -238,42 +118,56 @@ main .container .left .profile{
     width: 2rem;
     height: 2rem;
     align-self: start;
-    border: 3px solid var(--color-primary);
+    border: 2px solid var(--color-primary);
 }
 
 .post-profile{
-    height: 3rem;
+    /* height: 3rem; */
     border: solid 2px var(--color-primary);
-    width: 7rem;
-    margin-left: -8px; 
+    width: 3rem;
+    margin-left: -1px; 
 }
-.center{
-    margin-left: 1rem;
+.post-profile img{
+   width: 100%;
+   height: 100%;
 }
 
 .center .create-post{
     width: 100%;
-    display: flex;
+    display: grid;
+    grid-template-columns: 10% 90%;
+    column-gap: 0;
     align-items: center;
     justify-content: space-between;
+
     margin-top: 1rem;
     background: var(--color-white);
-    padding: 0.4rem var(--card-padding);
+    padding: 0.2rem 0.7rem;
     border-radius: var(--border-radius);
 }
 
-.center .create-post input[type="text"]{
+.center .create-post .input-post{
+    display: grid;
+    grid-template-columns: 70% 15% 15%;
+    column-gap: 0;
+    align-items: center;
+    /* justify-self: start; */
+    margin: 0;
+    padding: 0% 2px;
+
+}
+.center .create-post .input-post input[type="text"]{
     justify-self: start;
     width: 100%;
-    padding: 1rem;
+    /* padding: 1rem; */
     background: transparent;
     color: var(--color-dark);
-    margin-right: 1rem;
+    /* margin-right: 1rem; */
 }
 
 .wrapper {
-    width: 100%;
-    height: 100%;
+    /* width: 100%;
+    height: 100%; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -293,6 +187,7 @@ main .container .left .profile{
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    margin: 0 0.2rem;
 }
 
 .buttonpost input[type='file'] {
@@ -312,16 +207,16 @@ main .container .left .profile{
 .buttonpost {
     color: #fff;
     padding: 10px 20px;
-    margin-left: 17rem;
+    /* margin-left: 17rem; */
 }
 
 .writepost {
-    left: 16rem;
-    position: relative;
+    /* left: 16rem;
+    position: relative; */
 }
 
 
-main .container .right{
+main .container .home-main .right{
     height: max-content;
     position: sticky;
     top: var(--sticky-top-right);
@@ -610,57 +505,103 @@ main .container .right{
     border-radius: 50%;
     margin-right: 1rem;
 }
+ 
 
-
-/* Media Queries for small laptops and big tablet*/
-
-@media screen and (max-width:1200px) {
-    .container{
-        width: 96%;
-    }
+@media screen and (min-width:1200px) {
     main .container{
-        grid-template-columns: 6vw 64vw 20vw;
-        gap: 1rem;
+        display: grid;
+        grid-template-columns: 15% 84%;
+        column-gap: 1%;
+        /* position: absolute; */
+        width: 100%;
+        height: var(--con-height);
+        padding: 0 1vw;
     }
-    .left{
-        width: 5rem;
-        z-index: 5;;
+}
+@media screen and (max-width: 1200px)and  (min-width: 1024px) {
+    main .container{
+        display: grid;
+        grid-template-columns: 16% 83%;
+        column-gap: 1%;
+        /* position: absolute; */
+        width: 100%;
+        height: var(--con-height);
+        padding: 0 1vw;
     }
-    main .container .left .profile{
-        display: none;
+    main .container .home-main{
+        grid-template-columns: 70% 29%;
+        column-gap: 1%;
+        /* position: absolute; */
+        width: 100%;
+        height: var(--con-height);
     }
+    main .container .left .sidebar h3 {
+        margin-left: 0.5rem;
+        font-size: 1rem;
+    }
+}
 
-    .sidebar h3{
-        display: none;
+@media screen and (max-width:1023px)  {
+    main .container{
+        display: grid;
+        grid-template-rows: 86% 14%;
+        row-gap: 0%;
+        /* position: absolute; */
+        width: 100%;
+        height: 100%;
+        height: var(--con-height);
+        padding: 0 1vw;
+        /* grid-template-areas: home-main; */
     }
-
-    .left .btn{
-        display: none;
+    main .container .home-main{
+        /* display: none; */
+        grid-row: 1;
+        grid-template-columns: 100% 0;
+        column-gap: 1%;
+        /* position: absolute; */
+        width: 100%;
+        height:100% ;
+        margin-bottom: -2%;
     }
+    main .container .home-main .right{
+        position: fixed;
+        z-index: 120;
+        top: 0;
+        /* left: 0; */
+        width: 100%;
+        height: 91vh;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+        display: none; /* Initially hidden */
+        justify-content: center;
+        /* align-items: center; */
+    }
+    main .container .home-main .right .friend-requets{
+        display: none;
 
+    }
+    main .container .home-main .right .messages{
+        width:100%;
+        height: 100%;
+
+    }
+   
+    #Message-popup:target{
+        display: flex;
+    }
+  
+    main .container .home-main .center{
+        padding: 0 0.5vw;
+    }
+  
     .customize-theme .card{
         width: 80vw;
     }
 }
 
-/* Mobile Phone */
+@media  screen and (max-width:767px) {
+   
 
-@media  screen and (max-width:992px) {
-    nav .search-bar{
-        display: none;
-    }
-    main .container{
-        grid-template-columns: 0 103vh 5rem;
-        gap: 0;
-    }
-    main .container .left{
-        grid-column: 3/4;
-        position: fixed;
-        bottom: 0;
-        right: 0;
-    }
-
-    .left .notifications-popup{
+    /* .left .notifications-popup{
         position: absolute;
         left: -20rem;
         width: 20rem;
@@ -671,196 +612,53 @@ main .container .right{
         top: 1.3rem;
         left: calc(20rem-0.6rem);
         display: block;
-    }
+    } */
 
-    main .container .center{
-        grid-column: 1/3;
-        /* width: 40rem; */
+  .post-profile{
+        width: 100%;
+        height: 100%;
+        /* margin-left: -8px;  */
     }
+    .writepost{
+        padding: 2vh 3vw;
+        font-size: 3vw;
+    }
+    .buttonpost{
+        margin: 0 1vw;
+        
+        padding: 2vh 2.5vw;
+    }
+  
 
-    main .container .right{
-        display: none;
-    }
 }
 
+
+@media screen and (max-width:1023px) {
+    main .container{
+     padding: 0  ;
+     overflow: hidden;
+     }
+     main .container .left .profile .sidebar-name{
+         display: none;
+     }
+ 
+     .sidebar h3{
+         display: none;
+     }
+ 
+     .left .btn{
+         display: none;
+     }
+    
+ }
+
+/* Mobile Phone */
+/* 
 @media screen and (min-width: 1000px) and (max-width: 1024px) {
     .post-profile {
         width: 10rem;
     }
-}
-
-
-/* feed pop up */
-/* 
-305 main ke right ko sticky position se hatanaa hai i.e position hi mat dal
-main container ka z 1 kar 
-*/
-
-
-.comment .pop {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: linear-gradient(transparent,rgba(78, 66, 66, 0.75));
-     z-index: 10000;
-  }
-
-  
-.comment   .pop-container {
-   
-    /* padding: 0.4rem 0.8rem; */
-    /* border-radius: 1.5vw; */
-    position: absolute;
-    height: 70vh;
-    width: 80vw;
-    bottom: 5vh;
-   
-  }
- .comment .pop .pop-container .close {
-    position: absolute;
-    top: 1vh;
-    right: 1vw;
-    /* margin-top: 2vh;
-    margin-right: 0.5vw; */
-    /* margin-left: 4vw; */
-    font-size:1.5rem;   
-    color: #0e0d0d;
-    cursor: pointer;
-    z-index: 1;
-  }
-  .comment .pop .pop-container .pop-content{
-    display: grid;
-    grid-template-columns: 50% 48%;
-    column-gap: 2%;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    border-radius: 0;
-    background-color: wheat
-  }
-  .comment .pop .pop-container .pop-content .content{
-    display: flex;
-    object-fit: cover; 
-  }
-
-  .comment .pop .pop-container .pop-content .comment-bar{
-    display: flex;
-    flex-direction: column; 
-    padding: auto;
-    margin: 0.3rem ;
-    box-shadow: 0 0 10px rgb(54, 165, 165, 0.5);
-    border: #0e0d0d;
-  }
-  .comment .pop .pop-container .pop-content .comment-bar .user{
-    display: grid;
-    grid-template-columns: 10% 90%;
-    column-gap: 0;
-    margin:0.1rem ;
-    
-    font-size: 1.7rem;
-    /* border-bottom: 1px solid white; */
-    max-height : 7vh;
-  }
-  .comment .pop .pop-container .pop-content .comment-bar .user .profile-photo{
-    width: 3vw;
-    height: 3vw;
-    border-radius: 50%;
-    object-fit: cover;
-    /* position: relative; */
-    border: 2px solid  rgb(32, 7, 192);;
-    /* left: 20px;
-    top: 100px; */
-    /* border: 4px solid #ffffff; */
-    margin: auto;
-    padding: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 0;
-  }
-  .comment .pop .pop-container .pop-content .comment-bar .hr{
-    /* color:rgb(140, 123, 123); */
-    width: 100%;
-    align-items: center;
-    border: 2px solid white;
-    margin-top: 0;
-    margin-bottom: 10px;
-  }
-
-  .comment .pop .pop-container .pop-content .comment-bar .user .user-name{
-    color: #1b0d0d;
-    display: flex;
-    /* justify-content: ; */
-    align-items: center;
-    font-weight: 400;
-    
-    padding-bottom: 0;
-  }
-
-  .comments .comment-x {
-    font-size: 0.7rem;
-    padding-left: 5%;
-    overflow-y: scroll;
-  }
-  
-  .comments .comment-x .user .user-name{
-    font-size: 0.9rem;
-  }
-  .comments .comment-x .user .user-profile-photo{
-    width: 2vw;
-    height: 2vw;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid  rgb(32, 7, 192);;
-    margin: auto;
-    padding: 1.4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 0;
-    /* background-color: #0e0d0d; */
-  }
-  .comments .comment-x .user .user-profile-photo img{
-    object-fit: cover;
-  }
-  .comments .comment-x .comment-content{
-    padding-left: 12%;
-    margin-bottom: 2vh;
-    margin-top: -1vh;
-  }
-  .comment-bar .Write-comment{
-    bottom: 0;
-    position: absolute;
-    width: 47.5%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-bottom: 1vh;
-    padding-right: 1vh;
-
-  }
-
-  .comment-bar .Write-comment .input{
-    width: 85%;
-    display: flex;
-    border-radius:10px 0 0 10px ;
-    padding: 0 0.2rem;
-
-  }
-  .comment-bar .Write-comment .btn{
-   font-size: 0.7rem;
-   right: 0;
-   width: 15%;
-   border-radius: 0 10px 10px 0;
-
-
-  }
+} */
 
   /* Hide scrollbar for Webkit-based browsers */
 body::-webkit-scrollbar {
@@ -872,5 +670,18 @@ body::-webkit-scrollbar {
   }
   
   body::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  
+  .center::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  .center::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+  
+  .center::-webkit-scrollbar-track {
     background-color: transparent;
   }

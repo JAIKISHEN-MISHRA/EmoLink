@@ -140,7 +140,22 @@ nav .container .create .profile-options .btn-logout {
 
 
 /* Responsive Styles */
+@media screen and (max-width: 950px) {
+  nav .container {
+    
+    grid-template-columns: 20% 68% 10%;
+    column-gap: 1%;
+    width: 99%;
 
+  }
+  nav .container .create .profile-photo{
+    width:3rem
+    
+  }
+}
+@media screen and (max-width: 350px) {
+  
+}
 /* For 1440px and larger */
 /* @media screen and (max-width: 1440px) and (min-width : 750px) {
   .btn-search{
