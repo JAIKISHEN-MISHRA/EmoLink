@@ -17,8 +17,8 @@ const Profile = () => {
   const loggedInUsername = localStorage.getItem('token');
 
   const [userData, setUserData] = useState({
-    followers: [],
-    following: [],
+    followers: [0],
+    following: [0],
     posts: 0,
     username: '',
     fullName: '',
@@ -33,7 +33,7 @@ const Profile = () => {
 
   const [friendRequestSent, setFriendRequestSent] = useState(false);
   const [posts, setpost] = useState([]);
-  const [pi, setPi] = useState({Logo})
+  const [pi, setPi] = useState({ Logo })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -222,9 +222,9 @@ const Profile = () => {
       // setFileInputOpen(true);
     }
   };
-  
+
   const handleImageCropper = async (croppedImageUrl) => {
-  
+
     try {
       const token = localStorage.getItem('tokenurl');
       const config = {
@@ -233,23 +233,23 @@ const Profile = () => {
           Authorization: `Bearer ${token}`,
         },
       };
-  
+
       // Send a POST request to update the profile picture
       const response = await axios.post(
         'http://localhost:5000/ChangeProfile',
         { profilePicture: croppedImageUrl },
         config
       );
-  
+
       console.log('Profile picture updated:');
-  
+
       setSelectedImage(null);
       setPi(croppedImageUrl);
     } catch (error) {
       console.error('Error updating profile picture:', error);
     }
   };
-  
+
   // --------
 
   return (
@@ -259,21 +259,21 @@ const Profile = () => {
         <div className=' container profile-container'>
           <div className='profile'>
             <div className='profile-image'>
-              <span><img className='user-image' src={pi} alt='User' /></span> 
+              <span><img className='user-image' src={pi} alt='User' /></span>
               <span class="edit-button">
                 <label for="profile-image" >
                   <BsPencil className='pencil' />
-                  <input id="profile-image"type="file" accept="image/*" name="image"  onChange={handleProfileFileChange} style={{ display: 'none' }} />
+                  <input id="profile-image" type="file" accept="image/*" name="image" onChange={handleProfileFileChange} style={{ display: 'none' }} />
                 </label>
-
                 {selectedImage && (
-        <ProfileImageCropper imgSrc={selectedImage} onComplete={handleImageCropper} />
-      )}
-              </span> 
+                  <ProfileImageCropper imgSrc={selectedImage} onComplete={handleImageCropper} />
+                )}
+              </span>
+              
             </div>
 
             <div className='profile-info'>
-              <div>
+              <div className='user-details'>
                 <span className='original-name'>{userData.fullName}</span>
                 <h4 className='user-name'>{userData.username}</h4>
               </div>
@@ -333,9 +333,7 @@ const Profile = () => {
                     </div>
                   </div>
                 )}
-
               </div>
-
               <hr className='hr' />
             </div></div>
           <div className='profile-bottom'>
@@ -428,7 +426,7 @@ const Profile = () => {
 
       </div>
 
-     
+
     </>
   );
 };
