@@ -126,27 +126,32 @@ main container ka z 1 kar
 }
 .comment .pop .pop-container .pop-content{
   display: grid;
-  grid-template-columns: 50% 48%;
+  grid-template-columns: 50% 50%;
   column-gap: 2%;
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
   border-radius: 0;
-  background-color: wheat
+  background-color: rgb(255, 255, 255);
+  overflow: hidden;
+  border-radius: 15px 15px;
+  filter: drop-shadow(2px 4px 6px black);
 }
 .comment .pop .pop-container .pop-content .content{
   display: flex;
-  object-fit: cover; 
+  object-fit: cover;
+  align-items: center;
 }
 
 .comment .pop .pop-container .pop-content .comment-bar{
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   padding: auto;
-  margin: 0.3rem ;
-  box-shadow: 0 0 10px rgb(54, 165, 165, 0.5);
+  margin: 0.3rem;
+  box-shadow: 0 0 10px var(--color-primary);
   border: #0e0d0d;
+  overflow-y: scroll;
 }
 .comment .pop .pop-container .pop-content .comment-bar .user{
   display: grid;
@@ -250,5 +255,10 @@ main container ka z 1 kar
  width: 15%;
  border-radius: 0 10px 10px 0;
 
+
+}
+
+/* For 1024px and larger */
+@media screen and (max-width: 1024px) {
 
 }
