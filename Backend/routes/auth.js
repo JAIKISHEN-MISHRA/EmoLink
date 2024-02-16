@@ -7,6 +7,7 @@ import crypto from 'crypto';
 import { sendEmail } from '../config/sendEmail.js';
 import bcrypt from 'bcrypt';
 import protect from '../Middleware/auth.js';
+import DeleteRequest from '../Models/delete.js';
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
@@ -195,6 +196,110 @@ router.post('/reset-password/:token', async (req, res) => {
         res.status(404).json(error+" Change password error");
     }
 });
+
+router.post('/updateMob/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const { MobileNo } = req.body;
+
+    if (!MobileNo) {
+      return res.status(400).json({ message: 'MobileNo is required' });
+    }
+
+    const user = await Register.findOneAndUpdate(
+      { username },
+      { $set: { MobileNo } },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(user.MobileNo);
+  } catch (error) {
+    console.error('Error updating MobileNo:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.post('/updateName/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const { name } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ message: 'MobileNo is required' });
+    }
+
+    const user = await Register.findOneAndUpdate(
+      { username },
+      { $set: { name } },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(user.name);
+  } catch (error) {
+    console.error('Error updating MobileNo:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+router.post('/deactivate-or-delete', async (req, res) => {
+    try {
+        const { email, password, action } = req.body;
+
+        if (!email || !password || !action) {
+            return res.status(400).json({ message: 'Email, password, and action are required' });
+        }
+
+        const userExist = await Register.findOne({ email });
+
+        if (!userExist) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const passwordMatch = await bcrypt.compare(password, userExist.password);
+        
+        if (!passwordMatch) {
+            return res.status(401).json({ message: 'Incorrect password' });
+        }
+
+        let responseMessage = '';
+
+        if (action === 'deactivate') {
+            await Register.findOneAndUpdate(
+                { email },
+                { $set: { deactivate: true } },
+                { new: true }
+            );
+            responseMessage = 'Account deactivated successfully';
+        } else if (action === 'delete') {
+          await Register.findOneAndUpdate(
+            { email },
+            { $set: { deactivate: true } },
+            { new: true }
+        );
+            await DeleteRequest.create({ email });
+            responseMessage = 'Delete request submitted successfully';
+        } else {
+            return res.status(400).json({ message: 'Invalid action' });
+        }
+
+        res.status(200).json({ message: responseMessage });
+    } catch (error) {
+        console.error('Error processing request:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+
+
 
 
 export default router;

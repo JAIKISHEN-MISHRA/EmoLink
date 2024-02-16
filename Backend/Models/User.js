@@ -51,6 +51,12 @@ const userSchema = new mongoose.Schema({
   profilePicture: {
     type: String, 
     default: "", 
+  },
+  MobileNo:{
+    type:Number
+  },
+  deactivate:{
+    type:Boolean
   }
 });
 

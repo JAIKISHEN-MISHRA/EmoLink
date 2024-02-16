@@ -11,11 +11,16 @@ profileRouter.get('/user', async (req, res) => {
         const { username } = req.query;
 
         // Fetch user data from RegisteredUser schema
-        const user = await Register.findOne({ username })
+        const user = await Register.findOne({ username,deactivate: { $ne: true } })
             .populate('followers', 'username')
             .populate('following', 'username')
             .populate('profilePicture','username')
             .exec();
+
+            if (!user) {
+                return res.status(404).json({ message: 'User not found or has deactivated his account' });
+            }
+    
 
         // Fetch post count from Post schema based on the author (username)
         const postCount = await Post.countDocuments({ author: username }).exec();

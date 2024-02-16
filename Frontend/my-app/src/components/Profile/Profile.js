@@ -62,7 +62,7 @@ const Profile = () => {
         navigate('/profile');
         Swal.fire({
           title: 'User Not Found',
-          text: 'Wrong Email id',
+          text: error.response.data.message,
           icon: 'warning',
         });
       }

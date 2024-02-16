@@ -61,7 +61,16 @@ friendRouter.route('/friend-requests').get(protect, async (req, res) => {
       receiver: receiverId,
       status: 'pending',
     })
-      .populate('sender', 'username profilePicture'); // Populate sender information
+    .populate({
+      path: 'sender',
+      select: 'username profilePicture',
+      match: {
+        $or: [
+            { deactivate: { $exists: false } }, // Documents without the deactivate field
+            { deactivate: false } // Documents with deactivate field set to false
+        ]}
+    });
+  
 
     res.json(friendRequests);
   } catch (error) {
