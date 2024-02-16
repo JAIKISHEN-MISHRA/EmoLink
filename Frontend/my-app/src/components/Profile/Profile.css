@@ -149,11 +149,12 @@
 .friend-request button {
   background-color: #3498db;
   color: #ffffff;
-  padding: 10px 20px;
+  padding: 6px 8px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
+  margin: 6px 0px;
 }
 
 .left-about button:hover,
