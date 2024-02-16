@@ -16,7 +16,7 @@ import { BsImages } from "react-icons/bs";
 import Sidebar from "../Sidebar/Sidebar.js";
 import Navbar from "../Navbar/Navbar.js";
 const Main = () => {
-    const [user , setUser] =useState([])
+    const [u , setU] =useState([])
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState([]);
     const [friendRequests, setFriendRequests] = useState([]);
@@ -39,7 +39,7 @@ const Main = () => {
                 const email = localStorage.getItem('token');
                 const response = await axios.get(`http://localhost:5000/profDetail?email=${email}`);
                 const user = response.data.user;
-                setUser(user);
+                setU(user);
             } catch (error) {
                 console.log(error);
             }
@@ -321,13 +321,13 @@ const Main = () => {
                                                 </div>
                                                 <div className="heading" id="heading2">
                                                     <div className="profile-photo">
-                                                                    {user.profile ? (
-                                                                        <img src={user.profile} alt="Profile" />
+                                                                    {u.profile ? (
+                                                                        <img src={u.profile} alt="Profile" />
                                                                     ) : (
                                                                         <img src={Logo} alt="Profile" />
                                                                     )}
                                                                 </div>
-                                                        <h4>{user.name}</h4>
+                                                        <h4>{u.name}</h4>
                                                 </div>
                                                 <div className="category">
                                                     <h6 className="active" data-category="cat-con-msg">Message</h6>
