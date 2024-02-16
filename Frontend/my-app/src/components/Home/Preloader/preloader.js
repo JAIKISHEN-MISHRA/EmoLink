@@ -1,5 +1,5 @@
-import React from 'react';
-import "./preloader.css"; // Add your stylesheets for the logo preloader here
+import React, { useEffect, useState } from "react";
+import "./preloader.css"; 
 
 import Logo from "../Images/Logo.png"
 
