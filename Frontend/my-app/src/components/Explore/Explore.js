@@ -12,16 +12,16 @@ const Explore = () => {
     const fetchTopPosts = async () => {
       try {
         // Fetch top liked posts
-        const likedResponse = await axios.get("http://localhost:5000/explore/top-liked");
+        const likedResponse = await axios.get("https://emolink-148l.onrender.com/explore/top-liked");
         console.log(likedResponse.data)
         setTopLikedPosts(likedResponse.data);
 
         // Fetch top commented posts
-        const commentedResponse = await axios.get("http://localhost:5000/explore/top-commented");
+        const commentedResponse = await axios.get("https://emolink-148l.onrender.com/explore/top-commented");
         setTopCommentedPosts(commentedResponse.data);
 
         // Fetch top viewed posts
-        const viewedResponse = await axios.get("http://localhost:5000/explore/top-viewed");
+        const viewedResponse = await axios.get("https://emolink-148l.onrender.com/explore/top-viewed");
         setTopViewedPosts(viewedResponse.data);
       } catch (error) {
         console.error('Error fetching top posts:', error);

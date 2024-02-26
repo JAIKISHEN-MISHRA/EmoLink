@@ -85,7 +85,7 @@ const compressAndSetAspectRatio = async (file) => {
             };
     
             // Make a POST request to your backend API endpoint to save the stories
-            await axios.post('http://localhost:5000/addStory', submitFormData, config);
+            await axios.post('https://emolink-148l.onrender.com/addStory', submitFormData, config);
     
             // Clear the temporary stories and reset the component state
             setTempStories([]);

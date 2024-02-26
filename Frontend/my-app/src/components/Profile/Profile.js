@@ -47,7 +47,7 @@ const Profile = () => {
         setEditedBio(response.bio);
 
         // Check if friend request has been sent
-        const friendRequests = await axios.get(`http://localhost:5000/friendRequests/friend-requests/${response.id}`, {
+        const friendRequests = await axios.get(`https://emolink-148l.onrender.com/friendRequests/friend-requests/${response.id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('tokenurl')}`,
           },
@@ -69,7 +69,7 @@ const Profile = () => {
     };
     const fetchUserPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/getpost/getUserPost`, {
+        const response = await axios.get(`https://emolink-148l.onrender.com/api/getpost/getUserPost`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('tokenurl')}`,
           },
@@ -116,7 +116,7 @@ const Profile = () => {
 
   const handleAddFriend = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/friendRequests/send-request', {
+      const response = await axios.post('https://emolink-148l.onrender.com/friendRequests/send-request', {
         senderEmail: username,
         receiverEmail: profileUsername, // Assuming profileUsername is the user ID
       });
@@ -157,7 +157,7 @@ const Profile = () => {
     };
     try {
       const response = await axios.post(
-        `http://localhost:5000/profile/removeUser/${id}`,
+        `https://emolink-148l.onrender.com/profile/removeUser/${id}`,
         {},
         config
       );
@@ -178,7 +178,7 @@ const Profile = () => {
     };
     try {
       const response = await axios.post(
-        `http://localhost:5000/profile/unfollowUser/${id}`,
+        `https://emolink-148l.onrender.com/profile/unfollowUser/${id}`,
         {},
         config
       );
@@ -208,7 +208,7 @@ const Profile = () => {
   const handleDeletePost = async (postId) => {
     try {
       // Send a request to delete the post
-      const response = await axios.delete(`http://localhost:5000/api/getpost/${postId}`, {
+      const response = await axios.delete(`https://emolink-148l.onrender.com/api/getpost/${postId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('tokenurl')}`,
         },
@@ -271,7 +271,7 @@ const Profile = () => {
 
       // Send a POST request to update the profile picture
       const response = await axios.post(
-        'http://localhost:5000/ChangeProfile',
+        'https://emolink-148l.onrender.com/ChangeProfile',
         { profilePicture: croppedImageUrl },
         config
       );

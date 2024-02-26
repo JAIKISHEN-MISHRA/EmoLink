@@ -38,7 +38,7 @@ const Main = () => {
         const fetchProfName = async () => {
             try {
                 const email = localStorage.getItem('token');
-                const response = await axios.get(`http://localhost:5000/profDetail?email=${email}`);
+                const response = await axios.get(`https://emolink-148l.onrender.com/profDetail?email=${email}`);
                 const user = response.data.user;
                 console.log(user);
                 setU(user);
@@ -55,7 +55,7 @@ const Main = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 };
-                const response = await axios.get('http://localhost:5000/username', config);
+                const response = await axios.get('https://emolink-148l.onrender.com/username', config);
                 setUsers(response.data);
             } catch (error) {
                 console.error('Error fetching users:', error);
@@ -71,7 +71,7 @@ const Main = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 };
-                const response = await axios.get('http://localhost:5000/friendRequests/friend-requests', config);
+                const response = await axios.get('https://emolink-148l.onrender.com/friendRequests/friend-requests', config);
                 setFriendRequests(response.data);
             } catch (error) {
                 console.error('Error fetching friend requests:', error);
@@ -87,7 +87,7 @@ const Main = () => {
                     },
                 };
 
-                const response = await axios.get('http://localhost:5000/addStory', config);
+                const response = await axios.get('https://emolink-148l.onrender.com/addStory', config);
                 const groupedStories = response.data.stories.reduce((acc, story) => {
                     const username = story.userId.username;
                     const profilePicture = story.userId.profilePicture; // Add profilePicture field
@@ -220,7 +220,7 @@ const Main = () => {
                 },
             };
 
-            const response = await axios.delete('http://localhost:5000/deleteStory', {
+            const response = await axios.delete('https://emolink-148l.onrender.com/deleteStory', {
                 headers: config.headers,
                 data: { filename: imageToDelete.filename },
             });
@@ -241,7 +241,7 @@ const Main = () => {
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.get('http://localhost:5000/notifications', config);
+            const response = await axios.get('https://emolink-148l.onrender.com/notifications', config);
             setNotifications(response.data);
         } catch (error) {
             console.error('Error fetching notifications:', error);

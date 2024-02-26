@@ -41,7 +41,7 @@ const Feeds = () => {
 
   const handleLikeClick = async (postId) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/getpost/like/${postId}`, {}, config);
+      const response = await axios.post(`https://emolink-148l.onrender.com/api/getpost/like/${postId}`, {}, config);
       const updatedPosts = posts.map((post) =>
         post._id === postId ? { ...post, likes: response.data.likes, isLiked: !post.isLiked } : post
       );
@@ -57,7 +57,7 @@ const Feeds = () => {
       console.log("Adding comment:", myComment);
 
       // Assuming the API returns the updated comments array
-      const updatedComments = await axios.post(`http://localhost:5000/api/getpost/comment/${postId}`, {
+      const updatedComments = await axios.post(`https://emolink-148l.onrender.com/api/getpost/comment/${postId}`, {
         content: myComment
       }, config);
       setShowComment(prevShowComment => ({
@@ -95,7 +95,7 @@ const Feeds = () => {
       };
 
       // Send a POST request to bookmark the post
-      const response = await axios.post('http://localhost:5000/addBookmark', requestData, config);
+      const response = await axios.post('https://emolink-148l.onrender.com/addBookmark', requestData, config);
 
       const updatedPosts = posts.map((post) =>
         post._id === postId ? { ...post, isBookmarked: !post.isBookmarked } : post
@@ -121,7 +121,7 @@ const Feeds = () => {
 
   const incrementPostView = async (postId) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/getpost/view/${postId}`, {}, config);
+      const response = await axios.post(`https://emolink-148l.onrender.com/api/getpost/view/${postId}`, {}, config);
       const updatedPosts = posts.map((post) =>
         post._id === postId ? { ...post, isViewed: !post.isViewed } : post
       );

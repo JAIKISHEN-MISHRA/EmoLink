@@ -19,7 +19,7 @@ const BookmarkPage = () => {
             Authorization: `Bearer ${token}`,
           },
         };
-        const response = await axios.get('http://localhost:5000/addBookmark', config);
+        const response = await axios.get('https://emolink-148l.onrender.com/addBookmark', config);
         setBookmarkedPosts(response.data);
         setIsLoading(false); // Set loading to false after data is fetched
       } catch (error) {

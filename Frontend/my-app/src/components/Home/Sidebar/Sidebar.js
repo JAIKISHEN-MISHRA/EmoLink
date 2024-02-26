@@ -16,7 +16,7 @@ const Sidebar = () => {
         const fetchProfName = async () => {
             try {
                 const email = localStorage.getItem('token');
-                const response = await axios.get(`http://localhost:5000/profDetail?email=${email}`);
+                const response = await axios.get(`https://emolink-148l.onrender.com/profDetail?email=${email}`);
                 const user = response.data.user.name;
                 const nameArray = user.split(' ');
                 setProfPhoto(response.data.user.profilePicture)
@@ -34,7 +34,7 @@ const Sidebar = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 };
-                const response = await axios.get('http://localhost:5000/notifications', config);
+                const response = await axios.get('https://emolink-148l.onrender.com/notifications', config);
                 setNotifications(response.data);
             } catch (error) {
                 console.error('Error fetching notifications:', error);
