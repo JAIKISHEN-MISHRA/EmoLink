@@ -162,7 +162,7 @@ router.get('/reset-password/:token', async (req, res) => {
         // Render a page for the user to reset their password
         res.redirect(`/forgot-pass/${token}`);        ;
     } catch (error) {
-        res.redirect("/login?ResetEmailError=Server Error");
+        res.redirect("ResetEmailError=Server Error");
     }
 });
 
@@ -180,7 +180,7 @@ router.post('/reset-password/:token', async (req, res) => {
         const user = await Register.findOne({ _id: tokenDocument.userid });
 
         if (!user) {
-            return res.redirect("/login?RegistrationError=No user found Please Register first");
+            return res.status(400).send("RegistrationError=No user found Please Register first");
         }
 
         // Update the user's password with the new one

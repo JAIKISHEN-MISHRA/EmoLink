@@ -13,7 +13,7 @@ export const registerUser = async (req, res) => {
   try {
     // Validate user inputs
     if (!validator.isEmail(req.body.email)) {
-      return res.redirect("/login?RegistrationError=Invalid Email Address");
+      return res.status(400).send("RegistrationError=Invalid Email Address");
     }
 
     // Hash the password before storing it
