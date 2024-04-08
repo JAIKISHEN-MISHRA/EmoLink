@@ -30,7 +30,7 @@ friendRouter.post('/send-request', async (req, res) => {
     });
 
     if (existingRequest) {
-      return res.status(400).json({ message: 'Friend request already sent.' });
+      return res.status(200).json({ message: 'Friend request already sent.' });
     }
 
     const friendRequest = new FriendRequest({

@@ -38,7 +38,6 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Use the profileUsername if available; otherwise, use the logged-in user's username
         const username = profileUsername || loggedInUsername;
 
         const response = await fetchProfileData(username);
@@ -46,18 +45,26 @@ const Profile = () => {
         setPi(response.profile);
         setEditedBio(response.bio);
 
-        // Check if friend request has been sent
-        const friendRequests = await axios.get(`http://localhost:5000/friendRequests/friend-requests/${response.id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('tokenurl')}`,
-          },
-        });
+        // Check if the response includes the user's email address from localStorage
+        const userEmail = localStorage.getItem('token');
+        const isUserEmailInResponse = response.followers.users.some(user => user.username === userEmail);
 
-        const sentRequest = friendRequests.data.find(
-          (request) => request.receiver._id === response._id && request.status === 'pending'
-        );
+        if (isUserEmailInResponse) {
+          setFriendRequestSent(true);
+        } else {
+          // Check if friend request has been sent
+          const friendRequests = await axios.get(`http://localhost:5000/friendRequests/friend-requests/${response.id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('tokenurl')}`,
+            },
+          });
 
-        setFriendRequestSent(!!sentRequest);
+          const sentRequest = friendRequests.data.find(
+            (request) => request.receiver._id === response._id && request.status === 'pending'
+          );
+
+          setFriendRequestSent(!!sentRequest);
+        }
       } catch (error) {
         navigate('/profile');
         Swal.fire({
@@ -67,6 +74,7 @@ const Profile = () => {
         });
       }
     };
+
     const fetchUserPost = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/getpost/getUserPost`, {
@@ -121,9 +129,14 @@ const Profile = () => {
         receiverEmail: profileUsername, // Assuming profileUsername is the user ID
       });
 
-      console.log(response.data.message); // Message from the backend
+      Swal.fire({
+        title: 'Request sent',
+        text: response.data.message,
+        icon: 'success',
+      }); // Message from the backend
       setFriendRequestSent(true)
     } catch (error) {
+
       console.error('Error sending friend request:', error);
     }
   };
@@ -167,8 +180,8 @@ const Profile = () => {
       console.error('Error removing follower:', error);
     }
   };
-  
-  const handleFollowingUnfollow=async(id)=>{
+
+  const handleFollowingUnfollow = async (id) => {
     const token = localStorage.getItem('tokenurl');
     const config = {
       headers: {
@@ -192,12 +205,12 @@ const Profile = () => {
     if (popButtonLabel === "Remove") {
       handleFollowerRemove(id);
     }
-   
+
 
     if (popButtonLabel === "Unfollow") {
       handleFollowingUnfollow(id);
     }
-    
+
   }
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -304,7 +317,7 @@ const Profile = () => {
                   <ProfileImageCropper imgSrc={selectedImage} onComplete={handleImageCropper} />
                 )}
               </span>
-              
+
             </div>
 
             <div className='profile-info'>
@@ -342,11 +355,11 @@ const Profile = () => {
                               <span><img className='user-image' src={Logo} alt='User' /></span>
                               <div className='user-name'>{follower.username}</div>
                               <div>
-                              {isOwnProfile && (
-                                <button className='pop-bottom-button' value={popButtonLabel} onClick={() => handleBottomAction(follower.id)}>
-                                  {popButtonLabel}
-                                </button>
-                              )}
+                                {isOwnProfile && (
+                                  <button className='pop-bottom-button' value={popButtonLabel} onClick={() => handleBottomAction(follower.id)}>
+                                    {popButtonLabel}
+                                  </button>
+                                )}
                               </div>
                             </div>
                           );
@@ -359,11 +372,11 @@ const Profile = () => {
                               <span><img className='user-image' src={Logo} alt='User' /></span>
                               <div className='user-name'>{following.username}</div>
                               <div>
-                              {isOwnProfile && (
-                                <button className='pop-bottom-button' value={popButtonLabel} onClick={() => handleBottomAction(following.id)}>
-                                  {popButtonLabel}
-                                </button>
-                              )}
+                                {isOwnProfile && (
+                                  <button className='pop-bottom-button' value={popButtonLabel} onClick={() => handleBottomAction(following.id)}>
+                                    {popButtonLabel}
+                                  </button>
+                                )}
                               </div>
                             </div>
                           );
@@ -401,12 +414,22 @@ const Profile = () => {
             </div>
             <div className='friend-request'>
               {/* Friend request button and content */}
-              {!isOwnProfile && (<button onClick={handleAddFriend}>{friendRequestSent ? 'Request Sent' : 'Add Friend'}</button>)}
+              {!isOwnProfile && !friendRequestSent && (
+                <button onClick={handleAddFriend}>Add Friend</button>
+              )}
+
+              {!isOwnProfile && friendRequestSent && (
+                <button disabled>Request Sent</button>
+              )}
+
+              {!isOwnProfile && !friendRequestSent && (
+                <button disabled>Already Friend</button>
+              )}
             </div>
             <div className='user-posts'>
               <h4>Post</h4>
               <div className="feeds">
-                {posts.length > 0 ? (
+                {isOwnProfile && posts.length > 0 ? (
                   posts.map((post) => (
                     <div className="feed" key={post._id}>
                       <div className="head">
