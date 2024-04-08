@@ -1,8 +1,8 @@
 import cron from 'node-cron';
-import Analysis from '../Models/Analysis.js';;
-import Reputation from '../Models/Repuation.js';;
-
-const reputation=cron.schedule('0 */6 * * *', async () => {
+import Analysis from '../Models/Analysis.js';
+import Register from '../Models/User.js';
+import Reputation from '../Models/Repuation.js';
+const reputation = cron.schedule('0 */6 * * *', async () => {
   try {
     const analysisData = await Analysis.find({});
 
@@ -14,6 +14,15 @@ const reputation=cron.schedule('0 */6 * * *', async () => {
       if (!reputationData) {
         reputationData = new Reputation({ userId });
       }
+
+      if (reputationData.reputation < 30) {
+        await Register.findOneAndUpdate({ _id: userId }, { $set: { freeze: true } });
+      }
+
+      if (reputationData.reputation < 5 && reputationData.reputation > 0) {
+        continue;
+      }
+
 
       const prevImageCount = reputationData.prevImageCount || 0;
       const prevSentimentCount = reputationData.prevSentimentCount || 0;
@@ -41,7 +50,9 @@ const reputation=cron.schedule('0 */6 * * *', async () => {
     console.error('Error in reputation cron job:', error);
   }
 });
+
 export default reputation;
+
 function calculateZerosPercentage(array) {
   if (!array || array.length === 0) return 0;
 

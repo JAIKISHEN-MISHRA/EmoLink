@@ -80,10 +80,9 @@ const Login = () => {
 
             
           } catch (error) {
-            console.log(error);
             Swal.fire({
               title: 'Login Fail',
-              text: error.response.data,
+              text: error.message,
               icon: 'error',
             });
           }finally {

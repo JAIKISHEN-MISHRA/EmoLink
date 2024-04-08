@@ -57,7 +57,8 @@ const userSchema = new mongoose.Schema({
   },
   deactivate:{
     type:Boolean
-  }
+  },
+  freeze: { type: Boolean, default: false },
 });
 
 userSchema.methods.generateAuthToken = async function () {

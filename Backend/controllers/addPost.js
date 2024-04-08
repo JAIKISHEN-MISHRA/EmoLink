@@ -3,12 +3,16 @@ import Register from '../Models/User.js';
 import Analysis from '../Models/Analysis.js';
 import { runImageProcessing } from '../config/ImageModel.js';
 import { predictSentiment } from '../config/SentimentModel.js';
+import Reputation from '../Models/Repuation.js';
 
 export const addPost = async (req, res) => {
   try {
     const image = req.file;
     if (!image) {
       return res.status(400).json({ error: 'Image not provided' });
+    }
+    if(Reputation.reputation < 70){
+      return res.status(400).json({error:'OOPS!!!Reputaion less than 70. Please work towards positive community'})
     }
 
     // Read the image data and pass it to the image processing function

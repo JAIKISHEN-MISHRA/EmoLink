@@ -4,6 +4,7 @@ import protect from "../Middleware/auth.js";
 import Post from "../Models/addPost.js";
 import { predictSentiment } from "../config/SentimentModel.js";
 import Analysis from "../Models/Analysis.js";
+import Reputation from "../Models/Repuation.js";
 
 
 const router=express.Router();
@@ -14,6 +15,9 @@ router.post("/like/:postId", protect, async (req, res) => {
   const postId = req.params.postId;
 
   try {
+    if(Reputation.reputation < 40){
+      return res.status(400).json({error:'OOPS!!!Reputaion less than 40. Please work towards positive community'})
+    }
     const post = await Post.findById(postId);
 
     if (!post) {
@@ -46,6 +50,10 @@ router.post("/comment/:postId", protect, async (req, res) => {
   const { content } = req.body;
 
   try {
+
+    if(Reputation.reputation < 50){
+      return res.status(400).json({error:'OOPS!!!Reputaion less than 50. Please work towards positive community'})
+    }
     const post = await Post.findById(postId);
 
     if (!post) {
