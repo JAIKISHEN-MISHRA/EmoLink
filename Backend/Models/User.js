@@ -82,6 +82,8 @@ userSchema.methods.generateAuthToken = async function () {
   }
 };
 
+
+
 const Register = mongoose.model("RegisteredUser", userSchema);
 
 export default Register;
