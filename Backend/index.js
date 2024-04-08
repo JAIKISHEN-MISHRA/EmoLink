@@ -36,7 +36,7 @@ import deleteUserWholeData from './cronJobs/DeleteUser.js';
   
   app.use(bodyParser.json());
   app.use(cors({
-    origin: 'https://emolink.vercel.app/',
+    origin: 'http://localhost:3000/',
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     credentials: true,
   }));
@@ -61,7 +61,7 @@ import deleteUserWholeData from './cronJobs/DeleteUser.js';
   const io = new SocketIOServer(server, {
     pingTimeout: 60000,
     cors: {
-      origin: 'https://emolink.vercel.app/',
+      origin: 'http://localhost:3000/',
       methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
       credentials: true,
     },

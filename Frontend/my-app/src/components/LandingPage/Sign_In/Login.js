@@ -109,11 +109,11 @@ const Login = () => {
         <form>
             <h1>Create Account</h1>
             <div className="social-icons">
-                <a href="#" className="icon"><i className="uil uil-google"></i></a>
+                {/* <a href="#" className="icon"><i className="uil uil-google"></i></a>
                 <a href="#" className="icon"><i className="uil uil-github"></i></a>
-                <a href="#" className="icon"><i className="uil uil-linkedin"></i></a>
+                <a href="#" className="icon"><i className="uil uil-linkedin"></i></a> */}
             </div>
-            <span>or use your email for registeration</span>
+            {/* <span>or use your email for registeration</span> */}
             <input type="text" placeholder="Name" name="name" value={formData.name} onChange={handleInputChange}/>
             <input type="email" placeholder="Email" name="email" value={formData.email} onChange={handleInputChange}/>
             <input type="password" placeholder="Password" name="password" value={formData.password} onChange={handleInputChange}/>
@@ -124,11 +124,11 @@ const Login = () => {
         <form>
             <h1>Sign In</h1>
             <div className="social-icons">
-            <a href="#" className="icon"><i className="uil uil-google"></i></a>
+            {/* <a href="#" className="icon"><i className="uil uil-google"></i></a>
                 <a href="#" className="icon"><i className="uil uil-github"></i></a>
-                <a href="#" className="icon"><i className="uil uil-linkedin"></i></a>
+                <a href="#" className="icon"><i className="uil uil-linkedin"></i></a> */}
             </div>
-            <span>or use your email password</span>
+            {/* <span>or use your email password</span> */}
             <input type="email" placeholder="Email" name="email" value={formData.email} onChange={handleInputChange}/>
             <input type="password" placeholder="Password" name="password" value={formData.password} onChange={handleInputChange}/>
             <a href="/settings">Forget Your Password?</a>

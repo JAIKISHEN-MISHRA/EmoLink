@@ -18,7 +18,7 @@ const AnalyseWrapper = ({ children }) => {
       if (activityStartTime !== null) {
         const durationInSeconds = Math.floor((timestamp - activityStartTime) / 1000);
     
-        axios.post('https://emolink-148l.onrender.com/analytics/userActivity', {
+        axios.post('http://localhost:5000/analytics/userActivity', {
           username,
           timestamp,
           durationInSeconds,

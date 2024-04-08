@@ -46,7 +46,7 @@ const Analytics = () => {
             Authorization: `Bearer ${token}`,
           },
         };
-        const response = await axios.get('https://emolink-148l.onrender.com/getpoints', config);
+        const response = await axios.get('http://localhost:5000/getpoints', config);
         setPoints(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);

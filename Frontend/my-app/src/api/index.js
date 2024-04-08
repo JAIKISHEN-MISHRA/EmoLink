@@ -1,8 +1,8 @@
 import  axios from 'axios';
 
-const url='https://emolink-148l.onrender.com';
-const addpost='https://emolink-148l.onrender.com/api/addpost';
-const getpost='https://emolink-148l.onrender.com/api/getpost';
+const url='http://localhost:5000';
+const addpost='http://localhost:5000/api/addpost';
+const getpost='http://localhost:5000/api/getpost';
 
 export const registerUser=async(userData)=>{
     try {
@@ -88,7 +88,7 @@ export const fetchUserActivityDuration = async(username)=>{
 
 export const fetchProfileData = async (username) => {
   try {
-      const response = await axios.get(`https://emolink-148l.onrender.com/profile/user?username=${username}`);
+      const response = await axios.get(`http://localhost:5000/profile/user?username=${username}`);
       return response.data;
   } catch (error) {
       console.error('Error fetching user data:', error);
@@ -149,7 +149,7 @@ export const fetchUsers = async () => {
         Authorization: `Bearer ${token}`,
       },
     };
-    const response= await axios.get('https://emolink-148l.onrender.com/alluser', config); // Adjust the API endpoint
+    const response= await axios.get('http://localhost:5000/alluser', config); // Adjust the API endpoint
     console.log(response.data);
     return response.data;
   } catch (error) {

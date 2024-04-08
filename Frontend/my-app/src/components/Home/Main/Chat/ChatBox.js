@@ -4,7 +4,7 @@
 // import axios from 'axios';
 // import io from "socket.io-client";
 
-// const Endpoint = 'https://emolink-148l.onrender.com';
+// const Endpoint = 'http://localhost:5000';
 
 // const ChatBox = ({ user, onClose }) => {
 //   const [chatMessages, setChatMessages] = useState([]);
@@ -27,13 +27,13 @@
 //           },
 //         };
 //         const chatResponse = await axios.post(
-//           'https://emolink-148l.onrender.com/chat/',
+//           'http://localhost:5000/chat/',
 //           {
 //             userId: user._id,
 //           },
 //           config
 //         );
-//         const response = await axios.get(`https://emolink-148l.onrender.com/message/${chatResponse.data._id}`, config);
+//         const response = await axios.get(`http://localhost:5000/message/${chatResponse.data._id}`, config);
 //         setChatMessages(response.data);
 //       } catch (error) {
 //         console.error('Error fetching chat messages:', error);
@@ -65,7 +65,7 @@
 //       };
 
 //       const chatResponse = await axios.post(
-//         'https://emolink-148l.onrender.com/chat',
+//         'http://localhost:5000/chat',
 //         {
 //           userId: user._id,
 //         },
@@ -73,7 +73,7 @@
 //       );
 
 //       const messageResponse = await axios.post(
-//         'https://emolink-148l.onrender.com/message',
+//         'http://localhost:5000/message',
 //         {
 //           content: newMessage,
 //           chatId: chatResponse.data._id,
@@ -161,13 +161,13 @@ const ChatBox = ({ user, onClose }) => {
           },
         };
         const chatResponse = await axios.post(
-          'https://emolink-148l.onrender.com/chat/',
+          'http://localhost:5000/chat/',
           {
             userId: user._id,
           },
           config
         );
-        const response = await axios.get(`https://emolink-148l.onrender.com/message/${chatResponse.data._id}`, config);
+        const response = await axios.get(`http://localhost:5000/message/${chatResponse.data._id}`, config);
         setChatMessages(response.data);
       } catch (error) {
         console.error('Error fetching chat messages:', error);
@@ -199,7 +199,7 @@ const ChatBox = ({ user, onClose }) => {
       };
 
       const chatResponse = await axios.post(
-        'https://emolink-148l.onrender.com/chat',
+        'http://localhost:5000/chat',
         {
           userId: user._id,
         },
@@ -207,7 +207,7 @@ const ChatBox = ({ user, onClose }) => {
       );
 
       const messageResponse = await axios.post(
-        'https://emolink-148l.onrender.com/message',
+        'http://localhost:5000/message',
         {
           content: newMessage,
           chatId: chatResponse.data._id,
