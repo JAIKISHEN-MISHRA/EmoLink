@@ -16,6 +16,7 @@ import { BsImages } from "react-icons/bs";
 import Sidebar from "../Sidebar/Sidebar.js";
 import Navbar from "../Navbar/Navbar.js";
 import { Theme } from "./Theme/Theme.js";
+import BackButton from "../../Back.js";
 const Main = () => {
     const [u , setU] =useState([])
     const [loading, setLoading] = useState(false);
@@ -321,15 +322,13 @@ const Main = () => {
                                                     <h4>Messages</h4><i className="uil uil-message"></i>
                                                 </div>
                                                 <div className="heading" id="heading2">
-                                                    <div className="profile-photo">
-                                                                    {u.profilePicture ? (
-                                                                        <img src={u.profilePicture} alt="Profile" />
-                                                                    ) : (
-                                                                        <img src={Logo} alt="Profile" />
-                                                                    )}
-                                                                </div>
-                                                        <h4>{u.name}</h4>
+                                                    <BackButton />
+                                                    &nbsp;&nbsp; <h4>{u.name}</h4>
                                                 </div>
+                                              
+                                                {selectedUser ? (
+                                                        <ChatBox user={selectedUser} onClose={handleCloseChat} />
+                                                    ) : (<>
                                                 <div className="category">
                                                     <h6 className="active" data-category="cat-con-msg">Message</h6>
                                                     <h6 data-category="cat-con-not">Notification</h6>
@@ -340,10 +339,8 @@ const Main = () => {
                                                     <input type="search" placeholder="search messages" id="message-search" />
                                                 </div> */}
                                                 <div className="category-content message" id="cat-con-msg">
-                                                    {selectedUser ? (
-                                                        <ChatBox user={selectedUser} onClose={handleCloseChat} />
-                                                    ) : (
-                                                        users.map(user => (
+                                                    
+                                                       { users.map(user => (
                                                             <div
                                                                 key={user._id}
                                                                 className="msg"
@@ -360,9 +357,10 @@ const Main = () => {
                                                                     <h5>{user.username}</h5>
                                                                 </div>
                                                             </div>
-                                                        ))
-                                                    )}
+                                                        ))}
+                                                  
                                                 </div>
+                                                </>  )}
                                                 <div className="category-content notification" id="cat-con-not">
                                                     {notifications.map(notification => (
                                                         <div key={notification._id} className="notification-item">

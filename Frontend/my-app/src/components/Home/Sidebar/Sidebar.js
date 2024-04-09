@@ -10,7 +10,7 @@ const Sidebar = () => {
     const [profName, setProfname] = useState();
     const [notifications, setNotifications] = useState([]);
     const [profPhoto, setProfPhoto] = useState();
-
+    
     useEffect(() => {
         sideFunction();
         const fetchProfName = async () => {
@@ -18,9 +18,11 @@ const Sidebar = () => {
                 const email = localStorage.getItem('token');
                 const response = await axios.get(`http://localhost:5000/profDetail?email=${email}`);
                 const user = response.data.user.name;
-                const nameArray = user.split(' ');
+                console.log(response)
+                // const nameArray = user.split(' ');
                 setProfPhoto(response.data.user.profilePicture)
-                setProfname(nameArray);
+                // setProfname(nameArray);
+                setProfname(user);
             } catch (error) {
                 console.log(error);
             }

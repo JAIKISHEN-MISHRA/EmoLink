@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Logo from '../../Images/Logo.png';
 import axios from "axios";
-import "./feeds.css"
+import "./feeds.css";
+import { Link, useNavigate } from 'react-router-dom';
 import { BsFillXCircleFill } from 'react-icons/bs';
 import Swal from "sweetalert2";
 import { fetchPostApi } from "../../../../api";
@@ -132,6 +133,10 @@ const Feeds = () => {
     }
   };
 
+  const navigate = useNavigate();
+  const handleProfSearch = ( author) => {
+    navigate(`/profile/${author}`);
+  };
   return (
     <>
       <div className="feeds">
@@ -145,8 +150,12 @@ const Feeds = () => {
                 observer.observe(postRef);
               }
             }}>
-              <div className="head">
-                <div className="user">
+              <div className="head"   >
+                <div className="user"
+                 onClick={(e) => { 
+                  e.preventDefault();
+                 handleProfSearch();}
+            }>
                   <div className="profile-photo">
                     {post.authorProfilePicture ? (
                       <img src={post.authorProfilePicture} alt="Profile" />

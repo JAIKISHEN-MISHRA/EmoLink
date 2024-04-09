@@ -703,6 +703,9 @@ justify-content: center;    }
     }
     #heading2{
         display: block;
+        display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
     }
      .right .messages{
         border-bottom-right-radius: 0;

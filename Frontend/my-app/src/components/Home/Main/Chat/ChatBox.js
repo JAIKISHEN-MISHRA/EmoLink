@@ -140,7 +140,7 @@
 // export default ChatBox;
 
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useRef} from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
 import './Chatbox.css';
 import axios from 'axios';
@@ -148,6 +148,7 @@ import axios from 'axios';
 const ChatBox = ({ user, onClose }) => {
   const [chatMessages, setChatMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  // const chatBoxRef = useRef(null);
 
   useEffect(() => {
     // Fetch chat messages
@@ -169,6 +170,8 @@ const ChatBox = ({ user, onClose }) => {
         );
         const response = await axios.get(`http://localhost:5000/message/${chatResponse.data._id}`, config);
         setChatMessages(response.data);
+
+        // chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
       } catch (error) {
         console.error('Error fetching chat messages:', error);
       }
@@ -185,6 +188,7 @@ const ChatBox = ({ user, onClose }) => {
 
     // Cleanup interval on component unmount or if the user changes
     return () => clearInterval(refreshInterval);
+
 
   }, [user]);
 
@@ -227,30 +231,32 @@ const ChatBox = ({ user, onClose }) => {
     setNewMessage(e.target.value);
   };
   
-
+console.log(user)
   return (
-    <div className="chat-box">
+    <div className='chat-p'>
+     <div className="chat-box" > {/* ref={chatBoxRef} */}
       <div className='header'>
       <button className="btn btn-back" onClick={onClose}>
         <BsArrowLeft size={16} />
       </button>
-      <span className="chat-header">{user.username}</span>
+      <span className="chat-header">&nbsp;&nbsp;{user.username}</span>
       </div>
-      <br/>
-
+      
+      <div className='msg'>
       {chatMessages && (
         <div className="chat-messages">
           {chatMessages.map((msg, index) => ( 
             <div key={index} className="chitchat">
               <strong>{msg.sender.name}: &nbsp;</strong> 
-              <div className='msg'>
+              <div className='m'>
               {msg.content}
               </div>
             </div>
           ))}
         </div>
-      )}
-
+      )} 
+      
+         </div>
       <div className="chat-input">
         <input
           type="text"
@@ -270,6 +276,7 @@ const ChatBox = ({ user, onClose }) => {
           Send
         </button>
       </div>
+    </div>
     </div>
   );
 };
