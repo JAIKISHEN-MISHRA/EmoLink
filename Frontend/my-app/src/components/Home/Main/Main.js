@@ -36,17 +36,7 @@ const Main = () => {
 
     useEffect(() => {
         myFunction();
-        const fetchProfName = async () => {
-            try {
-                const email = localStorage.getItem('token');
-                const response = await axios.get(`http://localhost:5000/profDetail?email=${email}`);
-                const user = response.data.user;
-                setU(user);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        const fetchUsers = async () => {
+        const fetchData = async () => {
             try {
                 const token = localStorage.getItem('tokenurl');
                 const config = {
@@ -55,49 +45,28 @@ const Main = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 };
-                const response = await axios.get('http://localhost:5000/username', config);
-                setUsers(response.data);
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            }
-        };
-
-        const fetchFriendRequestsData = async () => {
-            try {
-                const token = localStorage.getItem('tokenurl');
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
-                    },
-                };
-                const response = await axios.get('http://localhost:5000/friendRequests/friend-requests', config);
-                setFriendRequests(response.data);
-            } catch (error) {
-                console.error('Error fetching friend requests:', error);
-            }
-        };
-        const fetchStories = async () => {
-            try {
-                const token = localStorage.getItem('tokenurl');
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
-                    },
-                };
-
-                const response = await axios.get('http://localhost:5000/addStory', config);
-                const groupedStories = response.data.stories.reduce((acc, story) => {
+    
+                const [profResponse, usersResponse, friendRequestsResponse, storiesResponse] = await Promise.all([
+                    axios.get(`http://localhost:5000/profDetail?email=${localStorage.getItem('token')}`, config),
+                    axios.get('http://localhost:5000/username', config),
+                    axios.get('http://localhost:5000/friendRequests/friend-requests', config),
+                    axios.get('http://localhost:5000/addStory', config),
+                ]);
+    
+                setU(profResponse.data.user);
+                setUsers(usersResponse.data);
+                setFriendRequests(friendRequestsResponse.data);
+    
+                const groupedStories = storiesResponse.data.stories.reduce((acc, story) => {
                     const username = story.userId.username;
-                    const profilePicture = story.userId.profilePicture; // Add profilePicture field
+                    const profilePicture = story.userId.profilePicture;
                     if (!acc[username]) {
-                        acc[username] = { stories: [], profilePicture }; // Include profilePicture in the accumulator
+                        acc[username] = { stories: [], profilePicture };
                     }
                     acc[username].stories.push(story);
                     return acc;
                 }, {});
-
+    
                 const mergedStories = Object.entries(groupedStories).map(([username, { stories, profilePicture }]) => {
                     const mergedImages = stories.map(story => ({
                         filename: story.filename,
@@ -106,23 +75,20 @@ const Main = () => {
                     }));
                     return {
                         username,
-                        profilePicture, // Include profilePicture in the merged story object
+                        profilePicture,
                         images: mergedImages
                     };
                 });
-                setStoriesData(mergedStories); // Update stories state with fetched data
+    
+                setStoriesData(mergedStories);
             } catch (error) {
-                console.error('Error fetching stories:', error);
+                console.error('Error fetching data:', error);
             }
         };
-
-
-        fetchStories();
-        fetchProfName();
-
-        fetchFriendRequestsData();
-        fetchUsers();
+    
+        fetchData();
     }, []);
+    
     const handleInputChange = (e) => {
         setData({
             ...formData,

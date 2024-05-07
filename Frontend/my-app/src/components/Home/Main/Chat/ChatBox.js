@@ -231,7 +231,6 @@ const ChatBox = ({ user, onClose }) => {
     setNewMessage(e.target.value);
   };
   
-console.log(user)
   return (
     <div className='chat-p'>
      <div className="chat-box" > {/* ref={chatBoxRef} */}
