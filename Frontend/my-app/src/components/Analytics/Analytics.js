@@ -25,6 +25,7 @@ const formatDuration = (value) => {
 const Analytics = () => {
   const [userActivityDuration, setUserActivityDuration] = useState([]);
   const [points,setPoints]=useState();
+  
 
   useEffect(() => {
     const email = localStorage.getItem('token');
@@ -48,6 +49,7 @@ const Analytics = () => {
         };
         const response = await axios.get('http://localhost:5000/getpoints', config);
         setPoints(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -55,6 +57,7 @@ const Analytics = () => {
     fetchPoints()
 
     fetchUserActivityData();
+    console.log(points)
   }, []);
   return (
     <div>
@@ -82,14 +85,14 @@ const Analytics = () => {
                   <h3>No. of Friend Requests</h3>
                   <BsPeopleFill className='card_icon' />
                 </div>
-                <h1>33</h1>
+                <h1>{points ? points.followersCount:"0"}</h1>
               </div>
               <div className='cards'>
                 <div className='card-inner'>
-                  <h3>Notifications</h3>
+                  <h3>Notification</h3>
                   <BsFillBellFill className='card_icon' />
                 </div>
-                <h1>42</h1>
+                <h1>{points ? points.notificationsCount:"0"}</h1>
               </div>
             </div>
 
