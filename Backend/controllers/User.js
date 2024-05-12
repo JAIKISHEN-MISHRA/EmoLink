@@ -83,7 +83,7 @@ export const loginUser = async (req, res) => {
 
     const activity=await UserActivityDuration.find({username:email}).exec();
 
-    if (activity) {
+    if (activity.length>0) {
       const durationInSeconds = activity[activity.length-1].durationInSeconds;
       const userdayOfWeek=activity[activity.length-1].dayOfWeek;
       const todayDay=new Date().getDay();
