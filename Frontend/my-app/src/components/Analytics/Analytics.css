@@ -186,3 +186,26 @@
   cursor: pointer;
   margin-top: 10px;
 }
+
+.emopoints-container {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.emopoints-input {
+  width: 100px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.emopoints-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
